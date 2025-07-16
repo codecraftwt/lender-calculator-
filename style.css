@@ -1,0 +1,313 @@
+/* Reset and base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #b19cd9 0%, #d8b4fe 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #2c2c54;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background network grid pattern */
+body::after {
+    content: "";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    background: url('data:image/svg+xml;utf8,<svg width="100%" height="250" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 40" stroke="%237b5de8" stroke-width="1"/></pattern></defs><rect width="100%" height="250" fill="url(%23grid)" /></svg>') repeat;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Logo */
+.logo {
+    height: 40px;
+}
+
+/* Navbar */
+header {
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
+.nav-link {
+    color: #4b3f99;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #7b5de8;
+    text-decoration: underline;
+}
+
+.btn-login {
+    background: #7b5de8;
+    color: white;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #5a3dbd;
+    color: white;
+}
+
+/* Intro text */
+.intro-text h2 {
+    color: #3a2f7a;
+    font-size: 1.5rem;
+}
+
+.intro-text p {
+    color: #4b4b7a;
+    font-size: 0.9rem;
+    max-width: 700px;
+}
+
+.intro-text a.text-primary {
+    color: #3a2f7a;
+    font-weight: 600;
+}
+
+.intro-text a.text-primary:hover {
+    color: #7b5de8;
+    text-decoration: none;
+}
+
+.btn-demo {
+    color: #7b5de8;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.btn-demo i {
+    font-size: 1.5rem;
+}
+
+/* Panels */
+.panel {
+    background: white;
+    position: relative;
+    z-index: 1;
+}
+
+/* AI Loan Matching Panel */
+.bg-gradient-ai-loan {
+    background: linear-gradient(90deg, #f7941d 0%, #f15a24 100%);
+    color: white;
+}
+
+.loan-options {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.loan-option {
+    background: #f0f0f5;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease, color 0.3s ease;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #dcdce6;
+}
+
+.loan-option i {
+    color: #7b5de8;
+}
+
+.loan-option span {
+    color: #4b4b7a;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.loan-option.active {
+    background: #7b5de8;
+    color: white;
+    border-color: #7b5de8;
+}
+
+.loan-option.active i {
+    color: white;
+}
+
+.loan-amount-display {
+    background: linear-gradient(90deg, #2a4fff 0%, #3a2f7a 100%);
+    color: white;
+    font-size: 1.25rem;
+    min-width: 160px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgb(58 47 122 / 0.5);
+}
+
+.loan-navigation {
+    color: #4b4b7a;
+}
+
+.btn-purple {
+    background: #7b5de8;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-purple:hover {
+    background: #5a3dbd;
+}
+
+.btn-green {
+    background: #4cd964;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-green:hover {
+    background: #3bb34a;
+}
+
+.loan-info-box {
+    min-width: 90px;
+    font-size: 0.75rem;
+}
+
+.loan-info-box .text-success {
+    color: #4cd964 !important;
+}
+
+.matched-lenders {
+    color: #4b4b7a;
+}
+
+.loan-actions button {
+    font-size: 0.8rem;
+    color: #7b5de8;
+    border-color: #7b5de8;
+}
+
+.loan-actions button i {
+    font-size: 1rem;
+}
+
+/* ebroker Lender Panel */
+.bg-gradient-ebroker {
+    background: linear-gradient(90deg, #7b5de8 0%, #b19cd9 100%);
+    color: white;
+}
+
+.lender-cards .lender-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgb(58 47 122 / 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+.lender-card:hover {
+    box-shadow: 0 6px 12px rgb(58 47 122 / 0.3);
+}
+
+.lender-logo {
+    max-height: 40px;
+    max-width: 100px;
+    object-fit: contain;
+}
+
+.lender-info {
+    flex-grow: 1;
+}
+
+.lender-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #3a2f7a;
+}
+
+.loan-details {
+    border-radius: 8px;
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.bg-gradient-wisr {
+    background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);
+}
+
+.bg-gradient-moneyplace {
+    background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);
+}
+
+.bg-gradient-moneyme {
+    background: linear-gradient(90deg, #f7941d 0%, #f15a24 100%);
+}
+
+.bg-gradient-plenti {
+    background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);
+}
+
+.loan-type {
+    color: #7b5de8;
+    font-weight: 600;
+}
+
+/* Comparison note */
+.comparison-note {
+    background: #3a2f7a;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .loan-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .lender-cards .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .loan-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Scrollbar hidden for loan options if overflow */
+.loan-options {
+    overflow-x: hidden;
+}
+
+/* Buttons */
+.btn-outline-primary {
+    border-color: #7b5de8;
+    color: #7b5de8;
+}
+
+.btn-outline-primary:hover {
+    background-color: #7b5de8;
+    color: white;
+}
