@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'eBrokerTech Loan Matching')
+@section('title', 'matrix Loan Matching')
 
 @section('content')
 <!-- Main content starts here -->

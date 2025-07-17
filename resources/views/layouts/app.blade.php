@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@yield('title', 'eBrokerTech Loan Matching')</title>
+    <title>@yield('title', 'matrix Loan Matching')</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
@@ -20,7 +20,7 @@
     <header class="py-3 bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="#" class="d-flex align-items-center text-decoration-none">
-                <img src="{{ url('assets/images/main-logo.png') }}" alt="ebrokertech" class="logo" />
+                <img src="{{ url('assets/images/main-logo.png') }}" alt="matrix" class="logo" />
             </a>
             <nav>
                 <ul class="nav gap-3 align-items-center">
