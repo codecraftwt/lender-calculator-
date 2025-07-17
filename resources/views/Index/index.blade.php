@@ -18,12 +18,14 @@
     <!-- Odometer JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 
 
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
+    <link rel="icon" href="{{ asset('assets/images/favicon.jpg') }}" type="image/jpeg">
 
 </head>
 
@@ -123,70 +125,79 @@
                             </div>
 
                         </div> -->
-
                         <div class="step step-2 d-none">
                             <form method="POST" action="#" class="car-bike-boat-form">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="input1" class="form-label">Select Your Trading Time</label>
+                                <div class="row">
+                                    <!-- Trading Time -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="trading_time" class="form-label">Select Your Trading Time</label>
                                         <select id="trading_time" name="trading_time" class="form-control">
                                             <option value="">Select Trading Time</option>
                                             @foreach ($trading_times as $trading_time)
-                                            <option value="{{ $trading_time['trading_time']}}">{{ $trading_time['trading_time']}} Months</option>
-
+                                            <option value="{{ $trading_time['trading_time'] }}">{{ $trading_time['trading_time'] }} Months</option>
                                             @endforeach
-
                                         </select>
                                     </div>
+
+                                    <!-- GST Registration -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="input1" class="form-label">Do you have ABN/GST Registration ?</label>
+                                        <label for="gst" class="form-label">Do you have ABN/GST Registration?</label>
                                         <select id="gst" name="gst" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
-
                                         </select>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="age" class="form-label">Enter your age</label>
+                                    <!-- Age -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="age" class="form-label">Enter Your Age</label>
                                         <input type="text" id="age" name="age" class="form-control">
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="loan_amt" class="form-label">How much loan are you looking for?</label>
+                                    <!-- Loan Amount -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="loan_amt" class="form-label">Loan Amount Needed</label>
                                         <input type="text" id="loan_amt" name="loan_amt" class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="interest" class="form-label">What interest rate are you expecting?</label>
+
+                                    <!-- Interest Rate -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="interest" class="form-label">Expected Interest Rate</label>
                                         <input type="text" id="interest" name="interest" class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Annual Revenue</label>
+
+                                    <!-- Annual Revenue -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="annual_revenue" class="form-label">Annual Revenue</label>
                                         <input type="text" id="annual_revenue" name="annual_revenue" class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Enter your net income</label>
+
+                                    <!-- Net Income -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="net_income" class="form-label">Net Income</label>
                                         <input type="text" id="net_income" name="net_income" class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Enter your credit score</label>
+
+                                    <!-- Credit Score -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="credit_score" class="form-label">Credit Score</label>
                                         <input type="text" id="credit_score" name="credit_score" class="form-control">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Select your bank statements type</label>
-                                        <!-- <input type="text" id="bank_statement" name="bank_statement" class="form-control"> -->
+
+                                    <!-- Bank Statement -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="bank_statement" class="form-label">Bank Statement Duration</label>
                                         <select id="bank_statement" name="bank_statement" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="Yes">Minimum 6 months</option>
-                                            <option value="No">Minimum 6 months plus
-                                                ATO portals</option>
-
+                                            <option value="6months">Minimum 6 months</option>
+                                            <option value="6months_ato">Minimum 6 months + ATO portals</option>
                                         </select>
                                     </div>
 
+                                    <!-- Guarantee -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="Guarantee" class="form-label">Will you provide a guarantee for the loan?</label>
+                                        <label for="Guarantee" class="form-label">Will You Provide a Guarantee?</label>
                                         <select id="Guarantee" name="Guarantee" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -194,9 +205,9 @@
                                         </select>
                                     </div>
 
-                                    <!-- Second Dropdown (initially hidden) -->
+                                    <!-- Guarantee Type (Conditional) -->
                                     <div id="guaranteeTypeDiv" class="col-md-6 mb-3" style="display: none;">
-                                        <label for="GuaranteeType" class="form-label">Select your guarantee type</label>
+                                        <label for="GuaranteeType" class="form-label">Guarantee Type</label>
                                         <select id="GuaranteeType" name="GuaranteeType" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Personal">Personal</option>
@@ -205,8 +216,9 @@
                                         </select>
                                     </div>
 
+                                    <!-- Financials -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="Financials" class="form-label">Will you provide financial documents ?</label>
+                                        <label for="Financials" class="form-label">Will You Provide Financial Docs?</label>
                                         <select id="Financials" name="Financials" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -214,92 +226,77 @@
                                         </select>
                                     </div>
 
-
-                                    <div class="col-md-6">
-                                        <label for="decision_time" class="form-label">What decision time are you expecting?</label>
+                                    <!-- Decision Time -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="decision_time" class="form-label">Preferred Decision Time</label>
                                         <select id="decision_time" name="decision_time" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="Yes">within 24 hours</option>
-                                            <option value="No">In as fast as 30 minutes</option>
+                                            <option value="24hr">Within 24 hours</option>
+                                            <option value="30min">As fast as 30 minutes</option>
                                         </select>
                                     </div>
 
-
-
-                                    <!-- <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Loan Amount (Min)</label>
-                                        <input type="text" id="min_loan_amt" name="min_loan_amt" class="form-control">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="multiSelect" class="form-label">Loan Amount (Max)</label>
-                                        <input type="text" id="max_loan_amt" name="max_loan_amt" class="form-control">
-                                    </div> -->
+                                    <!-- Loan Format -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="input1" class="form-label">Select loan format</label>
+                                        <label for="loan_format" class="form-label">Loan Format</label>
                                         <select id="loan_format" name="loan_format" class="form-control">
-                                            <option value="">Select Loan Format</option>
+                                            <option value="">Select</option>
                                             @foreach ($loan_formats as $loan_format)
-                                            <option value="{{$loan_format['loan_format']}}">{{ $loan_format['loan_format'] }}</option>
+                                            <option value="{{ $loan_format['loan_format'] }}">{{ $loan_format['loan_format'] }}</option>
                                             @endforeach
-
-
                                         </select>
                                     </div>
 
-
-
+                                    <!-- Loan Term -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="input1" class="form-label">Loan Term</label>
+                                        <label for="loan_term" class="form-label">Loan Term</label>
                                         <select id="loan_term" name="loan_term" class="form-control">
-                                            <option value="">Select Loan Term</option>
+                                            <option value="">Select</option>
                                             @foreach ($loan_terms as $loan_term)
-                                            <option value="{{$loan_term['loan_term']}}">{{ $loan_term['loan_term'] }} Months</option>
+                                            <option value="{{ $loan_term['loan_term'] }}">{{ $loan_term['loan_term'] }} Months</option>
                                             @endforeach
-
-
                                         </select>
                                     </div>
 
-
-                                    <!-- Credit History Dropdown -->
+                                    <!-- Credit History -->
                                     <div class="col-md-6 mb-3">
                                         <label for="CreditHistory" class="form-label">What best describes your credit history?</label>
                                         <select id="CreditHistory" name="CreditHistory" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="clean">Clean credit history (no defaults or dishonours)</option>
-                                            <option value="paidDefaults">Paid defaults or defaults under payment plan</option>
-                                            <option value="unpaidDefaults">Unpaid defaults or judgments</option>
-                                            <option value="dishonours">Recent dishonoured or overdrawn payments</option>
-                                            <option value="bankruptcy">Past bankruptcy / insolvency</option>
+                                            <option value="clean">Clean credit history</option>
+                                            <option value="paidDefaults">Paid/default under payment plan</option>
+                                            <option value="unpaidDefaults">Unpaid defaults</option>
+                                            <option value="dishonours">Dishonours / overdrawn</option>
+                                            <option value="bankruptcy">Past bankruptcy</option>
                                         </select>
                                     </div>
 
-                                    <!-- Optional: Display notes or alerts -->
-                                    <div id="creditNote" class="alert alert-warning mt-2" style="display: none;"></div>
-
+                                    <!-- Security
                                     <div class="col-md-6 mb-3">
-                                        <label for="SecurityProvided" class="form-label">Do you have assets or property to offer as security?</label>
+                                        <label for="SecurityProvided" class="form-label">Security Provided?</label>
                                         <select id="SecurityProvided" name="SecurityProvided" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="None">No – Unsecured loan only</option>
-                                            <option value="Property">Yes – Residential/Commercial property</option>
-                                            <option value="Assets">Yes – Business assets/equipment</option>
+                                            <option value="None">No</option>
+                                            <option value="Property">Property</option>
+                                            <option value="Assets">Assets</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
+                                    <!-- Repayment Frequency -->
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Repayment Frequency</label>
+                                        <label for="Repayment_Frequency" class="form-label">Repayment Frequency</label>
                                         <select id="Repayment_Frequency" name="Repayment_Frequency" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="Yes">Daily</option>
-                                            <option value="No">Weekly</option>
-                                            <option value="No">Monthly</option>
-                                            <option value="No">Fortnightly</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Fortnightly">Fortnightly</option>
                                         </select>
                                     </div>
 
+                                    <!-- Early Repayment -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="EarlyRepayment" class="form-label">Do you intend to repay the loan early?</label>
+                                        <label for="EarlyRepayment" class="form-label">Will You Repay Early?</label>
                                         <select id="EarlyRepayment" name="EarlyRepayment" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -307,23 +304,25 @@
                                         </select>
                                     </div>
 
+                                    <!-- Industry Type -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="IndustryType" class="form-label">Select your industry</label>
+                                        <label for="IndustryType" class="form-label">Industry Type</label>
                                         <select id="IndustryType" name="IndustryType" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="Accommodation">Accommodation / Hospitality</option>
+                                            <option value="Accommodation">Accommodation</option>
                                             <option value="PropertyDevelopment">Property Development</option>
                                             <option value="Retail">Retail</option>
                                             <option value="Gaming">Gaming / Gambling</option>
-                                            <option value="Healthcare">Healthcare / Medical</option>
-                                            <option value="Education">Education / Training</option>
-                                            <option value="Adult">Adult / Tattoo / Debt Collection</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Adult">Adult / Tattoo</option>
                                             <option value="Other">Other</option>
                                         </select>
                                     </div>
 
-                                    <div id="refinanceDetails" class="col-md-6 mb-3">
-                                        <label for="refinanceOption" class="form-label">Are you applying for refinance?</label>
+                                    <!-- Refinance -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="refinanceOption" class="form-label">Refinance Application?</label>
                                         <select id="refinanceOption" name="refinanceOption" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -331,26 +330,26 @@
                                         </select>
                                     </div>
 
-
+                                    <!-- Lending Ratio -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="lendingRatio" class="form-label">What is your preferred lending ratio?</label>
+                                        <label for="lendingRatio" class="form-label">Preferred Lending Ratio</label>
                                         <select id="lendingRatio" name="lendingRatio" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="125">Up to 125% of monthly sales</option>
-                                            <option value="150">Up to 150% of monthly sales</option>
-                                            <option value="custom">Other / Not sure</option>
+                                            <option value="125">Up to 125%</option>
+                                            <option value="150">Up to 150%</option>
+                                            <option value="custom">Other</option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="brokerage" class="form-label">How much brokerage are you expecting?</label>
+                                    <!-- Brokerage -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="brokerage" class="form-label">Expected Brokerage</label>
                                         <input type="text" id="brokerage" name="brokerage" class="form-control">
                                     </div>
 
-
-
+                                    <!-- Payday Loans -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="paydayLoans" class="form-label">Have you taken any payday loans?</label>
+                                        <label for="paydayLoans" class="form-label">Have You Taken Payday Loans?</label>
                                         <select id="paydayLoans" name="paydayLoans" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -358,14 +357,15 @@
                                         </select>
                                     </div>
 
-                                    <!-- Hidden Input Div (Only shown if Yes is selected) -->
+                                    <!-- Payday Count (if yes) -->
                                     <div id="payday_loan_div" class="col-md-6 mb-3" style="display: none;">
-                                        <label for="payday_loan" class="form-label">How many payday loans do you have?</label>
+                                        <label for="payday_loan" class="form-label">How Many Payday Loans?</label>
                                         <input type="text" id="payday_loan" name="payday_loan" class="form-control">
                                     </div>
 
+                                    <!-- Bankruptcy -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="bankruptcy" class="form-label">Have you ever filed for bankruptcy??</label>
+                                        <label for="bankruptcy" class="form-label">Filed for Bankruptcy?</label>
                                         <select id="bankruptcy" name="bankruptcy" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -373,14 +373,15 @@
                                         </select>
                                     </div>
 
-                                    <!-- Hidden Input Div (Only shown if Yes is selected) -->
+                                    <!-- Bankruptcy Details -->
                                     <div id="bankruptcy_div" class="col-md-6 mb-3" style="display: none;">
-                                        <label for="bankruptcy_count" class="form-label">How many months ago was your bankruptcy discharged?</label>
+                                        <label for="bankruptcy_count" class="form-label">Months Since Discharge</label>
                                         <input type="text" id="bankruptcy_count" name="bankruptcy_count" class="form-control">
                                     </div>
 
+                                    <!-- Cash Flow Loan -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="cashflow_loan" class="form-label">Do you have cash flow loan?</label>
+                                        <label for="cashflow_loan" class="form-label">Do You Have Cash Flow Loan?</label>
                                         <select id="cashflow_loan" name="cashflow_loan" class="form-control">
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>
@@ -388,26 +389,25 @@
                                         </select>
                                     </div>
 
-                                    <!-- Hidden Input Div (Only shown if Yes is selected) -->
+                                    <!-- Cash Flow Loan Count -->
                                     <div id="cashflow_loan_div" class="col-md-6 mb-3" style="display: none;">
-                                        <label for="cashflow_loan_count" class="form-label">How much cash flow loan do you have?</label>
+                                        <label for="cashflow_loan_count" class="form-label">How Much?</label>
                                         <input type="text" id="cashflow_loan_count" name="cashflow_loan_count" class="form-control">
                                     </div>
 
+                                    <!-- High Cost Lenders -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="high_cost_lenders" class="form-label">Do you consent to being assesed by high cost lenders?</label>
+                                        <label for="high_cost_lenders" class="form-label">Allow High-Cost Lenders?</label>
                                         <select id="high_cost_lenders" name="high_cost_lenders" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="Yes">Yes -I understand & consent</option>
-                                            <option value="No">No - I prefer to avoid high-cost lenders</option>
+                                            <option value="Yes">Yes - I consent</option>
+                                            <option value="No">No - Avoid</option>
                                         </select>
                                     </div>
-
-
                                 </div>
-
                             </form>
                         </div>
+
 
                         <div class="step step-3 d-none">
                             <h5 class="text-center mb-4">Summary</h5>
@@ -461,6 +461,8 @@
                 </div>
             </div>
 
+
+
             <!-- Right Panel -->
             <div class="col-lg-6 mb-4">
                 <div class="panel ebroker-lender-panel p-4 rounded-3 shadow-sm">
@@ -468,6 +470,9 @@
                         <span class="badge bg-gradient-ebroker px-3 py-1 rounded-pill fw-semibold">ebroker LENDER PANEL</span>
                     </div>
                     <div class="lender-cards row g-3">
+                        <div id="loader" class="text-center my-4" style="display: none;">
+                            <img src="{{ asset('assets/images/loader.gif') }}" alt="Loading...">
+                        </div>
                         <!-- Each lender card -->
                         <!-- <div class="col-6">
                             <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="1">
@@ -574,52 +579,77 @@
                 };
 
                 $.ajax({
-                    url: "/get-lenders", // Replace with actual URL
+                    url: "/get-lenders",
                     method: "GET",
                     data: formData,
-                    success: function(data) {
-                        const $container = $('.lender-cards');
-                        $('#matchedLenders').text(data.length);
-                        $container.empty(); // Clear existing cards
 
-                        data.forEach(function(lender) {
-                            const cardHtml = `
-                        <div class="col-6">
-                            <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
-                                <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative">
-                                    <img src="{{ url('assets/images') }}/${lender.lender_image}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo />
+                    beforeSend: function() {
+                        $('#loader').show();
+
+                        // Add loader inside the lender-cards container
+                        const loaderHtml = `
+            <div class="lender-cards-loader text-center w-100 py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="mt-2   small text-white">Finding best lenders for you...</div>
+            </div>`;
+                        $('.lender-cards').html(loaderHtml);
+                    },
+
+                    success: function(data) {
+                        setTimeout(function() {
+                            const $container = $('.lender-cards');
+                            $('#matchedLenders').text(data.length);
+                            $container.empty(); // Remove the loader and old cards
+
+                            data.forEach(function(lender) {
+                                const cardHtml = `
+                    <div class="col-6">
+                        <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
+                            <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative">
+                                <img src="{{ url('assets/images') }}/${lender.lender_image}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo />
+                            </div>
+                            <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small">
+                                <p class="fw-bold text-center">${lender.lender_name}</p>
+                                <div class="loan-header d-flex justify-content-between align-items-center">
+                                    <div class="from-label bg-purple px-2 py-1 rounded-top text-white small">FROM</div>
+                                    <div class="max-loan-label bg-orange px-2 py-1 rounded-top text-white small">MAX LOAN</div>
                                 </div>
-                                <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small">
-                                    <p class="fw-bold text-center">${lender.lender_name}</p>
-                                    <div class="loan-header d-flex justify-content-between align-items-center">
-                                        <div class="from-label bg-purple px-2 py-1 rounded-top text-white small">FROM</div>
-                                        <div class="max-loan-label bg-orange px-2 py-1 rounded-top text-white small">MAX LOAN</div>
-                                    </div>
-                                    <div class="loan-amounts d-flex justify-content-between fw-bold">
-                                        <div>$${lender.min_loan_amount}</div>
-                                        <div data-max-loan-amount>$${lender.max_loan_amount}</div>
-                                    </div>
-                                    <div class="loan-rates d-flex justify-content-between small">
-                                        <div>From ${lender.credit_score}+ credit score</div>
-                                    </div>
+                                <div class="loan-amounts d-flex justify-content-between fw-bold">
+                                    <div>$${lender.min_loan_amount}</div>
+                                    <div data-max-loan-amount>$${lender.max_loan_amount}</div>
                                 </div>
-                                <div class="expanded-content bg-light p-0">
-                                    <div class="d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);">
-                                        <span class="m-3 text-white">Click here to finish on a call with a specialist.</span>
-                                        <span class="circle-btn"><span class="text-purple">or</span></span>
-                                        <span class="m-3 text-white">Keep entering data to see your perfect match.</span>
-                                    </div>
+                                <div class="loan-rates d-flex justify-content-between small">
+                                    <div>From ${lender.credit_score}+ credit score</div>
+                                </div>
+                            </div>
+                            <div class="expanded-content bg-light p-0">
+                                <div class="d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);">
+                                    <span class=" text-white" style="font-size:13px;margin:19px">Click here to finish on a call with a specialist.</span>
+                                    <span class="circle-btn"><span class="text-white">or</span></span>
+                                    <span class=" text-white" style="font-size:13px;margin:22px">Keep entering data to see your perfect match.</span>
                                 </div>
                             </div>
                         </div>
-                    `;
-                            $container.append(cardHtml);
-                        });
+                    </div>`;
+                                $container.append(cardHtml);
+                            });
+
+                            $('#loader').hide();
+                            $('.lender-cards').show();
+                        }, 1500); // Simulated delay
                     },
+
                     error: function(xhr, status, error) {
                         console.error('Error fetching lenders:', error);
+                        $('#loader').hide();
+                        $('.lender-cards').html(`<div class="text-danger text-center py-4">Unable to load lenders. Please try again.</div>`);
                     }
                 });
+
+
+
             }
 
             // Trigger AJAX call on input or select change

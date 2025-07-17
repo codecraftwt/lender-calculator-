@@ -522,3 +522,47 @@ label[for="purchasePrice"] {
 .loan-option.selected span {
     color: #fff;
 }
+
+.lender-cards-loader {
+    position: relative;
+    background: linear-gradient(45deg, #6a5de8, #4a3f9a); /* Gradient background for a modern feel */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.custom-spinner {
+    width: 60px;
+    height: 60px;
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-top: 8px solid #6a5de8; /* Bright color for spinner */
+    animation: spin 1s linear infinite, pulse 1s ease-in-out infinite;
+}
+
+.custom-loading-text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 15px;
+    animation: fadeInOut 3s infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Pulse animation for spinner */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Text fade-in and fade-out effect */
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
