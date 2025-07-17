@@ -31,7 +31,7 @@
     <header class="py-3 bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="#" class="d-flex align-items-center text-decoration-none">
-                <img src="{{ asset('assets/images/main-logo.png') }}" alt="ebrokertech" class="logo" />
+                <img src="{{ url('assets/images/main-logo.png') }}" alt="ebrokertech" class="logo" />
             </a>
             <nav>
                 <ul class="nav gap-3 align-items-center">
@@ -267,7 +267,7 @@
                         <!-- <div class="col-6">
                             <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="1">
                                 <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative">
-                                    <img src="{{ asset('assets/images/liberty-logo.png') }}" alt="Wisr" class="lender-logo img-fluid" data-lender-logo />
+                                    <img src="{{ url('assets/images/liberty-logo.png') }}" alt="Wisr" class="lender-logo img-fluid" data-lender-logo />
 
                                 </div>
                                 <div class="loan-details-section flex-grow-1  bg-gradient-moneyme text-white d-flex flex-column justify-content-center small">
@@ -405,7 +405,7 @@
                         <div class="col-6">
                             <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
                                 <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative">
-                                    <img src="{{ asset('assets/images') }}/${lender.lender_image}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo />
+                                    <img src="{{ url('assets/images') }}/${lender.lender_image}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo />
                                 </div>
                                 <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small">
                                     <p style="text-align:center;margin-bottom:0rem" class="fw-bold">${lender.lender_name}</p>
