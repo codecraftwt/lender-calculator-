@@ -387,7 +387,8 @@
                 console.log(formData);
                 // Send AJAX request with the form data
                 $.ajax({
-                    url: "/get-lenders", // Change this to your actual URL
+                    url: "{{ route('get.lenders') }}",
+                    // Change this to your actual URL
                     method: "GET",
                     data: formData, // Send form data as query params
                     success: function(data) {

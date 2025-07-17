@@ -28,4 +28,4 @@ Route::get('/', function () {
 
 Route::get('/index', [IndexController::class, 'index']);
 Route::get('/index2', [IndexController::class, 'index_test']);
-Route::get('/get-lenders', [IndexController::class, 'get_lenders']);
+Route::get('/get-lenders', [IndexController::class, 'get_lenders'])->name('get.lenders');
