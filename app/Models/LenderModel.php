@@ -30,7 +30,7 @@ class LenderModel extends Model
         'security_assets',
         'early_payment',
         'interest_rate',
-        'industry_type',
+        'allowed_industry_type',
         'loan_type',
         'decision_time',
         'refinance_term',
@@ -42,6 +42,8 @@ class LenderModel extends Model
         'deposit_amount',
         'cash_flow_lending_time',
         'high_cost_lenders',
-        'high_cost_lenders_type'
+        'high_cost_lenders_type',
+        'repayment_frequency',
+        'restricted_industry_type'
     ];
 }

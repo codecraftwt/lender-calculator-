@@ -25,14 +25,14 @@ class LenderSeeder extends Seeder
             'lender_image'            => 'moula.png',
 
             // New fields
-            'bank_statement_type'     => '6 months',
+            'bank_statement_type'     => '6',
             'guarantee_type'          => json_encode(['Personal Guarantee']),
             'financial_docs'          => 'Yes',
             'credit_file_history'     =>  json_encode(['Clean credit history', 'No dishonoured payments']),
             'security_assets'         => 'Unsecured',
             'early_payment'           => 'Yes',
             'interest_rate'           => '15.99',
-            'industry_type'           =>  json_encode(['Accommodation', 'Property Development', 'Retail']),
+            'allowed_industry_type'           =>  json_encode(['Accommodation', 'Property Development', 'Retail']),
             'loan_type'               => json_encode(['Business', 'Personal']),
             'decision_time'           => '24',
             'refinance_term'          => 'Yes',
@@ -42,9 +42,11 @@ class LenderSeeder extends Seeder
             'bankruptcy_time'         => '12',
             'age_of_applicant'        => '21',
             'deposit_amount'          => '700',
-            'cash_flow_lending_time'  => '6',
+            'cash_flow_loan_count'  => '0',
             'high_cost_lenders'       => 'No',
             'high_cost_lenders_type'  => null, // Only if applicable
+            'repayment_frequency'  => json_encode(['Daily', 'Weekly']),
+            'restricted_industry_type' => json_encode(['Financial Services', 'Insurance']),
         ]);
 
         LenderModel::create([
@@ -62,14 +64,14 @@ class LenderSeeder extends Seeder
             'loan_term' => '6-12',
             'lender_image' => 'propsa.png',
 
-            'bank_statement_type'     => '12 months',
-            'guarantee_type'          => json_encode(['Personal Guarantee', 'Director Guarantee']),
+            'bank_statement_type'     => '12',
+            'guarantee_type'          => null,
             'financial_docs'          => 'No',
             'credit_file_history'     => json_encode(['No defaults']),
             'security_assets'         => 'Unsecured',
             'early_payment'           => 'No',
             'interest_rate'           => '13',
-            'industry_type'           =>  json_encode(['Gaming', 'Property Development', 'Healthcare']),
+            'allowed_industry_type'           =>  json_encode(['Gaming', 'Property Development', 'Healthcare']),
             'loan_type'               => json_encode(['Education', 'Business', 'Personal']),
             'decision_time'           => '48',
             'refinance_term'          => 'No',
@@ -79,9 +81,11 @@ class LenderSeeder extends Seeder
             'bankruptcy_time'         => '10',
             'age_of_applicant'        => '30',
             'deposit_amount'          => '0',
-            'cash_flow_lending_time'  => '12',
+            'cash_flow_loan_count'  => '2',
             'high_cost_lenders'       => 'Yes',
             'high_cost_lenders_type'  => null, // Only if applicable
+            'repayment_frequency'  => json_encode(['Weekly', 'Fortnightly']),
+            'restricted_industry_type' => json_encode(['Accommodation ', ' Property Development ', ' Retail ']),
         ]);
 
 
@@ -100,14 +104,14 @@ class LenderSeeder extends Seeder
             'loan_term' => '6-24',
             'lender_image' => 'on_deck.png',
 
-            'bank_statement_type'     => '6 months',
+            'bank_statement_type'     => '6',
             'guarantee_type'          => json_encode(['Owner Guarantee']),
             'financial_docs'          => 'Yes',
             'credit_file_history'     => json_encode(['Acceptable defaults']),
             'security_assets'         => 'Unsecured',
             'early_payment'           => 'Yes',
             'interest_rate'           => '12',
-            'industry_type'           => json_encode(['Education', 'Property Development', 'Tattoo']),
+            'allowed_industry_type'           => json_encode(['Education', 'Property Development', 'Tattoo']),
             'loan_type'               => json_encode(['Personal']),
             'decision_time'           => '30',
             'refinance_term'          => 'Yes',
@@ -117,9 +121,11 @@ class LenderSeeder extends Seeder
             'bankruptcy_time'         => '6',
             'age_of_applicant'        => '40',
             'deposit_amount'          => '500',
-            'cash_flow_lending_time'  => '12',
+            'cash_flow_loan_count'  => '1',
             'high_cost_lenders'       => 'No',
             'high_cost_lenders_type'  => null, // Only if applicable
+            'repayment_frequency'  => json_encode(['Weekly']),
+            'restricted_industry_type' => json_encode(['Gaming', 'Property Development', 'Healthcare']),
         ]);
 
         LenderModel::create([
@@ -137,14 +143,14 @@ class LenderSeeder extends Seeder
             'loan_term' => '6-36',
             'lender_image' => 'boost_business.png',
 
-            'bank_statement_type'     => '12 months',
-            'guarantee_type'          => json_encode(['Personal Guarantee', 'Director Guarantee']),
+            'bank_statement_type'     => '12',
+            'guarantee_type'          => null,
             'financial_docs'          => 'No',
             'credit_file_history'     =>  json_encode(['No dishonours or overdrawn in last 6 months', 'No court actions']),
             'security_assets'         => 'Unsecured',
             'early_payment'           => 'No',
             'interest_rate'           => '17',
-            'industry_type'           => json_encode(['Gaming', 'Property Development', 'Healthcare']),
+            'allowed_industry_type'           => json_encode(['Gaming', 'Property Development', 'Healthcare']),
             'loan_type'               => json_encode(['Business', 'Personal']),
             'decision_time'           => '36',
             'refinance_term'          => 'No',
@@ -154,9 +160,11 @@ class LenderSeeder extends Seeder
             'bankruptcy_time'         => '12',
             'age_of_applicant'        => '21',
             'deposit_amount'          => '500',
-            'cash_flow_lending_time'  => '3',
+            'cash_flow_loan_count'  => '3',
             'high_cost_lenders'       => 'No',
             'high_cost_lenders_type'  => null, // Only if applicable
+            'repayment_frequency'  => json_encode(['Monthly', 'Weekly']),
+            'restricted_industry_type' => json_encode(['Accommodation ', ' Retail ']),
         ]);
 
         LenderModel::create([
@@ -174,14 +182,14 @@ class LenderSeeder extends Seeder
             'loan_term' => '6-24',
             'lender_image' => 'finance_one.png',
 
-            'bank_statement_type'     => '12 months',
+            'bank_statement_type'     => '12',
             'guarantee_type'          => json_encode(['Joint Guarantee', 'Director Guarantee']),
             'financial_docs'          => 'Yes',
             'credit_file_history'     => json_encode(['Acceptable defaults']),
             'security_assets'         => 'Unsecured',
             'early_payment'           => 'Yes',
             'interest_rate'           => '20',
-            'industry_type'           => json_encode(['Education', 'Property Development', 'Tattoo']),
+            'allowed_industry_type'           => json_encode(['Education', 'Property Development', 'Tattoo']),
             'loan_type'               => json_encode(['Education', 'Business', 'Personal']),
             'decision_time'           => '12',
             'refinance_term'          => 'No',
@@ -191,9 +199,11 @@ class LenderSeeder extends Seeder
             'bankruptcy_time'         => '10',
             'age_of_applicant'        => '25',
             'deposit_amount'          => '1000',
-            'cash_flow_lending_time'  => '12',
+            'cash_flow_loan_count'  => '2',
             'high_cost_lenders'       => 'Yes',
             'high_cost_lenders_type'  => null, // Only if applicable
+            'repayment_frequency'  => json_encode(['Monthly', 'Fortnightly']),
+            'restricted_industry_type' => json_encode(['Adult ', ' Retail ']),
         ]);
 
         // Add more records as needed...
