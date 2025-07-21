@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,10 +17,11 @@
     <link rel="icon" href="{{ asset('assets/images/favicon.jpg') }}" type="image/jpeg">
     @yield('styles')
 </head>
+
 <body>
     <header class="py-3 bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="#" class="d-flex align-items-center text-decoration-none">
+            <a href="{{ url('/index') }}" class="d-flex align-items-center text-decoration-none">
                 <img src="{{ url('assets/images/main-logo.png') }}" alt="matrix" class="logo" />
             </a>
             <nav>
@@ -41,4 +43,5 @@
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+
+</html>
