@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-md-6  mt-3">
                         <div class="matched-lenders text-center ms-5">
-                            <div id="matchedLenders" class="odometer matched-count fw-bold fs-4 text-green">20</div>
+                            <div id="matchedLenders" class="odometer matched-count fw-bold fs-4 text-green">0</div>
                             <div class="matched-label small fw-bold text-purple">MATCHED LENDERS</div>
                         </div>
                     </div>
