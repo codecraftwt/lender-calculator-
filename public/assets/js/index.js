@@ -17,6 +17,14 @@ $(document).ready(function () {
         $btnNext.toggle(index < $steps.length - 1);
     }
 
+    $(".btn-prev-global").on("click", function () {
+        let which_step = $(".step.active").data("step");
+        if (which_step - 1 == 1) {
+            console.log(which_step);
+            $(".btn-prev-global").removeClass("btn-green");
+            $(".btn-prev-global").addClass("btn-warning");
+        }
+    });
     // // Handle loan option selection (Step 1)
     // $(".step-1 .loan-option").click(function () {
     //     $(".step-1 .loan-option").removeClass("selected border border-success");
@@ -54,6 +62,11 @@ $(document).ready(function () {
 
     showStep(currentStep);
 
+    // $("loan-option").on("click", function () {
+    //     var loan_purpose = $(this).data("loan_type");
+    //     triggerAjax(loan_purpose);
+    // });
+
     // Trigger AJAX request
     function triggerAjax() {
         const formData = {
@@ -87,6 +100,7 @@ $(document).ready(function () {
             cashflow_loan: $("#cashflow_loan").val(),
             cashflow_loan_count: $("#cashflow_loan_count").val(),
             IndustryType: $("#IndustryType").val(),
+            // Loan_type: Loan_type,
         };
 
         console.log(formData);
@@ -120,46 +134,59 @@ $(document).ready(function () {
 
                     if (data.length < 1) {
                         $container.html(`
-                <div class="text-danger text-center py-4">
-                    <div class="no-lenders-container">
-                        <div class="emoji">❌</div>
-                        <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">
-                            No lenders matched your preference at this moment.
-                        </p>
-                    </div>
-                </div>
-            `);
-                        return;
+        <div class="text-danger text-center py-4">
+            <div class="no-lenders-container">
+                <div class="emoji">❌</div>
+                <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">
+                    No lenders matched your preference at this moment.
+                </p>
+            </div>
+        </div>
+    `);
+
+                        // Update From Box
+                        $(".loan-info .from-amount").text(`$0`);
+                        $(".loan-info .from-frequency").text("credit score:");
+                        $(".loan-info .from-rate").text(`FROM 0%`);
+                        $(".loan-info .from-comparison").text(`$0`);
+
+                        // Update Max Box with fallback values
+                        $(".loan-info .max-amount").text(`$0`);
+                        $(".loan-info .max-unsecured").text(`unsecured`);
+                        $(".loan-info .max-secured").text(`$0 secured`);
+
+                        return; // stop execution before using lender
+                    } else {
+                        // ✅ Now we can safely define and use lender
+                        const lender = data[0];
+
+                        // Update From Box
+                        $(".loan-info .from-amount").text(
+                            `$${lender.min_loan_amount || 0}`
+                        );
+                        $(".loan-info .from-frequency").text(
+                            lender.credit_score
+                                ? `${lender.credit_score}+ credit score`
+                                : "500+ credit score"
+                        );
+                        $(".loan-info .from-rate").text(
+                            `FROM ${lender.interest_rate || 0}%`
+                        );
+                        $(".loan-info .from-comparison").text(
+                            `${lender.comparison_rate || 0}% comparison`
+                        );
+
+                        // Update Max Box
+                        $(".loan-info .max-amount").text(
+                            `$${lender.max_loan_amount || 0}`
+                        );
+                        $(".loan-info .max-unsecured").text(
+                            lender.unsecured_text || "unsecured"
+                        );
+                        $(".loan-info .max-secured").text(
+                            `$${lender.secured_amount || 0} secured`
+                        );
                     }
-
-                    // Populate .loan-info with first lender's info
-                    const lender = data[0]; // first lender record
-
-                    // Update From Box
-                    $(".loan-info .from-amount").text(
-                        `$${lender.min_loan_amount || 0}`
-                    );
-                    $(".loan-info .from-frequency").text(
-                        lender.credit_score + "+ credit score" || "500"
-                    ); // you can customize this if you have repayment_frequency field
-
-                    $(".loan-info .from-rate").text(
-                        `FROM ${lender.interest_rate || 0}%  `
-                    ); // example field
-                    $(".loan-info .from-comparison").text(
-                        `${lender.comparison_rate || 0}% comparison`
-                    ); // example field
-
-                    // Update Max Box
-                    $(".loan-info .max-amount").text(
-                        `$${lender.max_loan_amount || 0}`
-                    );
-                    $(".loan-info .max-unsecured").text(
-                        lender.unsecured_text || "unsecured"
-                    ); // example, replace with real field
-                    $(".loan-info .max-secured").text(
-                        `$${lender.secured_amount || 0} secured`
-                    ); // example, replace with real field
 
                     // Then add the lender cards as you already do:
                     data.forEach(function (lender) {
@@ -291,9 +318,88 @@ $(document).ready(function () {
     // Step 1: select option handler
     $(".loan-option").click(function () {
         $(".loan-option").removeClass("selected");
+        $(".btn-next-global").removeClass("btn-warning");
+        $(".btn-next-global").addClass("btn-green");
         $(this).addClass("selected");
         selectedOption = $(this).data("next-step");
         $(".step-1 .error-message").remove();
+    });
+
+    $("#next_btn").click(function () {
+        // $(".btn-prev-global").removeClass("btn-warning");
+        // $(".btn-prev-global").addClass("btn-green");
+        $(".btn-next-global").removeClass("btn-green");
+        $(".btn-next-global").addClass("btn-warning");
+    });
+
+    // js to check whether all fields are filled?
+
+    function checkFields() {
+        let allFilled = true;
+
+        // Check all inputs and selects that are required
+        $("input[required], select[required]").each(function () {
+            let value = $.trim($(this).val());
+            let hasErrorClass = $(this).hasClass("is-invalid");
+
+            if (value === "" || hasErrorClass) {
+                allFilled = false;
+            }
+        });
+
+        if (allFilled) {
+            $(".btn-next-global").removeClass("btn-warning");
+            $(".btn-next-global").addClass("btn-green");
+        } else {
+            $(".btn-next-global").removeClass("btn-green");
+            $(".btn-next-global").addClass("btn-warning");
+        }
+    }
+
+    // Trigger check on input or select change
+    $("select[required], input[required]").on("input change", checkFields);
+
+    // Run check once when page loads
+    checkFields();
+
+    // validations to numeric input fields
+    // Block non-numeric keys on keydown (allow numbers, backspace, delete, arrows, etc.)
+    $(
+        "#age,#loan_amt, #interest_rate, #annual_revenue, #net_income, #credit_score, #monthly_income, #brokerage, #payday_loan_count, #bankruptcy_count, #cashflow_loan_count"
+    ).on("keydown", function (e) {
+        // Allow: backspace(8), tab(9), delete(46), arrows(37-40), home(36), end(35), and num keys
+        // Also allow Ctrl+A (select all), Ctrl+C, Ctrl+V, Ctrl+X for convenience
+        if (
+            $.inArray(e.keyCode, [8, 9, 46, 37, 38, 39, 40, 35, 36]) !== -1 ||
+            (e.ctrlKey === true && [65, 67, 86, 88].indexOf(e.keyCode) !== -1)
+        ) {
+            // let it happen, don't block
+            return;
+        }
+        // Block if not a number key (0-9) on both main keyboard and numpad
+        if (
+            (e.keyCode < 48 || e.keyCode > 57) &&
+            (e.keyCode < 96 || e.keyCode > 105)
+        ) {
+            e.preventDefault();
+        }
+    });
+
+    // Show error message on input event (after user typed)
+    $(
+        "#age,#loan_amt, #interest_rate, #annual_revenue, #net_income, #credit_score, #monthly_income, #brokerage, #payday_loan_count, #bankruptcy_count, #cashflow_loan_count"
+    ).on("input", function (e) {
+        let value = $(this).val().trim();
+        let id = $(this).attr("id");
+        let errorPara = $("#invalid_" + id);
+
+        if (value === "" || isNaN(value)) {
+            $(this).addClass("is-invalid");
+            errorPara.removeClass("d-none").addClass("d-block");
+        } else {
+            $(this).removeClass("is-invalid");
+            errorPara.removeClass("d-block").addClass("d-none");
+        }
     });
 
     // validations
@@ -315,6 +421,8 @@ $(document).ready(function () {
                 return; // prevent going forward
             } else {
                 $(".step-1 .error-message").remove();
+                $(".btn-prev-global").removeClass("btn-warning");
+                $(".btn-prev-global").addClass("btn-green");
             }
 
             currentStep = parseInt(selectedOption) - 1;
@@ -356,6 +464,11 @@ $(document).ready(function () {
     // Previous button click
     $btnPrev.on("click", function (e) {
         e.preventDefault();
+        $(".loan-option").each(function () {
+            if ($(this).hasClass("selected")) {
+                $btnNext.addClass("btn-green");
+            }
+        });
 
         if (currentStep > 0) {
             currentStep--;
@@ -369,3 +482,9 @@ $(document).ready(function () {
         $steps.eq(step).removeClass("d-none").addClass("active");
     }
 });
+
+// $(".loan-option").on("click", function () {
+//     var Loan_type = $(this).attr("data-loan-type");
+//     console.log(Loan_type);
+//     triggerAjax(Loan_type);
+// });

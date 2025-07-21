@@ -68,7 +68,7 @@ class IndexController extends Controller
 
         // Apply filters if the values are provided in the request
         if ($request->has('trading_time') && $request->trading_time != '') {
-            $query->where('trading_time', $request->trading_time);
+            $query->where('trading_time', "<=", $request->trading_time);
         }
 
         if ($request->has('abn_gst') && $request->abn_gst != '') {
@@ -80,13 +80,13 @@ class IndexController extends Controller
             $query->whereRaw('CAST(annual_revenue AS DECIMAL(10,2)) <= ?', [$cleanedRevenue]);
         }
         if ($request->has('net_income') && $request->net_income != '') {
-            $cleanedIncome = preg_replace('/[^0-9.]/', '', $request->net_income);
-            $query->whereRaw('CAST(net_income AS DECIMAL(10,2)) <= ?', [$cleanedIncome]);
+            $net_income = preg_replace('/[^0-9.]/', '', $request->net_income);
+            $query->whereRaw('CAST(net_income AS DECIMAL(10,2)) <= ?', [$net_income]);
         }
 
         if ($request->has('credit_score') && $request->credit_score != '') {
-            $cleanedScore = preg_replace('/[^0-9.]/', '', $request->credit_score);
-            $query->whereRaw('CAST(credit_score AS DECIMAL(10,2)) <= ?', [$cleanedScore]);
+            $credit_score = preg_replace('/[^0-9.]/', '', $request->credit_score);
+            $query->whereRaw('CAST(credit_score AS DECIMAL(10,2)) <= ?', [$credit_score]);
         }
 
         // if ($request->has('min_loan_amount') && $request->min_loan_amount != '') {
@@ -109,6 +109,9 @@ class IndexController extends Controller
 
         if ($request->has('loan_term') && $request->loan_term != '') {
             $query->where('loan_term', $request->loan_term);
+        }
+        if ($request->has('bank_statements') && $request->bank_statements != '') {
+            $query->where('bank_statement_type', '>=', $request->bank_statements);
         }
 
         if ($request->has('age_of_applicant') && $request->age_of_applicant != '') {
@@ -193,7 +196,7 @@ class IndexController extends Controller
             if ($request->paydayLoans_option == 'Yes') {
                 $query->where('payday_loan', '>=', 1);
             } elseif ($request->paydayLoans_option == 'No') {
-                $query->where('payday_loan', '=', 0);
+                $query->where('payday_loan', '>=', 0);
             }
         }
 
@@ -230,8 +233,14 @@ class IndexController extends Controller
         }
 
         if ($request->has('IndustryType') && $request->IndustryType != '') {
-            $industryType = trim($request->IndustryType); // e.g. "Property Development"
+            $industryType = ucwords(strtolower(trim($request->IndustryType)));
+            // e.g. "Property Development"
             $query->whereJsonContains('allowed_industry_type', [$industryType]);
+        }
+
+        if ($request->has('Loan_type') && $request->Loan_type != '') {
+            $Loan_type = $request->Loan_type; // e.g. "Property Development"
+            $query->whereRaw("LOWER(JSON_EXTRACT(loan_type, '$')) LIKE '%" . strtolower($Loan_type) . "%'");
         }
 
 
