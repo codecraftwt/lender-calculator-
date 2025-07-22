@@ -93,13 +93,6 @@
 </script>
 
 
-<!-- Main content ends here -->
-@endsection
-
-@section('scripts')
-<!-- Odometer JS -->
-
-
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
@@ -121,7 +114,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 
-<script>
-
-</script>
+<!-- Main content ends here -->
 @endsection
