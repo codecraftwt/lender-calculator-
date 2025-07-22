@@ -46,7 +46,7 @@ class LenderModel extends Model
         'repayment_frequency',
         'restricted_industry_type',
         'monthly_income',
-        'number_of_dushonours',
+        'number_of_dishonours',
         'negative_days',
         'asset_backed',
 

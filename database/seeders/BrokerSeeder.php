@@ -22,7 +22,7 @@ class BrokerSeeder extends Seeder
             'min_loan_amount'         => '10000',
             'max_loan_amount'         => '250000',
             'lender_image'            => 'moula.png',
-            'number_of_dushonours'            => '3',
+            'number_of_dishonours'            => '3',
             'negative_days'           => '7',
             'asset_backed'            => 'Yes',
         ]);
@@ -35,7 +35,7 @@ class BrokerSeeder extends Seeder
             'min_loan_amount'         => '5000',
             'max_loan_amount'         => '500000',
             'lender_image'            => 'propsa.png',
-            'number_of_dushonours'            => '2',
+            'number_of_dishonours'            => '2',
             'negative_days'           => '5',
             'asset_backed'            => 'No',
         ]);
@@ -48,7 +48,7 @@ class BrokerSeeder extends Seeder
             'min_loan_amount'         => '50000',
             'max_loan_amount'         => '1000000',
             'lender_image'            => 'shift.png',
-            'number_of_dushonours'            => '5',
+            'number_of_dishonours'            => '5',
             'negative_days'           => '10',
             'asset_backed'            => 'Yes',
         ]);
@@ -62,7 +62,7 @@ class BrokerSeeder extends Seeder
             'min_loan_amount'         => '5000',
             'max_loan_amount'         => '500000',
             'lender_image'            => 'lumi.png',
-            'number_of_dushonours'            => '5',
+            'number_of_dishonours'            => '5',
             'negative_days'           => '3',
             'asset_backed'            => 'Yes',
         ]);
@@ -76,7 +76,7 @@ class BrokerSeeder extends Seeder
             'min_loan_amount'         => '10000',
             'max_loan_amount'         => '175000',
             'lender_image'            => 'on_deck.png',
-            'number_of_dushonours'            => '3',
+            'number_of_dishonours'            => '3',
             'negative_days'           => '5',
             'asset_backed'            => 'No',
         ]);
