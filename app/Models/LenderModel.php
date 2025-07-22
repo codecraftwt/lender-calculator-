@@ -44,6 +44,11 @@ class LenderModel extends Model
         'high_cost_lenders',
         'high_cost_lenders_type',
         'repayment_frequency',
-        'restricted_industry_type'
+        'restricted_industry_type',
+        'monthly_income',
+        'number_of_dushonours',
+        'negative_days',
+        'asset_backed',
+
     ];
 }

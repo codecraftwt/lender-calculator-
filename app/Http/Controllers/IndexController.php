@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\App;
 
 use App\Models\LenderModel;
+use App\Models\CustomerModel;
+
 
 class IndexController extends Controller
 {
@@ -56,7 +58,47 @@ class IndexController extends Controller
 
     public function index_test()
     {
-        return view('Index.index2');
+
+
+        $trading_times = LenderModel::select('trading_time')->groupBy('trading_time')->get();
+        $loan_formats = LenderModel::select('loan_format')->groupBy('loan_format')->get();
+        $loan_terms = LenderModel::select('loan_term')->groupBy('loan_term')->get();
+        $bank_statements = LenderModel::select('bank_statement_type')->groupBy('bank_statement_type')->get();
+        $guaranteeTypes = LenderModel::whereNotNull('guarantee_type')
+            ->pluck('guarantee_type')
+            ->map(function ($item) {
+                return json_decode($item, true);
+            })
+            ->flatten()
+            ->unique()
+            ->values();
+        $decision_times = LenderModel::select('decision_time')->groupBy('decision_time')->get();
+        $repayment_frequency = LenderModel::whereNotNull('repayment_frequency')
+            ->pluck('repayment_frequency')
+            ->map(function ($item) {
+                return json_decode($item, true);
+            })
+            ->flatten()
+            ->unique()
+            ->values();
+
+        $industries = LenderModel::select('restricted_industry_type', 'allowed_industry_type')
+            ->get()
+            ->flatMap(function ($lender) {
+                $restricted = json_decode($lender->restricted_industry_type, true) ?? [];
+                $allowed = json_decode($lender->allowed_industry_type, true) ?? [];
+                return array_merge($restricted, $allowed);
+            })
+            ->map(function ($item) {
+                return trim(strtolower($item));  // normalize strings for uniqueness
+            })
+            ->unique()
+            ->values()
+            ->map(function ($item) {
+                return ucfirst($item);  // optional: capitalize first letter for display
+            });
+        return view('Index.demo', compact('trading_times', 'loan_formats', 'loan_terms', 'bank_statements', 'guaranteeTypes', 'decision_times', 'repayment_frequency', 'industries'));
+        // return view('Index.demo');
     }
 
     public function get_lenders(Request $request)
@@ -67,9 +109,7 @@ class IndexController extends Controller
 
 
         // Apply filters if the values are provided in the request
-        if ($request->has('trading_time') && $request->trading_time != '') {
-            $query->where('trading_time', "<=", $request->trading_time);
-        }
+
 
         if ($request->has('abn_gst') && $request->abn_gst != '') {
             $query->where('GST_registration', $request->abn_gst);
@@ -84,10 +124,7 @@ class IndexController extends Controller
             $query->whereRaw('CAST(net_income AS DECIMAL(10,2)) <= ?', [$net_income]);
         }
 
-        if ($request->has('credit_score') && $request->credit_score != '') {
-            $credit_score = preg_replace('/[^0-9.]/', '', $request->credit_score);
-            $query->whereRaw('CAST(credit_score AS DECIMAL(10,2)) <= ?', [$credit_score]);
-        }
+
 
         // if ($request->has('min_loan_amount') && $request->min_loan_amount != '') {
         //     $cleanedmin_loan_amt = preg_replace('/[^0-9.]/', '', $request->credit_score);
@@ -117,13 +154,6 @@ class IndexController extends Controller
         if ($request->has('age_of_applicant') && $request->age_of_applicant != '') {
             $age_of_applicant = preg_replace('/[^0-9.]/', '', $request->age_of_applicant);
             $query->whereRaw('CAST(age_of_applicant AS DECIMAL(10,2)) <= ?', [$age_of_applicant]);
-        }
-
-        if ($request->has('loan_amt') && $request->loan_amt != '') {
-            $loan_amt = preg_replace('/[^0-9.]/', '', $request->loan_amt);
-
-            $query->whereRaw('CAST(min_loan_amount AS DECIMAL(10,2)) <= ?', [$loan_amt])
-                ->whereRaw('CAST(max_loan_amount AS DECIMAL(10,2)) >= ?', [$loan_amt]);
         }
 
         if ($request->has('interest_rate') && $request->interest_rate != '') {
@@ -176,16 +206,16 @@ class IndexController extends Controller
             $query->where('refinance_term', $request->refinanceOption);
         }
 
-        if ($request->has('loan_amt') && $request->has('monthly_income')) {
-            $loanAmount = (float) preg_replace('/[^0-9.]/', '', $request->loan_amount);
-            $monthlyIncome = (float) preg_replace('/[^0-9.]/', '', $request->monthly_income);
+        // if ($request->has('loan_amt') && $request->has('monthly_income')) {
+        //     $loanAmount = (float) preg_replace('/[^0-9.]/', '', $request->loan_amount);
+        //     $monthlyIncome = (float) preg_replace('/[^0-9.]/', '', $request->monthly_income);
 
-            if ($monthlyIncome > 0) {
-                $requiredLendingRatio = ($loanAmount / $monthlyIncome) * 100;
+        //     if ($monthlyIncome > 0) {
+        //         $requiredLendingRatio = ($loanAmount / $monthlyIncome) * 100;
 
-                $query->where('lending_ratio', '>=', $requiredLendingRatio);
-            }
-        }
+        //         $query->where('lending_ratio', '>=', $requiredLendingRatio);
+        //     }
+        // }
 
         if ($request->has('brokerage') && $request->brokerage != '') {
             $brokerage = preg_replace('/[^0-9.]/', '', $request->brokerage);
@@ -243,6 +273,60 @@ class IndexController extends Controller
             $query->whereRaw("LOWER(JSON_EXTRACT(loan_type, '$')) LIKE '%" . strtolower($Loan_type) . "%'");
         }
 
+
+
+        // From here the query is being executed and the results are being returned for updated form srtucture and db 
+
+        if ($request->has('loan_amt') && $request->loan_amt != '') {
+            $loan_amt = preg_replace('/[^0-9.]/', '', $request->loan_amt);
+
+            $query->whereRaw('CAST(min_loan_amount AS DECIMAL(10,2)) <= ?', [$loan_amt])
+                ->whereRaw('CAST(max_loan_amount AS DECIMAL(10,2)) >= ?', [$loan_amt]);
+        }
+
+        if ($request->has('trading_time') && $request->trading_time != '') {
+            $query->where('trading_time', "<=", $request->trading_time);
+        }
+
+        if ($request->has('credit_score') && $request->credit_score != '') {
+            $credit_score = preg_replace('/[^0-9.]/', '', $request->credit_score);
+            $query->whereRaw('CAST(credit_score AS DECIMAL(10,2)) <= ?', [$credit_score]);
+        }
+
+        if ($request->has('monthly_income') && $request->monthly_income != '') {
+            $monthly_income = preg_replace('/[^0-9.]/', '', $request->monthly_income);
+            $query->whereRaw('CAST(monthly_income AS DECIMAL(10,2)) <= ?', [$monthly_income]);
+        }
+
+        if ($request->has('negative_days') && $request->negative_days != '') {
+            $negative_days = preg_replace('/[^0-9.]/', '', $request->negative_days);
+            $query->whereRaw('CAST(negative_days AS DECIMAL(10,2)) >= ?', [$negative_days]);
+        }
+
+        if ($request->has('number_of_dishonours') && $request->number_of_dishonours != '') {
+            $number_of_dishonours = preg_replace('/[^0-9.]/', '', $request->number_of_dishonours);
+            $query->whereRaw('CAST(number_of_dishonours AS DECIMAL(10,2)) >= ?', [$number_of_dishonours]);
+        }
+
+        if ($request->has('asset_backed') && $request->asset_backed != '') {
+            if ($request->asset_backed == 'No') {
+                $query->where('asset_backed', 'No');
+            } elseif ($request->asset_backed == 'Yes') {
+                $query->whereIn('asset_backed', ['Yes', 'No']);
+            }
+        }
+
+        if ($request->has('cid') && !empty($request->cid)) {
+            $ids = is_array($request->cid) ? $request->cid : explode(',', $request->cid);
+
+            // Validate: allow only numeric values
+            $ids = array_filter($ids, function ($id) {
+                return is_numeric($id);
+            });
+
+            // Use whereIn to filter multiple
+            $query->whereIn('id', $ids);
+        }
 
         // Get the filtered results
         $lenders = $query->get();
