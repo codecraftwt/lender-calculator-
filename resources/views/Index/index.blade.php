@@ -229,16 +229,11 @@
     });
 </script>
 
-
-<!-- Main content ends here -->
-@endsection
-
-@section('scripts')
 <!-- Odometer JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <!-- <script src="{{ asset('assets/js/index.js') }}"></script> -->
 <script src="{{ url('assets/js/index.js') }}"></script>
-
+<!-- Main content ends here -->
 @endsection
