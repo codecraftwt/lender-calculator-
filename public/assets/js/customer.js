@@ -5,6 +5,8 @@ $(document).ready(function () {
         success: function (data) {
             const tableBody = $("#lenderTable tbody");
 
+            var table = $("#lenderTable").DataTable();
+
             // Destroy DataTable before clearing rows
             if ($.fn.DataTable.isDataTable("#lenderTable")) {
                 $("#lenderTable").DataTable().clear().destroy();
@@ -14,9 +16,9 @@ $(document).ready(function () {
 
             if (data.length > 0) {
                 data.forEach((item, index) => {
-                    // const applicableLendersStr = JSON.stringify(
-                    //     item.applicable_lenders
-                    // ).replace(/'/g, "&#39;");
+                    const applicableLendersStr = JSON.stringify(
+                        item.applicable_lenders
+                    ).replace(/'/g, "&#39;");
 
                     const row = `
                 <tr>
@@ -32,7 +34,7 @@ $(document).ready(function () {
                     <td>
                         <button 
                             type="button" 
-                            data-id='${item.applicable_lenders}'
+                            data-id='${applicableLendersStr}'
                             class="btn btn-sm btn-info view-btn"
                             style="background-color:#8455d9;color:white;border:1px solid #8455d9">
                             View
@@ -42,9 +44,10 @@ $(document).ready(function () {
                     tableBody.append(row);
                 });
             } else {
-                tableBody.append(
-                    `<tr><td colspan="10" class="text-center">No data found</td></tr>`
-                );
+                // table.clear().draw();
+                // tableBody.append(
+                //     `<tr><td colspan="10" class="text-center">No data found</td></tr>`
+                // );
             }
 
             // Initialize DataTable only once
