@@ -14,9 +14,9 @@ $(document).ready(function () {
 
             if (data.length > 0) {
                 data.forEach((item, index) => {
-                    const applicableLendersStr = JSON.stringify(
-                        item.applicable_lenders
-                    ).replace(/'/g, "&#39;");
+                    // const applicableLendersStr = JSON.stringify(
+                    //     item.applicable_lenders
+                    // ).replace(/'/g, "&#39;");
 
                     const row = `
                 <tr>
@@ -32,7 +32,7 @@ $(document).ready(function () {
                     <td>
                         <button 
                             type="button" 
-                            data-id='${applicableLendersStr}'
+                            data-id='${item.applicable_lenders}'
                             class="btn btn-sm btn-info view-btn"
                             style="background-color:#8455d9;color:white;border:1px solid #8455d9">
                             View
