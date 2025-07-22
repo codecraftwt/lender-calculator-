@@ -4,25 +4,39 @@ $(document).ready(function () {
         method: "GET",
         success: function (data) {
             const tableBody = $("#lenderTable tbody");
-            tableBody.empty(); // Clear existing rows if any
+
+            // Destroy DataTable before repopulating (to avoid duplication or _DT_CellIndex errors)
+            if ($.fn.DataTable.isDataTable("#lenderTable")) {
+                $("#lenderTable").DataTable().destroy();
+            }
+
+            tableBody.empty(); // Clear existing rows
 
             if (data.length > 0) {
                 data.forEach((item, index) => {
                     const row = `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.company_name || ""}</td>
-                            <td>${item.director_name || ""}</td>
-                            <td>${item.director_email || ""}</td>
-                            <td>${item.director_phone || ""}</td>
-                            <td>$${item.loan_amt_needed || ""}</td>
-                            <td>$${item.monthly_revenue || ""}</td>
-                            <td>${item.company_credit_score || ""}</td>
-                            <td>${item.time_in_business || ""} Months</td>
-                            <td><button type="button" data-id='${
-                                item.applicable_lenders
-                            }'  class="btn btn-sm btn-info view-btn" style="background-color:#8455d9;color:white;border:1px solid #8455d9">View</button></td>
-                        </tr>`;
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.company_name || ""}</td>
+                        <td>${item.director_name || ""}</td>
+                        <td>${item.director_email || ""}</td>
+                        <td>${item.director_phone || ""}</td>
+                        <td>$${item.loan_amt_needed || ""}</td>
+                        <td>$${item.monthly_revenue || ""}</td>
+                        <td>${item.company_credit_score || ""}</td>
+                        <td>${item.time_in_business || ""} Months</td>
+                        <td>
+                            <button 
+                                type="button" 
+                                data-id='${JSON.stringify(
+                                    item.applicable_lenders
+                                )}'
+                                class="btn btn-sm btn-info view-btn"
+                                style="background-color:#8455d9;color:white;border:1px solid #8455d9">
+                                View
+                            </button>
+                        </td>
+                    </tr>`;
                     tableBody.append(row);
                 });
             } else {
@@ -31,11 +45,14 @@ $(document).ready(function () {
                 );
             }
 
-            // Reinitialize DataTable if needed
-            if ($.fn.DataTable.isDataTable("#lenderTable")) {
-                $("#lenderTable").DataTable().clear().destroy();
-            }
-            $("#lenderTable").DataTable();
+            // Reinitialize DataTable with options
+            $("#lenderTable").DataTable({
+                pageLength: 10,
+                lengthChange: false,
+                ordering: true,
+                info: true,
+                searching: true,
+            });
         },
         error: function () {
             alert("Failed to fetch data.");
@@ -53,7 +70,6 @@ $(document).ready(function () {
         }
 
         console.log("Clicked IDs:", cidArray);
-        
 
         const modal = new bootstrap.Modal(
             document.getElementById("lenderModal")
