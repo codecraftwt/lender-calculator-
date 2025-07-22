@@ -54,7 +54,7 @@
                                 <label for="director_email" class="form-label">Director Email</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    <input type="text" id="director_email" name="director_email" class="form-control" value="pranav@gmail.com" required>
+                                    <input type="text" id="director_email" name="director_email" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_director_email">Please enter valid email.</p>
                             </div>
@@ -62,7 +62,7 @@
                                 <label for="director_phone" class="form-label">Director Phone</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-                                    <input type="text" id="director_phone" name="director_phone" class="form-control" value="852741963" required>
+                                    <input type="text" id="director_phone" name="director_phone" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_director_phone">Please enter valid Phone.</p>
                             </div>
@@ -238,5 +238,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<script src="{{ asset('assets/js/index.js') }}"></script>
+<!-- <script src="{{ asset('assets/js/index.js') }}"></script> -->
+<script src="{{ url('assets/js/index.js') }}"></script>
+
 @endsection
