@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    console.log("index.js Loaded...");
     const $steps = $(".multi-step-form .step"),
         $btnNext = $(".btn-next-global"),
         $btnPrev = $(".btn-back-global");
@@ -212,7 +213,7 @@ $(document).ready(function () {
     }
 
     function validateField(id) {
-        console.log(id);
+        console.log("validate Id :", id);
         const val = $(`#${id}`).val().trim();
         $(`#invalid_${id}`).addClass("d-none");
 
