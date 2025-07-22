@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\CustomerController;
+
 use App\Models\LenderModel;
 
 
@@ -73,3 +75,9 @@ Route::get('/lenders', function () {
 Route::get('/contact-us', function () {
     return 'Contact us page coming soon.';
 });
+
+
+Route::post('/save_data', [CustomerController::class, 'save_data']);
+Route::get('/customer-list', [CustomerController::class, 'list']);
+Route::get('/get-customers', [CustomerController::class, 'get_customers']);
+Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);

@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link rel="icon" href="{{ asset('assets/images/favicon.jpg') }}" type="image/jpeg">
     @yield('styles')
 </head>
@@ -28,6 +31,7 @@
                 <ul class="nav gap-3 align-items-center">
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Home</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Lenders</a></li>
+                    <li><a href="{{ url('/customer-list') }}" class="nav-link px-2">Customers</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Contact us</a></li>
                     <li>
                         <a href="#" class="btn btn-login px-3 py-1 rounded-pill">Login</a>
@@ -42,6 +46,8 @@
     @yield('scripts')
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 
 </html>
