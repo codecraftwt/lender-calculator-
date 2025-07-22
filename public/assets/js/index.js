@@ -212,6 +212,7 @@ $(document).ready(function () {
     }
 
     function validateField(id) {
+        console.log(id);
         const val = $(`#${id}`).val().trim();
         $(`#invalid_${id}`).addClass("d-none");
 
