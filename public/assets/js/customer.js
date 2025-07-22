@@ -5,38 +5,40 @@ $(document).ready(function () {
         success: function (data) {
             const tableBody = $("#lenderTable tbody");
 
-            // Destroy DataTable before repopulating (to avoid duplication or _DT_CellIndex errors)
+            // Destroy DataTable before clearing rows
             if ($.fn.DataTable.isDataTable("#lenderTable")) {
-                $("#lenderTable").DataTable().destroy();
+                $("#lenderTable").DataTable().clear().destroy();
             }
 
             tableBody.empty(); // Clear existing rows
 
             if (data.length > 0) {
                 data.forEach((item, index) => {
+                    const applicableLendersStr = JSON.stringify(
+                        item.applicable_lenders
+                    ).replace(/'/g, "&#39;");
+
                     const row = `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.company_name || ""}</td>
-                        <td>${item.director_name || ""}</td>
-                        <td>${item.director_email || ""}</td>
-                        <td>${item.director_phone || ""}</td>
-                        <td>$${item.loan_amt_needed || ""}</td>
-                        <td>$${item.monthly_revenue || ""}</td>
-                        <td>${item.company_credit_score || ""}</td>
-                        <td>${item.time_in_business || ""} Months</td>
-                        <td>
-                            <button 
-                                type="button" 
-                                data-id='${JSON.stringify(
-                                    item.applicable_lenders
-                                )}'
-                                class="btn btn-sm btn-info view-btn"
-                                style="background-color:#8455d9;color:white;border:1px solid #8455d9">
-                                View
-                            </button>
-                        </td>
-                    </tr>`;
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.company_name || ""}</td>
+                    <td>${item.director_name || ""}</td>
+                    <td>${item.director_email || ""}</td>
+                    <td>${item.director_phone || ""}</td>
+                    <td>$${item.loan_amt_needed || ""}</td>
+                    <td>$${item.monthly_revenue || ""}</td>
+                    <td>${item.company_credit_score || ""}</td>
+                    <td>${item.time_in_business || ""} Months</td>
+                    <td>
+                        <button 
+                            type="button" 
+                            data-id='${applicableLendersStr}'
+                            class="btn btn-sm btn-info view-btn"
+                            style="background-color:#8455d9;color:white;border:1px solid #8455d9">
+                            View
+                        </button>
+                    </td>
+                </tr>`;
                     tableBody.append(row);
                 });
             } else {
@@ -45,7 +47,7 @@ $(document).ready(function () {
                 );
             }
 
-            // Reinitialize DataTable with options
+            // Initialize DataTable only once
             $("#lenderTable").DataTable({
                 pageLength: 10,
                 lengthChange: false,
@@ -61,6 +63,7 @@ $(document).ready(function () {
 
     $(document).on("click", ".view-btn", function () {
         const dataId = $(this).attr("data-id");
+        console.log(dataId);
         let cidArray = [];
 
         try {
