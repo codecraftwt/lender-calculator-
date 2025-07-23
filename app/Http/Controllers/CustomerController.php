@@ -74,16 +74,16 @@ class CustomerController extends Controller
 
     public function get_applicable_lenders(Request $request)
     {
-
-        $lenders = collect(); // Default to empty collection
+        $lenders = collect();
 
         if ($request->has('cid') && !empty($request->cid)) {
-            $ids = is_array($request->cid) ? $request->cid : explode(',', $request->cid);
+            // Remove square brackets if passed as a JSON-like string
+            $idsRaw = is_array($request->cid) ? $request->cid : trim($request->cid, '[]');
+            $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
 
             // Filter only numeric IDs
             $ids = array_filter($ids, fn($id) => is_numeric($id));
 
-            // Only query if the filtered ID array is not empty
             if (!empty($ids)) {
                 $lenders = LenderModel::whereIn('id', $ids)->get();
             }
