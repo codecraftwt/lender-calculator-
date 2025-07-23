@@ -623,3 +623,34 @@ label[for="purchasePrice"] {
         transform: scale(1.3) rotate(10deg);
     }
 }
+
+.swal2-popup {
+    border: 5px solid #b19cd9; /* Red border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 5px;
+}
+
+.swal2-title {
+    color: #b47dee; /* Change to your desired title color */
+    font-size: 30px;
+}
+
+/* Change confirm button color */
+.swal2-confirm {
+    background-color: #28a745; /* Green background for the confirm button */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+}
+
+/* Change cancel button color */
+.swal2-cancel {
+    background-color: #dc3545; /* Red background for the cancel button */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+}
+.swal2-confirm:hover {
+    background-color: #28a745;
+}
+.swal2-cancel:hover {
+    background-color: #dc3545;
+}
