@@ -78,6 +78,6 @@ Route::get('/contact-us', function () {
 
 
 Route::post('/save_data', [CustomerController::class, 'save_data']);
-Route::get('/customer-list', [CustomerController::class, 'list']);
-Route::get('/get-customers', [CustomerController::class, 'get_customers']);
-Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
+// Route::get('/customer-list', [CustomerController::class, 'list']);
+// Route::get('/get-customers', [CustomerController::class, 'get_customers']);
+// Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);

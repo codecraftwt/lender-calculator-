@@ -268,7 +268,7 @@ $(document).ready(function () {
                 $btnPrev.removeClass("btn-warning").addClass("btn-green");
 
                 $btnNext
-                    .attr("type", "button") // KEEP as button to prevent auto-submit
+                    .attr("type", "button")
                     .css({ width: "80px" })
                     .html("Submit");
             } else {

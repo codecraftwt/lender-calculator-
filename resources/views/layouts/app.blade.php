@@ -32,7 +32,7 @@
                 <ul class="nav gap-3 align-items-center">
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Home</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Lenders</a></li>
-                    <li><a href="{{ url('/customer-list') }}" class="nav-link px-2">Customers</a></li>
+                    <li style="display: none;"><a href="{{ url('/customer-list') }}" class="nav-link px-2">Customers</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Contact us</a></li>
                     <li>
                         <a href="#" class="btn btn-login px-3 py-1 rounded-pill">Login</a>
