@@ -2,37 +2,25 @@ $(document).ready(function () {
     console.log("index.js Loaded...");
     const $steps = $(".multi-step-form .step"),
         $btnNext = $(".btn-next-global"),
-        $btnPrev = $(".btn-back-global");
+        $btnPrev = $(".btn-prev-global");
     let currentStep = 0,
         selectedOption = null;
 
-    function showStep(index) {
-        $steps.each(function (i) {
-            $(this)
-                .toggleClass("d-none", i !== index)
-                .toggleClass("active", i === index);
-        });
-        $btnPrev.toggle(index > 0);
-        $btnNext.toggle(index < $steps.length - 1);
+    // js for step
+    function showStep(step) {
+        $(".step").removeClass("active").addClass("d-none");
+        $(".step").eq(step).removeClass("d-none").addClass("active");
+        currentStep = step;
+        if (currentStep != 0) {
+            $btnPrev.removeClass("btn-warning");
+            $btnPrev.addClass("btn-green");
+        } else {
+            $btnPrev.removeClass("btn-green");
+            $btnPrev.addClass("btn-warning");
+        }
     }
 
-    $(".btn-prev-global").on("click", function () {
-        let which_step = $(".step.active").data("step");
-        if (which_step - 1 == 1) {
-            $(".btn-prev-global")
-                .removeClass("btn-green")
-                .addClass("btn-warning");
-        }
-    });
-
-    $btnPrev.click(function () {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
-    });
-
-    showStep(currentStep);
+    // js for ajax
 
     function triggerAjax() {
         const formData = {
@@ -126,20 +114,6 @@ $(document).ready(function () {
         $(this).addClass("expanded");
     });
 
-    showStep(currentStep);
-
-    $(".loan-option").click(function () {
-        $(".loan-option").removeClass("selected");
-        $(".btn-next-global").removeClass("btn-warning").addClass("btn-green");
-        $(this).addClass("selected");
-        selectedOption = $(this).data("next-step");
-        $(".step-1 .error-message").remove();
-    });
-
-    $("#next_btn").click(function () {
-        $(".btn-next-global").removeClass("btn-green").addClass("btn-warning");
-    });
-
     function checkFields() {
         let allFilled = true;
         $("input[required], select[required]").each(function () {
@@ -163,25 +137,12 @@ $(document).ready(function () {
     $("select[required], input[required]").on("input change", checkFields);
     checkFields();
 
-    $btnPrev.on("click", function (e) {
-        e.preventDefault();
-        $(".loan-option").each(function () {
-            if ($(this).hasClass("selected")) {
-                $btnNext.addClass("btn-green");
-            }
-        });
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
-    });
-
     function showStep(step) {
         $steps.removeClass("active").addClass("d-none");
         $steps.eq(step).removeClass("d-none").addClass("active");
     }
 
-    // new js
+    //   js for form validations
 
     const step1Fields = [
         "company_name",
@@ -195,17 +156,9 @@ $(document).ready(function () {
         "time_in_business",
         "credit_score",
         "negative_days",
-        "number_of_dushonours",
+        "number_of_dishonours",
         "asset_backed",
     ];
-
-    showStep(currentStep);
-
-    function showStep(step) {
-        $(".step").removeClass("active").addClass("d-none");
-        $(".step").eq(step).removeClass("d-none").addClass("active");
-        currentStep = step;
-    }
 
     function showError(id, msg = "This field is required.") {
         $(`#invalid_${id}`).text(msg).removeClass("d-none");
@@ -249,7 +202,7 @@ $(document).ready(function () {
                     showError(id, "Please enter valid credit score (0–1200).")
                 );
             case "negative_days":
-            case "number_of_dushonours":
+            case "number_of_dishonours":
                 return (
                     /^[0-9]+$/.test(val) ||
                     showError(id, "Please enter a valid number.")
@@ -284,8 +237,22 @@ $(document).ready(function () {
             .toggleClass("btn-warning", !allStep1Valid);
     });
 
-    // Handle button click for next or submit
-    $(".btn-next-global").on("click", function (e) {
+    // js for back and next btn click events
+
+    $btnPrev.on("click", function (e) {
+        if (currentStep != 0) {
+            showStep(currentStep - 1);
+            currentStep--;
+            $btnPrev.removeClass("btn-green");
+            $btnPrev.addClass("btn-warning");
+
+            $btnNext.attr("type", "button").css({ width: "61px" }).html("Next");
+        } else {
+            showStep(0);
+        }
+    });
+
+    $btnNext.on("click", function (e) {
         const fields = currentStep === 0 ? step1Fields : step2Fields;
 
         if (!validateAll(fields)) {
@@ -294,21 +261,145 @@ $(document).ready(function () {
         } else {
             $(this).removeClass("btn-warning").addClass("btn-green");
 
-            if (currentStep === 0) {
+            if (currentStep == 0) {
                 // Move to step 2
                 showStep(1);
                 currentStep = 1;
+                $btnPrev.removeClass("btn-warning").addClass("btn-green");
 
-                // Change button to submit type and update style
-                $(this)
-                    .attr("type", "submit")
-                    .css({ width: "150px", height: "40px", color: "white" })
+                $btnNext
+                    .attr("type", "button") // KEEP as button to prevent auto-submit
+                    .css({ width: "80px" })
                     .html("Submit");
-                $(this).removeClass("rounded-circle");
-                $("#next_btn").addClass("d-none");
-                $("#submit-btn").removeClass("d-none");
+            } else {
+                // Show SweetAlert confirmation before submission
+                e.preventDefault();
+
+                Swal.fire({
+                    title: "Please Check Your Details",
+                    // icon: "info",
+
+                    showCancelButton: true,
+                    confirmButtonText: "Confirm & Submit",
+                    cancelButtonText: "Back",
+                    reverseButtons: true,
+                    width: 800,
+                    customClass: {
+                        // popup: "border-rounded border-2 border-info",
+                    },
+                    html: `
+    <div class="col-md-12" style="border: 1px solid black; padding: 10px; border-radius: 10px; font-size: 14px; color: #333;">
+        <h5 style="color: #b47dee;"><i class="fa fa-user" style="font-size: 16px; color: #b47dee;"></i> Client Details</h5>
+        <hr>
+        <div class="row">
+        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Company Name:</label>
+            <div class="input-group">
+           <span  class="input-group-text"> <i class="fas fa-building"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#company_name"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class="  col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Director Name:</label>
+            <div class="input-group">
+            <span  class="input-group-text"><i class="fa-solid fa-user"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#director_name"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Email:</label>
+            <div class="input-group">
+            <span  class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" style="background-color:#e5e5e5" value="${$(
+                "#director_email"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class="  col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Phone:</label>
+            <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#director_phone"
+            ).val()}" readonly />
+            </div>
+        </div>
+        </div>
+
+        <hr>
+
+        <h5 style="color: #b47dee;"><i class="fa fa-briefcase" style="font-size: 16px; color: #b47dee;"></i> Loan Details</h5>
+        <hr>
+        <div class="row">
+        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Loan Amount:</label>
+            <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input style="background-color:#e5e5e5" class="form-control" value="$${$(
+                "#loan_amt"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Monthly Revenue:</label>
+            <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input style="background-color:#e5e5e5" class="form-control" value="$${$(
+                "#monthly_revenue"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class=" col-md-6  form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Time in Business (months):</label>
+            <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#time_in_business"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class="  col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Credit Score:</label>
+            <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#credit_score"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class=" col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Negative Days:</label>
+            <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#negative_days"
+            ).val()}" readonly />
+            </div>
+        </div>
+        <div class="  col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Dishonours:</label>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#number_of_dishonours"
+            ).val()}" readonly />
+        </div>
+        <div class="  col-md-6 form-group " style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Asset Backed:</label>
+            <input style="background-color:#e5e5e5" class="form-control" value="${$(
+                "#asset_backed"
+            ).val()}" readonly />
+        </div>
+    </div>
+    `,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#lender_form").submit();
+                    }
+                });
             }
-            // For step 2, all validations passed, allow form to submit naturally (no e.preventDefault)
         }
     });
 });
