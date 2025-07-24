@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\LenderModel;
 
@@ -67,6 +68,8 @@ Route::get('/', function () {
 
 Route::get('/index', [IndexController::class, 'index']);
 Route::get('/index2', [IndexController::class, 'index_test']);
+Route::get('/broker', [IndexController::class, 'broker_panel']);
+
 Route::get('/get-lenders', [IndexController::class, 'get_lenders'])->name('get.lenders');
 Route::get('/lenders', function () {
     return 'Lenders page coming soon.';
@@ -78,6 +81,13 @@ Route::get('/contact-us', function () {
 
 
 Route::post('/save_data', [CustomerController::class, 'save_data']);
-Route::get('/customer-list', [CustomerController::class, 'list']);
-Route::get('/get-customers', [CustomerController::class, 'get_customers']);
-Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
