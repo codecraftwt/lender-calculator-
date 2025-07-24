@@ -106,6 +106,7 @@ $(document).ready(function () {
     }
 
     //   js for form validations
+    //   js for form validations
 
     const step1Fields = [
         "company_name",
@@ -119,6 +120,7 @@ $(document).ready(function () {
         "time_in_business",
         "credit_score",
         "negative_days",
+        "number_of_dishonours",
         "number_of_dishonours",
         "asset_backed",
     ];
@@ -194,6 +196,7 @@ $(document).ready(function () {
                         ))
                 );
             case "negative_days":
+            case "number_of_dishonours":
             case "number_of_dishonours":
                 return (
                     /^[0-9]+$/.test(val) ||
