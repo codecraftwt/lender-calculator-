@@ -27,30 +27,27 @@ class CustomerController extends Controller
             'applicable_lenders' => 'required',
         ]);
 
-        $lenders = json_decode($request->applicable_lenders, true);
+        $lenderIds = json_decode($request->applicable_lenders, true);
 
-        // Get only the IDs
-        $lenderIds = collect($lenders)->pluck('id')->toArray();
+        // Optional: validate that it's an array of integers
+        $lenderIds = array_map('intval', $lenderIds);
 
-        // Convert to JSON string for storing in DB (shorter + cleaner)
+        // Convert to JSON string again for storing (if needed)
         $lenderIdsJson = json_encode($lenderIds);
 
-        // print_r($lenderIdsJson);
-        // exit;
-
-        $data =  CustomerModel::create([
-            'loan_amt_needed' => $validated['loan_amt'],
-            'time_in_business' => $validated['time_in_business'],
-            'company_credit_score' => $validated['credit_score'],
-            'negative_days' => $validated['negative_days'],
-            'number_of_dishonours' => $validated['number_of_dishonours'],
-            'asset_backed' => $validated['asset_backed'],
-            'company_name' => $validated['company_name'],
-            'director_name' => $validated['director_name'],
-            'director_email' => $validated['director_email'],
-            'director_phone' => $validated['director_phone'],
-            'monthly_revenue' => $validated['monthly_revenue'],
-            'applicable_lenders' => $lenderIdsJson,
+        $data = CustomerModel::create([
+            'loan_amt_needed'       => $validated['loan_amt'],
+            'time_in_business'      => $validated['time_in_business'],
+            'company_credit_score'  => $validated['credit_score'],
+            'negative_days'         => $validated['negative_days'],
+            'number_of_dishonours'  => $validated['number_of_dishonours'],
+            'asset_backed'          => $validated['asset_backed'],
+            'company_name'          => $validated['company_name'],
+            'director_name'         => $validated['director_name'],
+            'director_email'        => $validated['director_email'],
+            'director_phone'        => $validated['director_phone'],
+            'monthly_revenue'       => $validated['monthly_revenue'],
+            'applicable_lenders'    => $lenderIdsJson, // already a JSON string of IDs
         ]);
 
         if ($data) {
