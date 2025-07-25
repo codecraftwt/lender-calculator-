@@ -8,11 +8,15 @@
     <!-- Left Panel -->
     <div class="col-lg-12 mb-4">
         <!-- <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm position-sticky" style="top: 72px; z-index: 1000;margin-bottom:10px;border: 3px solid #d8b4fe;"> -->
+        <!-- <h3 class="text-center mb-4">Customer List</h3> -->
 
-        <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm">
-            <h3 class="text-center mb-4">Customer List</h3>
-            <hr>
-            <table id="lenderTable" class="table table-striped">
+        <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;">
+            <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;" class="header">
+                <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
+            </div>
+
+            <!-- <hr> -->
+            <table id="lenderTable" class="table table-striped p-1">
                 <thead>
                     <tr>
                         <th>Sr.No</th>

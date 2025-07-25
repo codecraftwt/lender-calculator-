@@ -52,11 +52,34 @@ $(document).ready(function () {
 
             // Initialize DataTable only once
             $("#lenderTable").DataTable({
-                pageLength: 10,
+                paging: true,
                 lengthChange: false,
-                ordering: true,
-                info: true,
                 searching: true,
+                ordering: false,
+                info: true,
+                autoWidth: false,
+                responsive: true,
+                lengthMenu: [100, 120, 140, 160],
+                pageLength: 80,
+                dom: "Blfrtip",
+                buttons: [
+                    {
+                        extend: "excelHtml5",
+                        text: "Export to Excel",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // specify column indexes to include
+                        },
+                        title: "Customer List",
+                    },
+                    {
+                        extend: "print",
+                        text: "Print Table",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // specify column indexes to include
+                        },
+                        title: "Customer List",
+                    },
+                ],
             });
         },
         error: function () {
