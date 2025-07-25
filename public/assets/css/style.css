@@ -675,7 +675,7 @@ label[for="purchasePrice"] {
     background: #ffffff;
     border-radius: 1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 2.5rem 3rem;
+    padding: 2rem 2rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: #3a3a3a;
     border: 1px solid #e0e0e0;
@@ -811,3 +811,59 @@ select.form-control:focus {
     margin-top: 10px;
     margin-right: 5px;
 }
+
+
+
+    .panel {
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .header {
+        background-color: #bd94e7;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1rem;
+        color: white;
+        font-size: 1.25rem;
+        text-align: center;
+    }
+
+    .multi-step-form {
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    
+
+    .btn-submit {
+        background-color: #bd94e7;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #9f7ae2;
+    }
+
+    .loan-navigation {
+        margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .col-lg-2 {
+            display: none;
+        }
+
+        .panel {
+            margin: 0;
+            padding: 1rem;
+        }
+    }
