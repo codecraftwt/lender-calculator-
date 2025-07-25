@@ -801,3 +801,13 @@ select.form-control:focus {
     box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
     outline: none;
 }
+
+.dt-buttons {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#lenderTable_filter {
+    margin-top: 10px;
+    margin-right: 5px;
+}
