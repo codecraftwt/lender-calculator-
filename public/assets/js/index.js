@@ -6,24 +6,7 @@ $(document).ready(function () {
     let currentStep = 0,
         selectedOption = null;
 
-    // js for step
-    // function showStep(step) {
-    //     $(".step").removeClass("active").addClass("d-none");
-    //     $(".step").eq(step).removeClass("d-none").addClass("active");
-    //     currentStep = step;
-    //     if (currentStep != 0) {
-    //         $btnPrev.removeClass("btn-warning");
-    //         $btnPrev.addClass("btn-green");
-    //     } else {
-    //         $btnPrev.removeClass("btn-green");
-    //         $btnPrev.addClass("btn-warning");
-    //     }
-    // }
-
     // js for ajax
-
-
-     
 
     function triggerAjax() {
         const formData = {
@@ -84,15 +67,6 @@ $(document).ready(function () {
                     allFilled = false;
                 }
             });
-        if (allFilled) {
-            $(".btn-next-global")
-                .removeClass("btn-warning")
-                .addClass("btn-green");
-        } else {
-            $(".btn-next-global")
-                .removeClass("btn-green")
-                .addClass("btn-warning");
-        }
     }
 
     $(".multi-step-form")
@@ -107,23 +81,6 @@ $(document).ready(function () {
 
     //   js for form validations
     //   js for form validations
-
-    const step1Fields = [
-        "company_name",
-        "director_name",
-        "director_email",
-        "director_phone",
-    ];
-    const step2Fields = [
-        "loan_amt",
-        "monthly_revenue",
-        "time_in_business",
-        "credit_score",
-        "negative_days",
-        "number_of_dishonours",
-        "number_of_dishonours",
-        "asset_backed",
-    ];
 
     function showError(id, msg = "This field is required.") {
         $(`#invalid_${id}`).text(msg).removeClass("d-none");
@@ -147,12 +104,22 @@ $(document).ready(function () {
     ];
 
     function validateField(id, showErrorMessage = true) {
-        const val = $(`#${id}`).val().trim();
-        if (showErrorMessage) $(`#invalid_${id}`).addClass("d-none");
+        if (!id || typeof id !== "string" || id.trim() === "") return true;
+
+        const $field = $(`#${CSS.escape(id)}`);
+        const val = $field.val().trim();
+
+        if (showErrorMessage)
+            $(`#invalid_${CSS.escape(id)}`).addClass("d-none");
 
         switch (id) {
             case "company_name":
-                return val !== "" || (showErrorMessage && showError(id));
+                return (
+                    val.length > 0 ||
+                    (showErrorMessage &&
+                        showError(id, "Company name is required."))
+                );
+
             case "director_name":
                 return (
                     /^[A-Za-z\s]+$/.test(val) ||
@@ -162,17 +129,21 @@ $(document).ready(function () {
                             "Please enter a valid name (letters only)."
                         ))
                 );
+
             case "director_email":
                 return (
                     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) ||
-                    (showErrorMessage && showError(id))
+                    (showErrorMessage &&
+                        showError(id, "Invalid email address."))
                 );
+
             case "director_phone":
                 return (
                     /^\+?[0-9\s\-().]{7,20}$/.test(val) ||
                     (showErrorMessage &&
                         showError(id, "Please enter a valid phone number."))
                 );
+
             case "loan_amt":
             case "monthly_revenue":
                 return (
@@ -180,29 +151,32 @@ $(document).ready(function () {
                     (showErrorMessage &&
                         showError(id, "Please enter a valid amount."))
                 );
+
             case "time_in_business":
                 return (
                     /^[0-9]+$/.test(val) ||
                     (showErrorMessage &&
                         showError(id, "Please enter valid months."))
                 );
+
             case "credit_score":
                 return (
                     (/^[0-9]+$/.test(val) && val >= 0 && val <= 1200) ||
                     (showErrorMessage &&
                         showError(
                             id,
-                            "Please enter valid credit score (0–1200)."
+                            "Please enter a valid credit score (0–1200)."
                         ))
                 );
+
             case "negative_days":
-            case "number_of_dishonours":
             case "number_of_dishonours":
                 return (
                     /^[0-9]+$/.test(val) ||
                     (showErrorMessage &&
                         showError(id, "Please enter a valid number."))
                 );
+
             case "asset_backed":
                 return (
                     val === "Yes" ||
@@ -210,32 +184,50 @@ $(document).ready(function () {
                     (showErrorMessage &&
                         showError(id, "Please select a valid option."))
                 );
-        }
 
-        return true;
+            default:
+                return true;
+        }
     }
-    function validateAll(fields) {
-        return fields.every((id) => validateField(id, false));
+
+    function validateAll(fields, showErrorMessage = false) {
+        return fields.every((id) => validateField(id, showErrorMessage));
     }
     $("input, select").on("input change", function () {
         validateField(this.id, true);
 
         const allStep1Valid = validateAll(stepFields);
-        $(".btn-next-global")
-            .toggleClass("btn-green", allStep1Valid)
-            .toggleClass("btn-warning", !allStep1Valid);
     });
 
     $btnNext.on("click", function (e) {
-        const fields = currentStep === 0 ? step1Fields : step2Fields;
+        const fields = $(".multi-step-form")
+            .find("input[id], select[id]") // only elements WITH an id
+            .not("textarea")
+            .map(function () {
+                return this.id;
+            })
+            .get()
+            .filter((id) => id && id.trim() !== ""); // remove any empty/blank
 
-        if (!validateAll(fields)) {
+        if (!validateAll(fields, true)) {
             e.preventDefault();
-            $(this).removeClass("btn-green").addClass("btn-warning");
         } else {
-            $(this).removeClass("btn-warning").addClass("btn-green");
-
             e.preventDefault();
+
+            // ✅ Get values OUTSIDE of template string
+            const companyName = $("#company_name").val();
+            const directorName = $("#director_name").val();
+            const directorEmail = $("#director_email").val();
+            const directorPhone = $("#director_phone").val();
+            const loanAmt = $("#loan_amt").val();
+            const monthlyRevenue = $("#monthly_revenue").val();
+            const timeInBusiness = $("#time_in_business").val();
+            const creditScore = $("#credit_score").val();
+            const negativeDays = $("#negative_days").val();
+            const numberOfDishonours = $("#number_of_dishonours").val();
+            const assetBacked = $("#asset_backed").val();
+
+            // ✅ SweetAlert with values injected safely
             Swal.fire({
                 title: "Please Check Your Details",
                 showCancelButton: true,
@@ -243,116 +235,97 @@ $(document).ready(function () {
                 cancelButtonText: "Back",
                 reverseButtons: true,
                 width: 800,
-                customClass: {
-                    // popup: "border-rounded border-2 border-info",
-                },
+                customClass: {},
                 html: `
-    <div class="col-md-12" style="border: 1px solid black; padding: 10px; border-radius: 10px; font-size: 14px; color: #333;">
-        <h5 style="color: #b47dee;"><i class="fa fa-user" style="font-size: 16px; color: #b47dee;"></i> Client Details</h5>
-        <hr>
-        <div class="row">
-        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+<div class="col-md-12" style="border: 1px solid black; padding: 10px; border-radius: 10px; font-size: 14px; color: #333;">
+    <h5 style="color: #b47dee;"><i class="fa fa-user" style="font-size: 16px; color: #b47dee;"></i> Client Details</h5>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
             <label style="font-weight:500;float:left">Company Name:</label>
             <div class="input-group">
-           <span  class="input-group-text"> <i class="fas fa-building"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#company_name"
-            ).val()}" readonly />
+                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${companyName}" readonly />
             </div>
         </div>
-        <div class="  col-md-6 form-group " style="margin-bottom:10px">
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
             <label style="font-weight:500;float:left">Director Name:</label>
             <div class="input-group">
-            <span  class="input-group-text"><i class="fa-solid fa-user"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#director_name"
-            ).val()}" readonly />
+                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${directorName}" readonly />
             </div>
         </div>
-        <div class=" col-md-6 form-group " style="margin-bottom:10px">
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
             <label style="font-weight:500;float:left">Email:</label>
             <div class="input-group">
-            <span  class="input-group-text"><i class="fas fa-envelope"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" style="background-color:#e5e5e5" value="${$(
-                "#director_email"
-            ).val()}" readonly />
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${directorEmail}" readonly />
             </div>
         </div>
-        <div class="  col-md-6 form-group " style="margin-bottom:10px">
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
             <label style="font-weight:500;float:left">Phone:</label>
             <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#director_phone"
-            ).val()}" readonly />
+                <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${directorPhone}" readonly />
             </div>
-        </div>
-        </div>
-
-        <hr>
-
-        <h5 style="color: #b47dee;"><i class="fa fa-briefcase" style="font-size: 16px; color: #b47dee;"></i> Loan Details</h5>
-        <hr>
-        <div class="row">
-        <div class=" col-md-6 form-group " style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Loan Amount:</label>
-            <div class="input-group">
-            <span class="input-group-text">$</span>
-            <input style="background-color:#e5e5e5" class="form-control" value="$${$(
-                "#loan_amt"
-            ).val()}" readonly />
-            </div>
-        </div>
-        <div class=" col-md-6 form-group " style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Monthly Revenue:</label>
-            <div class="input-group">
-            <span class="input-group-text">$</span>
-            <input style="background-color:#e5e5e5" class="form-control" value="$${$(
-                "#monthly_revenue"
-            ).val()}" readonly />
-            </div>
-        </div>
-        <div class=" col-md-6  form-group " style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Time in Business (months):</label>
-            <div class="input-group">
-            <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#time_in_business"
-            ).val()}" readonly />
-            </div>
-        </div>
-        <div class="  col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Credit Score:</label>
-            <div class="input-group">
-            <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#credit_score"
-            ).val()}" readonly />
-            </div>
-        </div>
-        <div class=" col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Negative Days:</label>
-            <div class="input-group">
-            <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#negative_days"
-            ).val()}" readonly />
-            </div>
-        </div>
-        <div class="  col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Dishonours:</label>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#number_of_dishonours"
-            ).val()}" readonly />
-        </div>
-        <div class="  col-md-6 form-group " style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Asset Backed:</label>
-            <input style="background-color:#e5e5e5" class="form-control" value="${$(
-                "#asset_backed"
-            ).val()}" readonly />
         </div>
     </div>
-    `,
+
+    <hr>
+
+    <h5 style="color: #b47dee;"><i class="fa fa-briefcase" style="font-size: 16px; color: #b47dee;"></i> Loan Details</h5>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Loan Amount:</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${
+                    "$" + loanAmt
+                }" readonly />
+            </div>
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Monthly Revenue:</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${
+                    "$" + monthlyRevenue
+                }" readonly />
+            </div>
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Time in Business (months):</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${timeInBusiness}" readonly />
+            </div>
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Credit Score:</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${creditScore}" readonly />
+            </div>
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Negative Days:</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                <input class="form-control" style="background-color:#e5e5e5" value="${negativeDays}" readonly />
+            </div>
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Dishonours:</label>
+            <input class="form-control" style="background-color:#e5e5e5" value="${numberOfDishonours}" readonly />
+        </div>
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">Asset Backed:</label>
+            <input class="form-control" style="background-color:#e5e5e5" value="${assetBacked}" readonly />
+        </div>
+    </div>
+</div>
+            `,
             }).then((result) => {
                 if (result.isConfirmed) {
                     $("#lender_form").submit();
@@ -360,7 +333,4 @@ $(document).ready(function () {
             });
         }
     });
-
-
-   
 });
