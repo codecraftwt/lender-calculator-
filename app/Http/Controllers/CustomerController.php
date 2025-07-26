@@ -51,9 +51,9 @@ class CustomerController extends Controller
         ]);
 
         if ($data) {
-            return redirect('/index')->with('success', 'Data submitted successfully');
+            return redirect('/customer-list')->with('success', 'Data submitted successfully');
         } else {
-            return redirect('/index')->with('error', 'Data submission failed');
+            return redirect('/customer-list')->with('error', 'Data submission failed');
         }
     }
 
