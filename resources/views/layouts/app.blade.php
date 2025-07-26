@@ -28,7 +28,7 @@
     <header class="py-3 bg-white shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="{{ url('/index') }}" class="d-flex align-items-center text-decoration-none">
-                <img src="#" alt="matrix" class="logo" />
+                <img src="{{ url('assets/images/matrix.png') }}" alt="matrix" class="logo" />
             </a>
             <nav>
                 <ul class="nav gap-3 align-items-center">
