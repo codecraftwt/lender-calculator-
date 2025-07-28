@@ -5,6 +5,7 @@
 @section('content')
 <!-- Main content starts here -->
 <div class="row ">
+
     <!-- Left Panel -->
     <div class="col-lg-12 mb-4">
         <!-- <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm position-sticky" style="top: 72px; z-index: 1000;margin-bottom:10px;border: 3px solid #d8b4fe;"> -->

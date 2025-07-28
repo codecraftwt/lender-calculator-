@@ -61,7 +61,7 @@ Route::get('/', function () {
         ->unique()
         ->values()
         ->map(function ($item) {
-            return ucfirst($item);  // optional: capitalize first letter for display
+            return ucfirst($item);
         });
     return view('Index.index', compact('trading_times', 'loan_formats', 'loan_terms', 'bank_statements', 'guaranteeTypes', 'decision_times', 'repayment_frequency', 'industries'));
 });
@@ -82,9 +82,9 @@ Route::get('/contact-us', function () {
 
 Route::post('/save_data', [CustomerController::class, 'save_data']);
 
- Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
-Route::get('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth');
-Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth');
+Route::get('/customer-list', [CustomerController::class, 'list']);
+Route::get('/get-customers', [CustomerController::class, 'get_customers']);
+Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
 
 Auth::routes();
 

@@ -67,7 +67,7 @@ $(document).ready(function () {
                         extend: "excelHtml5",
                         text: "Export to Excel",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],  
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                         },
                         title: "Customer List",
                     },
@@ -75,7 +75,7 @@ $(document).ready(function () {
                         extend: "print",
                         text: "Print Table",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],  
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                         },
                         title: "Customer List",
                     },
@@ -175,7 +175,13 @@ $(document).ready(function () {
                         );
                     }
                     data.forEach(function (lender) {
-                        const cardHtml = `<div class="col-6"><div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}"><div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative"><img src="/assets/images/${lender.lender_image}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo /></div><div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small"><p class="fw-bold text-center">${lender.lender_name}</p><div class="loan-header d-flex justify-content-between align-items-center"><div class="from-label bg-purple px-2 py-1 rounded-top text-white small">FROM</div><div class="max-loan-label bg-orange px-2 py-1 rounded-top text-white small">MAX LOAN</div></div><div class="loan-amounts d-flex justify-content-between fw-bold"><div>$${lender.min_loan_amount}</div><div data-max-loan-amount>$${lender.max_loan_amount}</div></div><div class="loan-rates d-flex justify-content-between small"><div>From ${lender.credit_score}+ credit score</div></div></div><div class="expanded-content bg-light p-0"><div class="d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);"><span class=" text-white" style="font-size:13px;margin:19px">Click here to finish on a call with a specialist.</span><span class="circle-btn"><span class="text-white">or</span></span><span class=" text-white" style="font-size:13px;margin:22px">Keep entering data to see your perfect match.</span></div></div></div></div>`;
+                        const cardHtml = `<div class="col-6"><div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
+                        <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative"><img src="/assets/images/${lender.lender_logo}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo /></div>
+                        <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small"><p style="margin-bottom:0px" class="fw-bold text-center">${lender.lender_name} <br><span style="font-weight:500">${lender.lender_type_name}</span</p>
+                        <div class="loan-header d-flex justify-content-between align-items-center">
+                        <div class="from-label bg-purple   rounded-top text-white small">FROM</div>
+                        <div class="max-loan-label bg-orange   rounded-top text-white small">MAX LOAN</div></div>
+                        <div class="loan-amounts d-flex justify-content-between fw-bold"><div>$${lender.min_loan_amount}</div><div data-max-loan-amount>$${lender.max_loan_amount}</div></div><div class="loan-rates d-flex justify-content-between small"><div>From ${lender.credit_score}+ credit score</div></div></div><div class="expanded-content bg-light p-0"><div class="d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);"><span class=" text-white" style="font-size:13px;margin:19px">Click here to finish on a call with a specialist.</span><span class="circle-btn"><span class="text-white">or</span></span><span class=" text-white" style="font-size:13px;margin:22px">Keep entering data to see your perfect match.</span></div></div></div></div>`;
                         $container.append(cardHtml);
                     });
                     $("#loader").hide();

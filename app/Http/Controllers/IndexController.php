@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\App;
 
 use App\Models\LenderModel;
+use App\Models\LenderTypeModel;
+use App\Models\MainLenderTable;
 use App\Models\CustomerModel;
 
 
@@ -146,7 +148,15 @@ class IndexController extends Controller
     public function get_lenders(Request $request)
     {
         // Initialize the query for all lenders
-        $query = LenderModel::query();
+        // $query = LenderTypeModel::query();
+
+        $query = LenderTypeModel::query()
+            ->join('main_lender_tables', 'main_lender_tables.id', '=', 'lender_type_models.lender_id')
+            ->select(
+                'lender_type_models.*',
+                'main_lender_tables.lender_name',
+                'main_lender_tables.lender_logo'
+            );
 
 
 
