@@ -82,8 +82,7 @@ Route::get('/contact-us', function () {
 
 Route::post('/save_data', [CustomerController::class, 'save_data']);
 
-Route::post('/save_data', [CustomerController::class, 'save_data']);
-Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
+ Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
 Route::get('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth');
 Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth');
 

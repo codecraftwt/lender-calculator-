@@ -67,7 +67,7 @@ $(document).ready(function () {
                         extend: "excelHtml5",
                         text: "Export to Excel",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // specify column indexes to include
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],  
                         },
                         title: "Customer List",
                     },
@@ -75,7 +75,7 @@ $(document).ready(function () {
                         extend: "print",
                         text: "Print Table",
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // specify column indexes to include
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],  
                         },
                         title: "Customer List",
                     },

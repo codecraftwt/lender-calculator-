@@ -11,7 +11,7 @@
         <!-- <h3 class="text-center mb-4">Customer List</h3> -->
 
         <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;">
-            <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;" class="header">
+            <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
                 <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
             </div>
 
