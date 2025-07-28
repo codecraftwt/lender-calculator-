@@ -164,7 +164,12 @@ class IndexController extends Controller
 
 
         if ($request->has('abn_gst') && $request->abn_gst != '') {
-            $query->where('GST_registration', $request->abn_gst);
+            // $query->where('GST_registration', $request->abn_gst);
+            if ($request->abn_gst == 'Yes') {
+                $query->where('GST_registration', 'Yes');
+            } elseif ($request->abn_gst == 'Yes') {
+                $query->whereIn('GST_registration', ['Yes', 'No']);
+            }
         }
 
         if ($request->has('annual_revenue') && $request->annual_revenue != '') {

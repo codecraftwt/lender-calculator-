@@ -16,7 +16,7 @@ $(document).ready(function () {
             monthly_income: $("#monthly_revenue").val(),
             negative_days: $("#negative_days").val(),
             number_of_dishonours: $("#number_of_dishonours").val(),
-            asset_backed: $("#asset_backed").val(),
+            abn_gst: $("#abn_gst").val(),
         };
         console.log(formData);
         $.ajax({
@@ -177,7 +177,7 @@ $(document).ready(function () {
                         showError(id, "Please enter a valid number."))
                 );
 
-            case "asset_backed":
+            case "abn_gst":
                 return (
                     val === "Yes" ||
                     val === "No" ||
@@ -225,7 +225,7 @@ $(document).ready(function () {
             const creditScore = $("#credit_score").val();
             const negativeDays = $("#negative_days").val();
             const numberOfDishonours = $("#number_of_dishonours").val();
-            const assetBacked = $("#asset_backed").val();
+            const abn_gst = $("#abn_gst").val();
 
             // ✅ SweetAlert with values injected safely
             Swal.fire({
@@ -321,7 +321,7 @@ $(document).ready(function () {
         </div>
         <div class="col-md-6 form-group" style="margin-bottom:10px">
             <label style="font-weight:500;float:left">Asset Backed:</label>
-            <input class="form-control" style="background-color:#e5e5e5" value="${assetBacked}" readonly />
+            <input class="form-control" style="background-color:#e5e5e5" value="${abn_gst}" readonly />
         </div>
     </div>
 </div>

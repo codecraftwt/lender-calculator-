@@ -59,6 +59,16 @@
                             <h5 class="text-center mt-3">Loan Details</h5>
 
                             <div class="col-md-6 mb-3 loan-details">
+                                <label for="abn_gst" class="form-label">Do you have ABN/GST registration?</label>
+                                <select id="abn_gst" name="abn_gst" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <p class="text-danger d-none" id="invalid_abn_gst">Please select valid option.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
                                 <label for="loan_amt" class="form-label">Loan Amount Needed</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
@@ -111,15 +121,7 @@
                                 <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="asset_backed" class="form-label">Is your loan secured by any assets?</label>
-                                <select id="asset_backed" name="asset_backed" class="form-control" required>
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                                <p class="text-danger d-none" id="invalid_asset_backed">Please select valid option.</p>
-                            </div>
+
 
                             <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden" required></textarea>
                         </div>
