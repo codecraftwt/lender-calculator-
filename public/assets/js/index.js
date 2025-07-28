@@ -320,7 +320,7 @@ $(document).ready(function () {
             <input class="form-control" style="background-color:#e5e5e5" value="${numberOfDishonours}" readonly />
         </div>
         <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Asset Backed:</label>
+            <label style="font-weight:500;float:left">GST Registration:</label>
             <input class="form-control" style="background-color:#e5e5e5" value="${abn_gst}" readonly />
         </div>
     </div>
