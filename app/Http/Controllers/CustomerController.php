@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CustomerModel;
 use App\Models\LenderModel;
-
-
+use App\Models\LenderTypeModel;
 
 class CustomerController extends Controller
 {
@@ -82,7 +81,15 @@ class CustomerController extends Controller
             $ids = array_filter($ids, fn($id) => is_numeric($id));
 
             if (!empty($ids)) {
-                $lenders = LenderModel::whereIn('id', $ids)->get();
+                $lenders = LenderTypeModel::query()
+                    ->join('main_lender_tables', 'main_lender_tables.id', '=', 'lender_type_models.lender_id')
+                    ->select(
+                        'lender_type_models.*',
+                        'main_lender_tables.lender_name',
+                        'main_lender_tables.lender_logo'
+                    )
+                    ->whereIn('lender_type_models.id', $ids)
+                    ->get();
             }
         }
 
