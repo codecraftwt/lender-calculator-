@@ -472,3 +472,127 @@ $(document).ready(function () {
         width: "100%",
     });
 });
+
+// abn api
+const input = document.getElementById("company_name");
+const spinner = document.getElementById("loading-spinner");
+const companyList = document.getElementById("company_list");
+
+$(document).ready(function () {
+    let debounceTimer = null;
+    let currentRequest = null;
+
+    $("#company_name").on("input", function () {
+        const query = $(this).val().trim();
+        const companyList = $("#company_list");
+
+        // Clear previous debounce timer
+        clearTimeout(debounceTimer);
+
+        // Abort previous request if still running
+        if (currentRequest && currentRequest.readyState !== 4) {
+            currentRequest.abort();
+        }
+
+        companyList.empty();
+
+        if (query.length < 3) {
+            // If less than 3 chars, don't call API or show spinner
+            return;
+        }
+
+        // Show spinner immediately when user starts typing
+        companyList.html(`
+      <div class="d-flex justify-content-center align-items-center py-2">
+        <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    `);
+
+        // Set debounce timer - only send API request after 500ms pause
+        debounceTimer = setTimeout(() => {
+            currentRequest = $.ajax({
+                url: "/api/abn-lookup",
+                method: "GET",
+                data: { query: query },
+                dataType: "json",
+                success: function (companies) {
+                    if (!companies.length) {
+                        companyList.html(
+                            '<div class="list-group-item">No matches found</div>'
+                        );
+                        return;
+                    }
+
+                    let html = "";
+                    $.each(companies, function (index, item) {
+                        html += `<a href="#" class="list-group-item list-group-item-action" data-abn="${item.Abn}">${item.Name}</a>`;
+                    });
+
+                    companyList.html(html);
+                },
+                error: function (xhr, status) {
+                    if (status !== "abort") {
+                        companyList.html(
+                            '<div class="list-group-item text-danger">Error fetching data</div>'
+                        );
+                    }
+                },
+            });
+        }, 500); // 500ms debounce delay
+    });
+
+    // Handle click on company name to populate input and fetch details with spinner
+    $("#company_list").on("click", "a.list-group-item-action", function (e) {
+        e.preventDefault();
+        const abn = $(this).data("abn");
+        const companyList = $("#company_list");
+
+        companyList.html(`
+      <div class="d-flex justify-content-center align-items-center py-2">
+        <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    `);
+
+        fetch(`/api/abn-details?abn=${abn}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                $("#company_name").val(data.EntityName || "");
+
+                if (data) {
+                    console.log(data);
+                    $("#abn_date").val(data.AbnStatusEffectiveFrom || "");
+                    $("#gst_date").val(data.Gst || "");
+                    $("#abn_gst").val(data.Gst ? "Yes" : "No");
+                    $("#entity_type").val(data.EntityTypeName || "");
+
+                    if (data.AbnStatusEffectiveFrom) {
+                        const abnDate = new Date(data.AbnStatusEffectiveFrom);
+                        const today = new Date();
+                        const months =
+                            (today.getFullYear() - abnDate.getFullYear()) * 12 +
+                            (today.getMonth() - abnDate.getMonth());
+                        $("#time_in_business").val(months);
+                    } else {
+                        $("#time_in_business").val("");
+                    }
+                }
+
+                companyList.empty(); // Clear spinner and list after loading
+            })
+            .catch((err) => {
+                console.error("Error loading ABN details:", err);
+                companyList.html(
+                    '<div class="list-group-item text-danger">Error loading details</div>'
+                );
+            });
+    });
+});

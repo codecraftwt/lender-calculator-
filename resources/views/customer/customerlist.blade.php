@@ -4,17 +4,15 @@
 
 @section('content')
 <!-- Main content starts here -->
-<div class="row ">
+<div class="row px-0">
+    <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
+        <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
+    </div>
+    <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
 
-    <!-- Left Panel -->
-    <div class="col-lg-12 mb-4 px-0">
-        <!-- <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm position-sticky" style="top: 72px; z-index: 1000;margin-bottom:10px;border: 3px solid #d8b4fe;"> -->
-        <!-- <h3 class="text-center mb-4">Customer List</h3> -->
+        <!-- Left Panel -->
+        <div class="col-lg-12 mb-4 ">
 
-        <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
-            <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
-                <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
-            </div>
 
             <!-- <hr> -->
             <table id="lenderTable" class="table table-striped p-1">
