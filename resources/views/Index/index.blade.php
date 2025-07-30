@@ -26,6 +26,7 @@
                                     <span class="input-group-text"><i class="fas fa-building"></i></span>
                                     <input type="text" id="company_name" name="company_name" class="form-control" required>
                                 </div>
+                                <div id="company_list"></div>
                                 <p class="text-danger d-none" id="invalid_company_name">Please enter valid Name.</p>
                             </div>
 
@@ -59,13 +60,49 @@
                             <h5 class="text-center mt-3">Loan Details</h5>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="abn_gst" class="form-label">Do you have ABN/GST registration?</label>
+                                <label for="abn_date" class="form-label">Date of ABN registration</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="date" id="abn_date" name="abn_date" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_abn_date">Please enter valid monthly revenue.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="time_in_business" class="form-label">Time in Business (Months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+                                    <input type="text" id="time_in_business" name="time_in_business" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_time_in_business">Please enter valid Time.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="abn_gst" class="form-label">Do you have GST registration?</label>
                                 <select id="abn_gst" name="abn_gst" class="form-control" required>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
                                 <p class="text-danger d-none" id="invalid_abn_gst">Please select valid option.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="gst_date" class="form-label">Date of GST registration</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="date" id="gst_date" name="gst_date" class="form-control">
+                                </div>
+                                <p class="text-danger d-none" id="invalid_gst_date">Please enter valid monthly revenue.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="entity_type" class="form-label">Entity Type</label>
+                                <select id="entity_type" name="entity_type" class="form-control" required>
+                                    <option value="">Select</option>
+
+                                </select>
+                                <p class="text-danger d-none" id="invalid_entity_type">Please select valid option.</p>
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
@@ -87,21 +124,37 @@
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="time_in_business" class="form-label">Time in Business (Months)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
-                                    <input type="text" id="time_in_business" name="time_in_business" class="form-control" required>
-                                </div>
-                                <p class="text-danger d-none" id="invalid_time_in_business">Please enter valid Time.</p>
+                                <label for="company_credit_score" class="form-label">Company Credit Score</label>
+                                <select id="company_credit_score" name="company_credit_score" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Excellent">Excellent (800+)</option>
+                                    <option value="Very_Good "> Very Good (700-800) </option>
+                                    <option value="Good">Good (500-700)</option>
+                                    <option value="Fair"> Fair (300 - 500) </option>
+                                    <option value="Low">Low (0-300)</option>
+                                </select>
+                                <p class="text-danger d-none" id="invalid_company_credit_score">Please select valid option.</p>
                             </div>
 
+
+
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="credit_score" class="form-label">Company Credit Score</label>
+                                <label for="credit_score" class="form-label">Actual Credit Score </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
                                     <input type="text" id="credit_score" name="credit_score" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_credit_score">Please enter valid credit score.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="property_owner" class="form-label">Are you a property owner? </label>
+                                <select id="property_owner" name="property_owner" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
@@ -121,6 +174,76 @@
                                 <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
                             </div>
 
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="industry_type" class="form-label">Select your industry</label>
+                                <select id="industry_type" name="industry_type" class="form-select select2" required>
+                                    <option value="">Select</option>
+                                    <option value="Accounting & Bookkeeping">Accounting & Bookkeeping</option>
+                                    <option value="Advertising & Marketing Services">Advertising & Marketing Services</option>
+                                    <option value="Agriculture Equipment Supply & Services (not farms)">Agriculture Equipment Supply & Services (not farms)</option>
+                                    <option value="Architecture & Design">Architecture & Design</option>
+                                    <option value="Automotive Repairs & Servicing">Automotive Repairs & Servicing</option>
+                                    <option value="Business Consulting Services">Business Consulting Services</option>
+                                    <option value="Childcare Services">Childcare Services</option>
+                                    <option value="Cleaning & Sanitation Services">Cleaning & Sanitation Services</option>
+                                    <option value="Construction Trades (e.g. Electrical, Plumbing, Carpentry)">Construction Trades (e.g. Electrical, Plumbing, Carpentry)</option>
+                                    <option value="Courier & Logistics (non-food/alcohol delivery)">Courier & Logistics (non-food/alcohol delivery)</option>
+                                    <option value="Creative Services (Photography, Graphic Design, Copywriting)">Creative Services (Photography, Graphic Design, Copywriting)</option>
+                                    <option value="Dental Clinics">Dental Clinics</option>
+                                    <option value="Digital Marketing Agencies">Digital Marketing Agencies</option>
+                                    <option value="E-commerce (Physical Products)">E-commerce (Physical Products)</option>
+                                    <option value="Education & Tutoring Services">Education & Tutoring Services</option>
+                                    <option value="Engineering Services">Engineering Services</option>
+                                    <option value="Event Services (excluding adult or gambling-related)">Event Services (excluding adult or gambling-related)</option>
+                                    <option value="Financial & Mortgage Brokers">Financial & Mortgage Brokers</option>
+                                    <option value="Fitness & Personal Training Studios (only if not flagged in your logic)">Fitness & Personal Training Studios (only if not flagged in your logic)</option>
+                                    <option value="Florists">Florists</option>
+                                    <option value="Food & Beverage – Cafés, Bakeries (excluding nightclubs, vape bars, etc.)">Food & Beverage – Cafés, Bakeries (excluding nightclubs, vape bars, etc.)</option>
+                                    <option value="Freight & Logistics (non-high-risk categories)">Freight & Logistics (non-high-risk categories)</option>
+                                    <option value="Furniture Retail & Manufacturing">Furniture Retail & Manufacturing</option>
+                                    <option value="General Retail (Clothing, Electronics, Homewares)">General Retail (Clothing, Electronics, Homewares)</option>
+                                    <option value="Hairdressers & Barber Shops (as long as not flagged)">Hairdressers & Barber Shops (as long as not flagged)</option>
+                                    <option value="Health & Allied Services (Physiotherapists, Osteopaths, etc.)">Health & Allied Services (Physiotherapists, Osteopaths, etc.)</option>
+                                    <option value="HVAC Services (Heating, Ventilation & Air Conditioning)">HVAC Services (Heating, Ventilation & Air Conditioning)</option>
+                                    <option value="Import/Export Agents (non-restricted goods)">Import/Export Agents (non-restricted goods)</option>
+                                    <option value="Information Technology Services">Information Technology Services</option>
+                                    <option value="Landscaping & Gardening Services">Landscaping & Gardening Services</option>
+                                    <option value="Legal Services (Sole Practitioner or Firm)">Legal Services (Sole Practitioner or Firm)</option>
+                                    <option value="Manufacturing – Light/Consumer Goods">Manufacturing – Light/Consumer Goods</option>
+                                    <option value="Mechanic & Auto Servicing">Mechanic & Auto Servicing</option>
+                                    <option value="Medical Clinics & Practitioners">Medical Clinics & Practitioners</option>
+                                    <option value="NDIS Plan Managers & Admin Support">NDIS Plan Managers & Admin Support</option>
+                                    <option value="Office Supplies & Equipment">Office Supplies & Equipment</option>
+                                    <option value="Online Services (Web Dev, SaaS, IT Support)">Online Services (Web Dev, SaaS, IT Support)</option>
+                                    <option value="Optometrists & Optical Retail">Optometrists & Optical Retail</option>
+                                    <option value="Packaging & Printing Services">Packaging & Printing Services</option>
+                                    <option value="Pest Control Services">Pest Control Services</option>
+                                    <option value="Pet Services & Supplies">Pet Services & Supplies</option>
+                                    <option value="Property Management Agencies">Property Management Agencies</option>
+                                    <option value="Real Estate Agencies (Sales & Leasing)">Real Estate Agencies (Sales & Leasing)</option>
+                                    <option value="Recruitment & Staffing (General)">Recruitment & Staffing (General)</option>
+                                    <option value="Repair Services (Electronics, Homewares, etc.)">Repair Services (Electronics, Homewares, etc.)</option>
+                                    <option value="Security System Installation (CCTV, alarms)">Security System Installation (CCTV, alarms)</option>
+                                    <option value="Solar & Renewable Energy Installation">Solar & Renewable Energy Installation</option>
+                                    <option value="Trades & Maintenance">Trades & Maintenance</option>
+                                    <option value="Training & Professional Development">Training & Professional Development</option>
+                                    <option value="Veterinary Clinics">Veterinary Clinics</option>
+                                </select>
+                                <small class="form-text text-muted"> </small>
+                                <p class="text-danger d-none" id="invalid_industry_type">Please select a valid option.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="restricted_industry" class="form-label">
+                                    Please select if client operates in one of the following industries
+                                </label>
+                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
+                                    <option value="null">None of the below</option>
+                                    @foreach ($restricted_industries as $industry)
+                                    <option value="{{ $industry }}">{{ $industry }}</option>
+                                    @endforeach
+                                </select>
+                                <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
+                            </div>
 
 
                             <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden" required></textarea>
@@ -168,20 +291,21 @@
     @endif
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.toast').forEach(function(toastEl) {
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-        });
-    });
-</script>
+
 
 <!-- Odometer JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 

@@ -26,5 +26,12 @@ class CustomerModel extends Model
         'monthly_revenue',
         'applicable_lenders',
         'deleted_flag',
+        'abn_date',
+        'gst_date',
+        'entity_type',
+        'credit_score',
+        'property_owner',
+        'restricted_industries',
+        'industry_type'
     ];
 }

@@ -27,10 +27,23 @@ $(document).ready(function () {
                     <td>${item.director_name || ""}</td>
                     <td>${item.director_email || ""}</td>
                     <td>${item.director_phone || ""}</td>
+                    <td>${item.abn_date || ""}</td>
+                     <td>${item.time_in_business || ""} Months</td>
+                     <td>${item.gst_date || ""}</td>
+                     <td>${item.entity_type || ""}</td>
+                     <td>${
+                         item.company_credit_score && item.credit_score
+                             ? item.company_credit_score +
+                               " (" +
+                               item.credit_score +
+                               ")"
+                             : ""
+                     }</td>
                     <td>$${item.loan_amt_needed || ""}</td>
                     <td>$${item.monthly_revenue || ""}</td>
-                    <td>${item.company_credit_score || ""}</td>
-                    <td>${item.time_in_business || ""} Months</td>
+                    <td>${item.industry_type}</td>
+                    
+                   
                     <td>
                         <button 
                             type="button" 
@@ -177,7 +190,7 @@ $(document).ready(function () {
                     data.forEach(function (lender) {
                         const cardHtml = `<div class="col-6"><div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
                         <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative"><img src="/assets/images/${lender.lender_logo}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo /></div>
-                        <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small"><p style="margin-bottom:0px" class="fw-bold text-center">${lender.lender_name} <br><span style="font-weight:500">${lender.lender_type_name}</span</p>
+                        <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small"><p style="margin-bottom:0px" class="fw-bold text-center">${lender.product_name} <br><spanclass="loan-details-section" style="font-weight:500">${lender.sub_product_name}</span</p>
                         <div class="loan-header d-flex justify-content-between align-items-center">
                         <div class="from-label bg-purple   rounded-top text-white small">FROM</div>
                         <div class="max-loan-label bg-orange   rounded-top text-white small">MAX LOAN</div></div>

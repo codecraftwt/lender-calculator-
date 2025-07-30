@@ -11,5 +11,5 @@ class MainLenderTable extends Model
 
     protected $table = 'main_lender_tables';
 
-    protected $fillable = ['lender_name', 'lender_logo'];
+    protected $fillable = ['lender_name', 'lender_logo', 'deleted_flag'];
 }
