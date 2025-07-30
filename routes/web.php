@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\ProductTypeModel;
@@ -64,3 +65,5 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+

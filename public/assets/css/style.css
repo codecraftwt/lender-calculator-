@@ -673,7 +673,7 @@ label[for="purchasePrice"] {
 
 .ai-loan-matching {
     background: #ffffff;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 2rem 2rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -813,7 +813,7 @@ select.form-control:focus {
 }
 
 .panel {
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
 }

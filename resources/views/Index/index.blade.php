@@ -23,10 +23,9 @@
                             <div class="col-md-6 mb-3">
                                 <label for="company_name" class="form-label">Company Name</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-building"></i></span>
-                                    <input type="text" id="company_name" name="company_name" class="form-control" required>
+                                    <input type="text" id="company_name" name="company_name" class="form-control" autocomplete="off" />
                                 </div>
-                                <div id="company_list"></div>
+                                <div id="company_list" class="list-group mt-1" style="min-height: 40px;"></div>
                                 <p class="text-danger d-none" id="invalid_company_name">Please enter valid Name.</p>
                             </div>
 
@@ -98,10 +97,8 @@
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="entity_type" class="form-label">Entity Type</label>
-                                <select id="entity_type" name="entity_type" class="form-control" required>
-                                    <option value="">Select</option>
+                                <input type="text" id="entity_type" name="entity_type" class="form-control" required readonly>
 
-                                </select>
                                 <p class="text-danger d-none" id="invalid_entity_type">Please select valid option.</p>
                             </div>
 

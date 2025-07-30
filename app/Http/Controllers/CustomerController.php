@@ -13,28 +13,34 @@ class CustomerController extends Controller
 {
     public function save_data(Request $request)
     {
-        $validated = $request->validate([
-            'abn_date' => 'required',
-            'gst_date' => 'nullable',
-            'entity_type' => 'nullable',
-            'company_credit_score' => 'required',
-            'property_owner' => 'required',
-            'industry_type' => 'required',
-            'restricted_industry' => ['required', 'array'],
-            'restricted_industry.*' => ['string'],
-            'loan_amt' => 'required|numeric',
-            'time_in_business' => 'required|numeric',
-            'credit_score' => 'required|numeric',
-            'monthly_revenue' => 'required|numeric',
-            'negative_days' => 'required|numeric',
-            'number_of_dishonours' => 'required|numeric',
-            'abn_gst' => 'required',
-            'company_name' => 'required',
-            'director_name' => 'required',
-            'director_email' => 'required|email',
-            'director_phone' => 'required',
-            'applicable_lenders' => 'required',
-        ]);
+
+        // dd($request->all());
+        try {
+            $validated = $request->validate([
+                'abn_date'             => 'required|date',
+                'gst_date'             => 'nullable|date',
+                'entity_type'          => 'nullable|string',
+                'company_credit_score' => 'required|string',
+                'property_owner'       => 'required|string',
+                'industry_type'        => 'required|string',
+                'restricted_industry'  => 'nullable|array',
+                'loan_amt'             => 'required|numeric',
+                'time_in_business'     => 'required|numeric',
+                'credit_score'         => 'required|numeric',
+                'monthly_revenue'      => 'required|numeric',
+                'negative_days'        => 'required|numeric',
+                'number_of_dishonours' => 'required|numeric',
+                'abn_gst'              => 'required|in:Yes,No',
+                'company_name'         => 'required|string',
+                'director_name'        => 'required|string',
+                'director_email'       => 'required|email',
+                'director_phone'       => 'required|string',
+                'applicable_lenders'   => 'required|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->errors());
+        }
+
 
         $industries = $request->input('restricted_industry');
         if (in_array('null', $industries)) {
