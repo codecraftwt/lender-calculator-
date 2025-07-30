@@ -50,7 +50,7 @@ header {
 }
 
 .btn-login {
-    background: #7b5de8;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
     color: white;
     font-weight: 600;
     transition: background 0.3s ease;
@@ -819,7 +819,7 @@ select.form-control:focus {
 }
 
 .header {
-    background-color: #bd94e7;
+    background: linear-gradient(90deg, #4a3f9ade 0%, #d15de8de 100%);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     padding: 1rem;
@@ -836,7 +836,7 @@ select.form-control:focus {
 }
 
 .btn-submit {
-    background-color: #bd94e7;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
     color: white;
     padding: 10px 25px;
     border-radius: 5px;
@@ -861,5 +861,11 @@ select.form-control:focus {
     .panel {
         margin: 0;
         padding: 1rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1440px !important;
     }
 }

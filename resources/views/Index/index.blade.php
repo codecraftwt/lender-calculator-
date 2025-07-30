@@ -8,7 +8,7 @@
     <!-- Left Panel -->
     <div class="col-lg-2 mb-4"></div>
     <div class="col-lg-8 mb-4">
-        <div class="panel ai-loan-matching shadow-sm">
+        <div class="panel ai-loan-matching shadow-sm" style="border-radius:20px">
 
             <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787;">
                 <div class="header" style="height:62px">
@@ -19,6 +19,7 @@
                     <div class="col-12 step active" data-step="1">
                         <div class="row">
                             <h5 class="text-center section-title">Client Details</h5>
+                            <hr>
 
                             <div class="col-md-6 mb-3">
                                 <label for="company_name" class="form-label">Company Name</label>
@@ -57,6 +58,7 @@
                             </div>
 
                             <h5 class="text-center mt-3">Loan Details</h5>
+                            <hr>
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="abn_date" class="form-label">Date of ABN registration</label>

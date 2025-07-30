@@ -5,8 +5,8 @@
 @section('content')
 <!-- Main content starts here -->
 <div class="row px-0">
-    <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
-        <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
+    <div style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
+        <h5 style="color: white; margin: 0; padding: 1rem;font-size:25px;font-weight:600;">Customer List</h5>
     </div>
     <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
 
