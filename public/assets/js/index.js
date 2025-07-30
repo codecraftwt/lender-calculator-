@@ -17,6 +17,9 @@ $(document).ready(function () {
             negative_days: $("#negative_days").val(),
             number_of_dishonours: $("#number_of_dishonours").val(),
             abn_gst: $("#abn_gst").val(),
+            gst_date: $("#gst_date").val(),
+            property_owner: $("#property_owner").val(),
+            restricted_industry: $("#restricted_industry").val(),
         };
         console.log(formData);
         $.ajax({
@@ -101,16 +104,28 @@ $(document).ready(function () {
         "negative_days",
         "number_of_dishonours",
         "asset_backed",
+        // Newly added fields:
+        "abn_date",
+        "entity_type",
+        "company_credit_score",
+        "property_owner",
+        "industry_type",
+        "restricted_industry",
+        "abn_gst",
     ];
 
-    function validateField(id, showErrorMessage = true) {
-        if (!id || typeof id !== "string" || id.trim() === "") return true;
-
+    const validateField = (id, showErrorMessage = true) => {
         const $field = $(`#${CSS.escape(id)}`);
-        const val = $field.val().trim();
 
-        if (showErrorMessage)
+        // Use `.val()` safely
+        let val = $field.val();
+        if (typeof val === "string") {
+            val = val.trim();
+        }
+
+        if (showErrorMessage) {
             $(`#invalid_${CSS.escape(id)}`).addClass("d-none");
+        }
 
         switch (id) {
             case "company_name":
@@ -169,6 +184,38 @@ $(document).ready(function () {
                         ))
                 );
 
+            case "abn_date":
+                const selectedDate = new Date(val);
+                const currentDate = new Date();
+
+                // Normalize time to compare date-only
+                selectedDate.setHours(0, 0, 0, 0);
+                currentDate.setHours(0, 0, 0, 0);
+
+                const isValidDate = selectedDate < currentDate;
+
+                if (isValidDate) {
+                    // Difference in days
+                    const timeDiff = selectedDate - currentDate;
+                    const diffDays = Math.ceil(
+                        Math.abs(timeDiff) / (1000 * 60 * 60 * 24)
+                    );
+
+                    // Approximate months, force non-negative
+                    let diffMonths = Math.floor(diffDays / 30);
+                    diffMonths = Math.max(diffMonths, 0); // Ensure no negatives
+                    $("#time_in_business").val(diffMonths);
+                }
+
+                return (
+                    isValidDate ||
+                    (showErrorMessage &&
+                        showError(
+                            id,
+                            "Please enter a valid ABN registration date."
+                        ))
+                );
+
             case "negative_days":
             case "number_of_dishonours":
                 return (
@@ -177,18 +224,61 @@ $(document).ready(function () {
                         showError(id, "Please enter a valid number."))
                 );
 
-            case "abn_gst":
+            case "company_credit_score":
+            case "property_owner":
+            case "industry_type":
+            case "restricted_industry":
                 return (
-                    val === "Yes" ||
-                    val === "No" ||
+                    val !== "" ||
                     (showErrorMessage &&
                         showError(id, "Please select a valid option."))
+                );
+
+            case "abn_gst":
+                const abnGstVal = val?.toLowerCase().trim(); // safely get and normalize value
+
+                // Step 1: Check if abn_gst is empty
+                if (!abnGstVal) {
+                    return (
+                        showErrorMessage &&
+                        showError(id, "Please select a valid GST option.")
+                    );
+                }
+
+                // Step 2: If "yes", gst_date must be filled
+                if (abnGstVal === "yes") {
+                    const gstDateVal = $("#gst_date").val();
+                    const isGstDateFilled =
+                        gstDateVal && gstDateVal.trim() !== "";
+
+                    return (
+                        isGstDateFilled ||
+                        (showErrorMessage &&
+                            showError(
+                                "gst_date",
+                                "GST registration date is required when GST is 'Yes'."
+                            ))
+                    );
+                }
+                if (abnGstVal === "no") {
+                    $(`#invalid_${id}`).addClass("d-none"); // hide abn_gst error if visible
+                    $("#invalid_gst_date").addClass("d-none"); // also hide gst_date error if it was shown
+                    return true;
+                }
+                // Step 3: If "no" or anything else, all good
+                return true;
+
+            case "abn_date":
+                return (
+                    val !== "" ||
+                    (showErrorMessage &&
+                        showError(id, "Please enter a valid date."))
                 );
 
             default:
                 return true;
         }
-    }
+    };
 
     function validateAll(fields, showErrorMessage = false) {
         return fields.every((id) => validateField(id, showErrorMessage));
@@ -207,14 +297,14 @@ $(document).ready(function () {
                 return this.id;
             })
             .get()
-            .filter((id) => id && id.trim() !== ""); // remove any empty/blank
+            .filter((id) => id && id.trim() !== "");
 
         if (!validateAll(fields, true)) {
             e.preventDefault();
         } else {
             e.preventDefault();
 
-            // ✅ Get values OUTSIDE of template string
+            // ✅ Get values
             const companyName = $("#company_name").val();
             const directorName = $("#director_name").val();
             const directorEmail = $("#director_email").val();
@@ -226,8 +316,14 @@ $(document).ready(function () {
             const negativeDays = $("#negative_days").val();
             const numberOfDishonours = $("#number_of_dishonours").val();
             const abn_gst = $("#abn_gst").val();
+            const abnDate = $("#abn_date").val();
+            const gstDate = $("#gst_date").val();
+            const entityType = $("#entity_type").val();
+            const companyCreditScore = $("#company_credit_score").val();
+            const propertyOwner = $("#property_owner").val();
+            const industryType = $("#industry_type").val();
+            const restricted_industry = $("#restricted_industry").val();
 
-            // ✅ SweetAlert with values injected safely
             Swal.fire({
                 title: "Please Check Your Details",
                 showCancelButton: true,
@@ -235,94 +331,55 @@ $(document).ready(function () {
                 cancelButtonText: "Back",
                 reverseButtons: true,
                 width: 800,
-                customClass: {},
                 html: `
 <div class="col-md-12" style="border: 1px solid black; padding: 10px; border-radius: 10px; font-size: 14px; color: #333;">
     <h5 style="color: #b47dee;"><i class="fa fa-user" style="font-size: 16px; color: #b47dee;"></i> Client Details</h5>
     <hr>
     <div class="row">
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Company Name:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-building"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${companyName}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Director Name:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${directorName}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Email:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${directorEmail}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Phone:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${directorPhone}" readonly />
-            </div>
-        </div>
+        ${inputGroup("Company Name", companyName, "fas fa-building")}
+        ${inputGroup("Director Name", directorName, "fa-solid fa-user")}
+        ${inputGroup("Email", directorEmail, "fas fa-envelope")}
+        ${inputGroup("Phone", directorPhone, "fas fa-mobile-alt")}
+        ${inputGroup(
+            "ABN Registration Date",
+            abnDate,
+            "fa-solid fa-calendar-days"
+        )}
+        ${inputGroup("GST Registration", abn_gst)}
+        ${inputGroup(
+            "GST Registration Date",
+            gstDate,
+            "fa-solid fa-calendar-days"
+        )}
+        ${inputGroup("Entity Type", entityType)}
+        ${inputGroup("Company Credit Score", companyCreditScore)}
+        ${inputGroup("Property Owner", propertyOwner)}
+        ${inputGroup("Industry", industryType)}
+         ${inputGroup("Restricted Industry", restricted_industry)}
     </div>
 
     <hr>
-
     <h5 style="color: #b47dee;"><i class="fa fa-briefcase" style="font-size: 16px; color: #b47dee;"></i> Loan Details</h5>
     <hr>
     <div class="row">
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Loan Amount:</label>
-            <div class="input-group">
-                <span class="input-group-text">$</span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${
-                    "$" + loanAmt
-                }" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Monthly Revenue:</label>
-            <div class="input-group">
-                <span class="input-group-text">$</span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${
-                    "$" + monthlyRevenue
-                }" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Time in Business (months):</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${timeInBusiness}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Credit Score:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${creditScore}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Negative Days:</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
-                <input class="form-control" style="background-color:#e5e5e5" value="${negativeDays}" readonly />
-            </div>
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">Dishonours:</label>
-            <input class="form-control" style="background-color:#e5e5e5" value="${numberOfDishonours}" readonly />
-        </div>
-        <div class="col-md-6 form-group" style="margin-bottom:10px">
-            <label style="font-weight:500;float:left">GST Registration:</label>
-            <input class="form-control" style="background-color:#e5e5e5" value="${abn_gst}" readonly />
-        </div>
+        ${inputGroup("Loan Amount", "$" + loanAmt, "fa-solid fa-dollar-sign")}
+        ${inputGroup(
+            "Monthly Revenue",
+            "$" + monthlyRevenue,
+            "fa-solid fa-dollar-sign"
+        )}
+        ${inputGroup(
+            "Time in Business (months)",
+            timeInBusiness,
+            "fa-solid fa-calendar"
+        )}
+        ${inputGroup("Credit Score", creditScore, "fa-solid fa-credit-card")}
+        ${inputGroup(
+            "Negative Days",
+            negativeDays,
+            "fa-solid fa-calendar-days"
+        )}
+        ${inputGroup("Dishonours", numberOfDishonours)}
     </div>
 </div>
             `,
@@ -332,5 +389,86 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+
+    function inputGroup(label, value, icon = "") {
+        return `
+        <div class="col-md-6 form-group" style="margin-bottom:10px">
+            <label style="font-weight:500;float:left">${label}:</label>
+            <div class="input-group">
+                ${
+                    icon
+                        ? `<span class="input-group-text"><i class="${icon}"></i></span>`
+                        : ""
+                }
+                <input class="form-control" style="background-color:#e5e5e5" value="${value}" readonly />
+            </div>
+        </div>
+    `;
+    }
+
+    const today = new Date();
+    today.setDate(today.getDate() - 1);
+    const maxDate = today.toISOString().split("T")[0];
+    $("#abn_date, #gst_date").attr("max", maxDate);
+});
+
+$(document).ready(function () {
+    $("#industry_type").select2({
+        placeholder: "Select or enter your industry",
+        tags: true,
+        allowClear: true,
+        language: {
+            noResults: function () {
+                return "Can't find your industry? Start typing to add it manually.";
+            },
+        },
+    });
+
+    $(document).ready(function () {
+        $("#restricted_industry").select2({
+            placeholder: "Select industries",
+            allowClear: true,
+        });
+    });
+
+    // Apply CSS dynamically via JS to the Select2 container and elements
+    const $container = $("#industry_type").next(".select2-container");
+
+    // Style the main selection box
+    $container.find(".select2-selection--single").css({
+        height: "38px",
+        padding: "6px 12px",
+        border: "1px solid #ced4da",
+        "border-radius": "0.375rem",
+        "background-color": "#fff",
+        "box-sizing": "border-box",
+        cursor: "pointer",
+        display: "flex",
+        "align-items": "center",
+    });
+
+    // Style the displayed text inside selection box
+    $container.find(".select2-selection__rendered").css({
+        "line-height": "1.5",
+        "padding-left": "0",
+        "padding-right": "0",
+        color: "#495057",
+        width: "100%",
+        "white-space": "nowrap",
+        overflow: "hidden",
+        "text-overflow": "ellipsis",
+    });
+
+    // Style the dropdown arrow container
+    $container.find(".select2-selection__arrow").css({
+        height: "100%",
+        right: "10px",
+        width: "20px",
+    });
+
+    // Make sure Select2 container fills parent width
+    $container.css({
+        width: "100%",
     });
 });

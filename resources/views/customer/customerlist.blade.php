@@ -7,11 +7,11 @@
 <div class="row ">
 
     <!-- Left Panel -->
-    <div class="col-lg-12 mb-4">
+    <div class="col-lg-12 mb-4 px-0">
         <!-- <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm position-sticky" style="top: 72px; z-index: 1000;margin-bottom:10px;border: 3px solid #d8b4fe;"> -->
         <!-- <h3 class="text-center mb-4">Customer List</h3> -->
 
-        <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;">
+        <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
             <div style="background-color: #bd94e7; border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
                 <h5 style="color: white; margin: 0; padding: 1rem;">Customer List</h5>
             </div>
@@ -25,11 +25,15 @@
                         <th>Director Name</th>
                         <th>Director Email</th>
                         <th>Director Phone</th>
+                        <th>ABN Registration Date</th>
+                        <th>Time in Business</th>
+                        <th>GST Registrations</th>
+                        <th>Entity Type</th>
+                        <th>Company Credit Score</th>
                         <th>Loan Amount Needed</th>
                         <th>Monthly Revenue</th>
-                        <th>Credit Score</th>
-                        <th>Time in Business</th>
-                        <th>Action</th>
+                        <th>Industry</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
