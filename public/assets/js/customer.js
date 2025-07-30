@@ -49,7 +49,7 @@ $(document).ready(function () {
                             type="button" 
                             data-id='${applicableLendersStr}'
                             class="btn btn-sm btn-info view-btn"
-                            style="background-color:#8455d9;color:white;border:1px solid #8455d9">
+                            style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">
                             View
                         </button>
                     </td>
