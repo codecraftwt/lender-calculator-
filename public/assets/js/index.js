@@ -224,10 +224,38 @@ $(document).ready(function () {
                         showError(id, "Please enter a valid number."))
                 );
 
+            case "restricted_industry": {
+                const select = document.getElementById(id);
+                const selectedOptions = Array.from(select.selectedOptions).map(
+                    (opt) => opt.value
+                );
+
+                // Validation rules:
+                // 1) At least one option selected
+                // 2) If "null" selected, it must be the ONLY selection
+
+                const isValid =
+                    selectedOptions.length > 0 &&
+                    ((selectedOptions.length === 1 &&
+                        selectedOptions[0] === "null") ||
+                        (selectedOptions.length > 0 &&
+                            !selectedOptions.includes("null")));
+
+                if (!isValid && showErrorMessage) {
+                    showError(id, "Please select a valid option.");
+                } else {
+                    // Hide error if any
+                    document
+                        .getElementById("invalid_restricted_industry")
+                        .classList.add("d-none");
+                }
+
+                return isValid;
+            }
+
             case "company_credit_score":
             case "property_owner":
             case "industry_type":
-            case "restricted_industry":
                 return (
                     val !== "" ||
                     (showErrorMessage &&
@@ -411,6 +439,41 @@ $(document).ready(function () {
     today.setDate(today.getDate() - 1);
     const maxDate = today.toISOString().split("T")[0];
     $("#abn_date, #gst_date").attr("max", maxDate);
+
+    // $("#gst_date").on("input change", function () {
+    //     const gstDateVal = $(this).val();
+    //     const gstDate = new Date(gstDateVal);
+    //     const today = new Date();
+
+    //     // Debug logs
+    //     console.log("GST Date Raw:", gstDateVal);
+    //     console.log("Parsed GST Date:", gstDate);
+
+    //     if (isNaN(gstDate.getTime())) {
+    //         $("#invalid_gst_date")
+    //             .removeClass("d-none")
+    //             .text("Please enter a valid GST registration date.");
+    //         $("#gst_time").val(""); // clear invalid value
+    //         return;
+    //     }
+
+    //     // ✅ Calculate absolute months difference
+    //     let months = Math.abs(
+    //         (today.getFullYear() - gstDate.getFullYear()) * 12 +
+    //             (today.getMonth() - gstDate.getMonth())
+    //     );
+
+    //     // Optionally adjust if the day is before today
+    //     if (today.getDate() < gstDate.getDate()) {
+    //         months = Math.max(0, months - 1);
+    //     }
+
+    //     // ✅ Set the calculated value
+    //     $("#gst_time").val(`${months} month${months !== 1 ? "s" : ""}`);
+
+    //     // ✅ Hide error if shown
+    //     $("#invalid_gst_date").addClass("d-none");
+    // });
 });
 
 $(document).ready(function () {
@@ -581,6 +644,49 @@ $(document).ready(function () {
                             (today.getFullYear() - abnDate.getFullYear()) * 12 +
                             (today.getMonth() - abnDate.getMonth());
                         $("#time_in_business").val(months);
+
+                        if (data.Gst) {
+                            let gst_date_raw = data.Gst;
+
+                            if (gst_date_raw) {
+                                const gst_date = new Date(gst_date_raw);
+                                const today = new Date();
+
+                                if (!isNaN(gst_date.getTime())) {
+                                    // ✅ Calculate absolute months difference
+                                    let gst_months = Math.abs(
+                                        (today.getFullYear() -
+                                            gst_date.getFullYear()) *
+                                            12 +
+                                            (today.getMonth() -
+                                                gst_date.getMonth())
+                                    );
+
+                                    // Optionally adjust if the day is before today
+                                    if (today.getDate() < gst_date.getDate()) {
+                                        gst_months = Math.max(
+                                            0,
+                                            gst_months - 1
+                                        );
+                                    }
+
+                                    // ✅ Set the calculated value
+                                    $("#gst_time").val(`${gst_months}`);
+                                } else {
+                                    console.error(
+                                        "Invalid GST date format:",
+                                        gst_date_raw
+                                    );
+                                    $("#gst_time").val(""); // Clear value on error
+                                }
+                            } else {
+                                console.warn("No GST date returned in data.");
+                                $("#gst_time").val(""); // Clear value if GST is missing
+                            }
+                        }
+
+                        // ✅ Hide error if shown
+                        $("#invalid_gst_date").addClass("d-none");
                     } else {
                         $("#time_in_business").val("");
                     }
@@ -595,4 +701,5 @@ $(document).ready(function () {
                 );
             });
     });
+    
 });

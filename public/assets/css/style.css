@@ -675,7 +675,7 @@ label[for="purchasePrice"] {
     background: #ffffff;
     /* border-radius: 1rem; */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 2rem 2rem;
+    /* padding: 2rem 2rem; */
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: #3a3a3a;
     border: 1px solid #e0e0e0;
@@ -868,4 +868,44 @@ select.form-control:focus {
     .container {
         max-width: 1440px !important;
     }
+}
+
+span.hover-white:hover {
+    color: white;
+}
+.lender-box {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.lender-box:hover {
+    transform: translateY(-4px);
+}
+
+/* Allow stacking of modals */
+.modal-backdrop.show:nth-child(n + 3) {
+    z-index: 1049;
+}
+
+#lenderModal .modal-content {
+    z-index: 1050;
+}
+
+#lenderDetailModal .modal-content {
+    z-index: 1060;
+}
+
+.modal-dialog.modal-lg {
+    max-width: 900px;
+    height: 90vh;
+}
+
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal-body {
+    overflow-y: scroll !important; /* Always show scrollbar */
+    max-height: 65vh; /* Adjust based on your layout */
 }

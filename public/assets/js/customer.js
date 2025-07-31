@@ -29,7 +29,9 @@ $(document).ready(function () {
                     <td>${item.director_phone || ""}</td>
                     <td>${item.abn_date || ""}</td>
                      <td>${item.time_in_business || ""} Months</td>
-                     <td>${item.gst_date || ""}</td>
+                    <td>${
+                        item.gst_time ? item.gst_time + " Months" : "Null"
+                    }</td>
                      <td>${item.entity_type || ""}</td>
                      <td>${
                          item.company_credit_score && item.credit_score
@@ -42,9 +44,22 @@ $(document).ready(function () {
                     <td>$${item.loan_amt_needed || ""}</td>
                     <td>$${item.monthly_revenue || ""}</td>
                     <td>${item.industry_type}</td>
+                    <td>${
+                        item.created_at ? item.created_at.substring(0, 10) : ""
+                    }</td>
                     
                    
                     <td>
+                       
+                    <a href="/customer-edit/${item.id}"><button 
+                            type="button" 
+                            data-id='${applicableLendersStr}'
+                            class="btn btn-sm btn-info"
+                            style=" color:white;">
+                            <i class="fas fa-pencil"></i>
+                        </button><a>
+                    </td>
+                     <td>
                         <button 
                             type="button" 
                             data-id='${applicableLendersStr}'
@@ -53,6 +68,8 @@ $(document).ready(function () {
                             View
                         </button>
                     </td>
+
+
                 </tr>`;
                     tableBody.append(row);
                 });
@@ -122,6 +139,7 @@ $(document).ready(function () {
         triggerAjax(cidArray);
     });
 
+    //function to get the main lenders
     function triggerAjax(cidArray) {
         const formData = {
             trading_time: $("#time_in_business").val(),
@@ -146,9 +164,12 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 setTimeout(function () {
-                    const $container = $(".lender-cards");
-                    $("#matchedLenders").text(data.length);
-                    $container.empty();
+                    // const $container = $(".lender-cards");
+                    const $container = $("#applicableLenderCards");
+                    $container.empty(); // before appending
+
+                    // $("#matchedLenders").text(data.length);
+                    // $container.empty();
                     if (data.length < 1) {
                         $container.html(
                             `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No lenders appicable.</p></div></div>`
@@ -188,15 +209,32 @@ $(document).ready(function () {
                         );
                     }
                     data.forEach(function (lender) {
-                        const cardHtml = `<div class="col-6"><div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="${lender.id}" id="lenderCard${lender.id}">
-                        <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative"><img src="/assets/images/${lender.lender_logo}" alt="${lender.lender_name}" class="lender-logo img-fluid" data-lender-logo /></div>
-                        <div class="loan-details-section flex-grow-1 bg-gradient-moneyme text-white d-flex flex-column justify-content-center small"><p style="margin-bottom:0px" class="fw-bold text-center">${lender.product_name} <br><spanclass="loan-details-section" style="font-weight:500">${lender.sub_product_name}</span</p>
-                        <div class="loan-header d-flex justify-content-between align-items-center">
-                        <div class="from-label bg-purple   rounded-top text-white small">FROM</div>
-                        <div class="max-loan-label bg-orange   rounded-top text-white small">MAX LOAN</div></div>
-                        <div class="loan-amounts d-flex justify-content-between fw-bold"><div>$${lender.min_loan_amount}</div><div data-max-loan-amount>$${lender.max_loan_amount}</div></div><div class="loan-rates d-flex justify-content-between small"><div>From ${lender.credit_score}+ credit score</div></div></div><div class="expanded-content bg-light p-0"><div class="d-flex justify-content-between align-items-center" style="background: linear-gradient(90deg, #4a3f9a 0%, #6a5de8 100%);"><span class=" text-white" style="font-size:13px;margin:19px">Click here to finish on a call with a specialist.</span><span class="circle-btn"><span class="text-white">or</span></span><span class=" text-white" style="font-size:13px;margin:22px">Keep entering data to see your perfect match.</span></div></div></div></div>`;
-                        $container.append(cardHtml);
+                        const productTypeIds = JSON.stringify(
+                            lender.product_type_ids
+                        ); // Store array as JSON string
+
+                        const cardHtml = `
+        <div class="col-6 col-md-6 mb-4 d-flex justify-content-center view-product-btn" 
+             data-product-type-id='${productTypeIds}'>
+            <div class="lender-box d-flex flex-column align-items-center justify-content-center p-3"
+                data-lender-id="${lender.lender_id}"
+                id="lenderCard${lender.lender_id}"
+                style="background-color: #ffffff; height: 124px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
+                
+                <img src="/assets/images/${lender.lender_logo}" alt="${lender.lender_name}" 
+                    class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
+                
+                <a href="#" class="view-options text-decoration-underline " 
+                   data-id="${lender.lender_id}"
+                   style="font-size:15px; font-weight:700; color: #821a99">
+                   View Options
+                </a>
+            </div>
+        </div>`;
+
+                        $container.append(cardHtml); // append here
                     });
+
                     $("#loader").hide();
                     $(".lender-cards").show();
                 }, 1500);
@@ -212,4 +250,158 @@ $(document).ready(function () {
             },
         });
     }
+
+    // triggers the function to get the sub products
+    $(document).on("click", ".view-product-btn", function (e) {
+        e.preventDefault();
+
+        // Step 1: Parse data-id as JSON array
+        const dataId = $(this).attr("data-product-type-id");
+        let productTypeIds = [];
+
+        try {
+            productTypeIds = JSON.parse(dataId);
+        } catch (err) {
+            console.error(
+                "Invalid data-product-type-id format. Expected JSON array.",
+                err
+            );
+            return;
+        }
+
+        console.log("Product Type IDs:", productTypeIds);
+
+        // Step 2: Open lenderDetailModal OVER lenderModal
+        const modalElement = document.getElementById("lenderDetailModal");
+
+        // Bootstrap 5 way of initializing with options (prevent backdrop close conflict)
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false, // 🔑 allows stacking
+            keyboard: true,
+        });
+
+        detailModal.show();
+
+        // Step 3: Fetch product data
+        getSubProductData(productTypeIds);
+    });
+
+    // function for the subproducts modal
+    function getSubProductData(products) {
+        const formData = {
+            trading_time: $("#time_in_business").val(),
+            loan_amt: $("#loan_amt").val(),
+            credit_score: $("#credit_score").val(),
+            monthly_income: $("#monthly_revenue").val(),
+            negative_days: $("#negative_days").val(),
+            number_of_dishonours: $("#number_of_dishonours").val(),
+            asset_backed: $("#asset_backed").val(),
+            product_ids: products,
+        };
+
+        console.log(formData); // Debugging the request payload
+
+        $.ajax({
+            url: "/get-sub-products",
+            method: "GET",
+            data: formData,
+            beforeSend: function () {
+                $("#loader").show();
+
+                const loaderHtml = `
+            <div class="lender-cards-loader text-center w-100 py-5">
+                <div class="spinner-border text-primary" role="status" >
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="mt-2 small text-dark">Finding best lender options...</div>
+            </div>`;
+                $("#loanProductsContainer").html(loaderHtml);
+            },
+            success: function (data) {
+                console.log("Lender detail data:", data);
+
+                setTimeout(function () {
+                    const $container = $("#loanProductsContainer");
+                    $container.empty(); // Clear previous content
+
+                    if (data.length < 1) {
+                        $container.html(`
+                    <div class="text-danger text-center py-4">
+                        <div class="no-lenders-container">
+                            <div class="emoji">❌</div>
+                            <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No products found for this lender.</p>
+                        </div>
+                    </div>`);
+                        return;
+                    }
+
+                    // Set top section (assuming all products belong to one lender)
+                    const lender = data[0];
+                    $("#modalLenderLogo").attr(
+                        "src",
+                        `/assets/images/${lender.lender_logo}`
+                    );
+                    // $("#modalLenderName").text(lender.lender_name || "Lender");
+
+                    $("#modalWebsite").text(lender.website_url || "N/A");
+                    $("#modalPhone").text(lender.mobile_number || "N/A");
+                    $("#modalEmail").text(lender.email || "N/A");
+
+                    // Loop through each sub-product and render
+                    data.forEach(function (product) {
+                        const productHtml = `
+                    <div class="col-md-6">
+                        <div class="card  border  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
+                            <h5 class="fw-bold" style="color:#852aa3;">${
+                                product.product_name || "Product"
+                            }</h5>
+                            <h6 class="fw-bold" style="color:#852aa3;">${
+                                product.sub_product_name || ""
+                            }</h6>
+
+                            <strong>$${product.min_amount || 0} - $${
+                            product.max_amount || 0
+                        }</strong>
+
+                        <strong>Minimum Score Required:  ${
+                            product.credit_score || "500+"
+                        }</strong>
+
+                           
+                            
+                            <a style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i> </a>
+                        </div>
+                    </div>`;
+                        $container.append(productHtml);
+                    });
+
+                    $("#loader").hide();
+                }, 1000);
+
+                $("#applicable_lenders").val(JSON.stringify(data));
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching sub-products:", error);
+                $("#loader").hide();
+                $("#loanProductsContainer").html(
+                    `<div class="text-danger text-center py-4">Unable to load product details. Please try again.</div>`
+                );
+            },
+        });
+    }
 });
+
+//  <div class="row">
+//                             <div class="col-md-6">
+//                             <p><strong> </strong> $${
+//                                 product.min_amount || 0
+//                             }</p>
+//                             </div>
+//                             <div class="col-md-6">
+//                             <p><strong> </strong> $${
+//                                 product.max_amount || 0
+//                             }</p> </div>
+//                             </div>
+//                               <strong>Credit Score: ${
+//                                   product.credit_score || "500+"
+//                               } </strong>

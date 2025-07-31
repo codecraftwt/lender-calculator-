@@ -115,7 +115,7 @@
             }
         </script>
     </header>
-    <main class="container my-4">
+    <main class=" col-12" style="padding-right:15px;padding-left:15px">
         @yield('content')
     </main>
     @yield('scripts')
