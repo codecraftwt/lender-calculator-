@@ -112,8 +112,13 @@
     </div>
 
 </div>
+@php
+$baseImageUrl = "{{ url('assets/images') }}";
+@endphp
 
-
+<script>
+    const baseImageUrl = "{{ url('assets/images') }}";
+</script>
 
 
 <div class="position-fixed  p-3" style="z-index: 2000;top:0px;right:0px">

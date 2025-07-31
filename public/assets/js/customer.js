@@ -221,8 +221,8 @@ $(document).ready(function () {
                 id="lenderCard${lender.lender_id}"
                 style="background-color: #ffffff; height: 124px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
                 
-                <img src="/assets/images/${lender.lender_logo}" alt="${lender.lender_name}" 
-                    class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
+                <img src="${baseImageUrl}/${lender.lender_logo}" alt="${lender.lender_name}" 
+    class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
                 
                 <a href="#" class="view-options text-decoration-underline " 
                    data-id="${lender.lender_id}"
@@ -337,9 +337,10 @@ $(document).ready(function () {
 
                     // Set top section (assuming all products belong to one lender)
                     const lender = data[0];
+
                     $("#modalLenderLogo").attr(
                         "src",
-                        `/assets/images/${lender.lender_logo}`
+                        `${baseImageUrl}/${lender.lender_logo}`
                     );
                     // $("#modalLenderName").text(lender.lender_name || "Lender");
 
