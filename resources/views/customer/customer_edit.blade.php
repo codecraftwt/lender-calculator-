@@ -275,7 +275,7 @@
                             </div>
 
 
-                            <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden" required></textarea>
+                            <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden" required>{{ $customer['applicable_lenders'] }}</textarea>
                             <input type="text" name="customer_id" id="customer_id" value="{{ $customer['id'] }}" class="visually-hidden">
                         </div>
                     </div>

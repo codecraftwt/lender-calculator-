@@ -24,7 +24,7 @@ class CustomerController extends Controller
                 'company_credit_score' => 'required|string',
                 'property_owner'       => 'required|string',
                 'industry_type'        => 'required|string',
-                'restricted_industry'  => 'nullable|array',
+                'restricted_industry'  => 'nullable',
                 'loan_amt'             => 'required|numeric',
                 'time_in_business'     => 'required|numeric',
                 'credit_score'         => 'required|numeric',
@@ -36,15 +36,16 @@ class CustomerController extends Controller
                 'director_name'        => 'required|string',
                 'director_email'       => 'required|email',
                 'director_phone'       => 'required|string',
-                'applicable_lenders'   => 'required|string',
+                'applicable_lenders'   => 'nullable |string',
                 'gst_time'             => 'nullable|numeric'
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->errors());
         }
 
+        $industries = $request->input('restricted_industry', []);
 
-        $industries = $request->input('restricted_industry');
+
         if (in_array('null', $industries)) {
             $industries = [];
         } else {
@@ -229,7 +230,7 @@ class CustomerController extends Controller
                 'company_credit_score' => 'required|string',
                 'property_owner'       => 'required|string',
                 'industry_type'        => 'required|string',
-                'restricted_industry'  => 'nullable|array',
+                'restricted_industry'  => 'nullable',
                 'loan_amt'             => 'required|numeric',
                 'time_in_business'     => 'required|numeric',
                 'credit_score'         => 'required|numeric',
@@ -241,17 +242,17 @@ class CustomerController extends Controller
                 'director_name'        => 'required|string',
                 'director_email'       => 'required|email',
                 'director_phone'       => 'required|string',
-                'applicable_lenders'   => 'required|string',
+                'applicable_lenders'   => 'nullable|string',
                 'gst_time'             => 'nullable|numeric',
                 'customer_id'          => 'required|numeric',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // dd($e->errors());
-            return redirect('/customer-edit/' . $validated['customer_id'] . '')->with('success', 'Data submitted successfully');
+            dd($e->errors());
+            // return redirect('/customer-edit/' . $validated['customer_id'] . '')->with('success', 'Data submitted successfully');
         }
 
 
-        $industries = $request->input('restricted_industry');
+        $industries = $request->input('restricted_industry', []);
         if (in_array('null', $industries)) {
             $industries = [];
         } else {
