@@ -221,7 +221,9 @@ $(document).ready(function () {
                 id="lenderCard${lender.lender_id}"
                 style="background-color: #ffffff; height: 124px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
                 
-                <img src="${baseImageUrl}/${lender.lender_logo}" alt="${lender.lender_name}" 
+               <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="${
+                            lender.lender_name
+                        }" 
     class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
                 
                 <a href="#" class="view-options text-decoration-underline " 
@@ -340,7 +342,7 @@ $(document).ready(function () {
 
                     $("#modalLenderLogo").attr(
                         "src",
-                        `${baseImageUrl}/${lender.lender_logo}`
+                        `${baseImageUrl}/${lender.lender_logo.toLowerCase()}`
                     );
                     // $("#modalLenderName").text(lender.lender_name || "Lender");
 
