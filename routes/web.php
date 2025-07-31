@@ -36,6 +36,8 @@ Route::get('/', function () {
 });
 
 Route::get('/index', [IndexController::class, 'index']);
+Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
+Route::post('/update-customer', [CustomerController::class, 'update_customer']);
 Route::get('/index2', [IndexController::class, 'index_test']);
 Route::get('/broker', [IndexController::class, 'broker_panel']);
 
@@ -54,6 +56,8 @@ Route::post('/save_data', [CustomerController::class, 'save_data']);
 Route::get('/customer-list', [CustomerController::class, 'list']);
 Route::get('/get-customers', [CustomerController::class, 'get_customers']);
 Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
+Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products']);
+
 
 Route::get('/search-company', 'CompanySearchController@searchCompany');
 
@@ -65,5 +69,3 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
-
-

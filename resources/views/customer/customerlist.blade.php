@@ -25,13 +25,15 @@
                         <th>Director Phone</th>
                         <th>ABN Registration Date</th>
                         <th>Time in Business</th>
-                        <th>GST Registrations</th>
+                        <th>GST Registration Time</th>
                         <th>Entity Type</th>
                         <th>Company Credit Score</th>
                         <th>Loan Amount Needed</th>
                         <th>Monthly Revenue</th>
                         <th>Industry</th>
-                        <th></th>
+                        <th>Submission Date</th>
+                        <th>Actions</th>
+                        <th>Lenders</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,30 +43,78 @@
         </div>
         <!-- </div> -->
     </div>
+    <!-- Lender Modal (Main List) -->
+    <!-- Lender Modal (Background) -->
     <div class="modal fade" id="lenderModal" tabindex="-1" aria-labelledby="lenderModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content" style="border: 3px solid #d8b4fe;">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" style="max-height: 90vh;">
+            <div class="modal-content" style="border: 3px solid #d8b4fe; z-index: 1050; min-height: 90vh;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="lenderModalLabel">Applicable Lenders</h5>
-                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     <div class="panel ebroker-lender-panel p-4 rounded-3 shadow-sm">
-                        <div class="lender-cards row g-3">
+                        <div class="lender-cards row g-3" id="applicableLenderCards">
                             <div id="loader" class="text-center my-4" style="display: none;">
                                 <img src="{{ asset('assets/images/loader.gif') }}" alt="Loading...">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
+                    <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Lender Detail Modal (Overlay) -->
+    <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
+            <div class="modal-content p-4  modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
+                <!-- Header <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <img id="modalLenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3">
+
+                    </div>
+                    <div class=" mb-4 ml-4">
+                        <p class="mb-1"><i class="fas fa-globe" style="color: #852aa3;font-size:20px"></i> <span id="modalWebsite"></span></p>
+                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3;font-size:20px"></i> <span id="modalPhone"></span></p>
+                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3;font-size:20px"></i> <span id="modalEmail"></span></p>
+                    </div>
+
+                </div>
+
+                <h4 style="color: #852aa3;font-family:'Times New Roman', Times, serif;font-weight:500" class="p-3">MATCHED LENDERS</h4>
+                <div id="loanProductsContainer" class="row g-3" style="padding: 20px;">
+
+                </div>
+
+                <button type="button" class="text-white m-3" data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border-radius:20px;border:none;width: 185px;
+                  height: 28px; font-weight:600">
+                    View Lender contacts
+                </button>
+
+                <!-- Footer -->
+                <div class="modal-footer mt-4">
+
+                    <button type="button" class="btn btn-outline-secondary text-white m-1 " data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        ← Back to Lenders
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
+
+
 
 <div class="position-fixed  p-3" style="z-index: 2000;top:0px;right:0px">
     @if(session('success'))

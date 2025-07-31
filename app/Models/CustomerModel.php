@@ -32,6 +32,9 @@ class CustomerModel extends Model
         'credit_score',
         'property_owner',
         'restricted_industries',
-        'industry_type'
+        'industry_type',
+        'gst_time',
+        'number_of_dishonours',
+        'GST_registration'
     ];
 }
