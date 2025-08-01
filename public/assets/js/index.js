@@ -23,7 +23,7 @@ $(document).ready(function () {
         };
         console.log(formData);
         $.ajax({
-            url: "/get-lenders",
+            url: "/get-lender",
             method: "GET",
             data: formData,
             beforeSend: function () {

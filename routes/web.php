@@ -38,7 +38,7 @@ Route::get('/', function () {
 Route::get('/index', [IndexController::class, 'index']);
 Route::get('/index2', [IndexController::class, 'index_test']);
 Route::get('/broker', [IndexController::class, 'broker_panel']);
-Route::get('/get-lenders', [IndexController::class, 'get_lenders'])->name('get.lenders');
+Route::get('/get-lender', [IndexController::class, 'get_lenders'])->name('get.lenders');
 Route::get('/lenders', function () {
     return 'Lenders page coming soon.';
 });
