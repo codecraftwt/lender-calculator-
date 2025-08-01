@@ -27,11 +27,11 @@ class ProductModelSeeder extends Seeder
 
         ]);
 
-        ProductModel::create([
-            'lender_id' => 1,
-            'product_name' => 'CORPORATE',
+        // ProductModel::create([
+        //     'lender_id' => 1,
+        //     'product_name' => 'CORPORATE',
 
-        ]);
+        // ]);
 
         ProductModel::create([
             'lender_id' => 2,
@@ -47,13 +47,13 @@ class ProductModelSeeder extends Seeder
 
         ProductModel::create([
             'lender_id' => 3,
-            'product_name' => 'Business Overdraft',
+            'product_name' => 'Business Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 3,
-            'product_name' => 'Term Loan',
+            'product_name' => 'Line Of Credit',
 
         ]);
 
@@ -95,7 +95,7 @@ class ProductModelSeeder extends Seeder
 
         ProductModel::create([
             'lender_id' => 9,
-            'product_name' => '  Cash Advance & Line of Credit',
+            'product_name' => 'Cash Advance & Line of Credit',
 
         ]);
 

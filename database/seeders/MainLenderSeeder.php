@@ -106,7 +106,7 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'brokers@financeone.com.au',
                 'mobile_number'     => '(07) 4723 5044',
                 'website_url'  => 'financeone.com.au',
-                'product_guide' => 'Finance-One-Unsecured Product Guide.pdf     ',
+                'product_guide' => 'Finance-One-Unsecured Product Guide.pdf',
 
 
             ]
