@@ -164,7 +164,7 @@ class CustomerController extends Controller
                         'product_models.product_name as product_name',
                         'product_type_models.min_loan_amount',
                         'product_type_models.max_loan_amount',
-                        'product_type_models.sub_prodUct_name',
+                        'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
 
 
@@ -182,7 +182,7 @@ class CustomerController extends Controller
                         'product_name' => $product->product_name,
                         'min_amount' => $product->min_loan_amount,
                         'max_amount' => $product->max_loan_amount,
-                        'sub_product_name' => $product->sub_prodUct_name,
+                        'sub_product_name' => $product->sub_product_name,
                         'credit_score' => $product->credit_score,
                         'email'    => $product->email,
                         'mobile_number' => $product->mobile_number,

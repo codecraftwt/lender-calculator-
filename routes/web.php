@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\LenderController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,9 @@ use App\Models\ProductTypeModel;
 |
 */
 
-Route::get('/', function () {
 
+// index routes
+Route::get('/', function () {
     $restricted_industries = ProductTypeModel::whereNotNull('restricted_industry')
         ->pluck('restricted_industry')
         ->map(function ($item) {
@@ -31,41 +33,41 @@ Route::get('/', function () {
         ->flatten()
         ->unique()
         ->values();
-
     return view('Index.index', compact('restricted_industries'));
 });
-
 Route::get('/index', [IndexController::class, 'index']);
-Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
-Route::post('/update-customer', [CustomerController::class, 'update_customer']);
 Route::get('/index2', [IndexController::class, 'index_test']);
 Route::get('/broker', [IndexController::class, 'broker_panel']);
-
 Route::get('/get-lenders', [IndexController::class, 'get_lenders'])->name('get.lenders');
 Route::get('/lenders', function () {
     return 'Lenders page coming soon.';
 });
-
 Route::get('/contact-us', function () {
     return 'Contact us page coming soon.';
 });
 
 
+// customer routes
 Route::post('/save_data', [CustomerController::class, 'save_data']);
-
+Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
+Route::post('/update-customer', [CustomerController::class, 'update_customer']);
 Route::get('/customer-list', [CustomerController::class, 'list']);
 Route::get('/get-customers', [CustomerController::class, 'get_customers']);
 Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
 Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products']);
 
 
+// api route
 Route::get('/search-company', 'CompanySearchController@searchCompany');
-
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+// lender routes
+Route::get('/lender-list', [LenderController::class, 'lender_list']);
+Route::get('/get-lenders', [LenderController::class, 'get_lenders']);
+Route::get('/get-lender-products', [LenderController::class, 'get_lender_products']);
+Route::get('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);

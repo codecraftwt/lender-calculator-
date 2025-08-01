@@ -77,6 +77,12 @@
                                 </div>
                                 <p class="text-danger d-none" id="invalid_time_in_business">Please enter valid Time.</p>
                             </div>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="entity_type" class="form-label">Entity Type</label>
+                                <input type="text" id="entity_type" name="entity_type" class="form-control" required readonly>
+
+                                <p class="text-danger d-none" id="invalid_entity_type">Please select valid option.</p>
+                            </div>
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="abn_gst" class="form-label">Do you have GST registration?</label>
@@ -101,12 +107,7 @@
                                 <p class="text-danger d-none" id="invalid_gst_time">Please enter valid Time.</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="entity_type" class="form-label">Entity Type</label>
-                                <input type="text" id="entity_type" name="entity_type" class="form-control" required readonly>
 
-                                <p class="text-danger d-none" id="invalid_entity_type">Please select valid option.</p>
-                            </div>
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="loan_amt" class="form-label">Loan Amount Needed</label>
@@ -236,17 +237,27 @@
                                 <p class="text-danger d-none" id="invalid_industry_type">Please select a valid option.</p>
                             </div>
                             <div class="col-md-6 mb-3 loan-details">
+                                <!-- Top line as requested -->
+                                <!-- <small class="mb-1 mt-1 text-warning">Some industries may be subject to stricter lending criteria or are excluded by certain lenders.</small> -->
+
+                                <!-- Label as second line -->
                                 <label for="restricted_industry" class="form-label">
-                                    Please select if client operates in one of the following industries
+                                    Please select if your client operates in any of the following commonly restricted or excluded industries:
                                 </label>
+
+                                <!-- Select field -->
                                 <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
                                     <option value="null">None of the below</option>
                                     @foreach ($restricted_industries as $industry)
                                     <option value="{{ $industry }}">{{ $industry }}</option>
                                     @endforeach
                                 </select>
+
+
+                                <!-- Validation message -->
                                 <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
                             </div>
+
 
 
                             <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden " required></textarea>
