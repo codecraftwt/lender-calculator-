@@ -909,3 +909,7 @@ span.hover-white:hover {
     overflow-y: scroll !important; /* Always show scrollbar */
     max-height: 65vh; /* Adjust based on your layout */
 }
+
+.sub-product-card:hover {
+    transform: translateY(-4px);
+}

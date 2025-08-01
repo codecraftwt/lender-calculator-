@@ -6,7 +6,7 @@
 <!-- Main content starts here -->
 <div class="row px-0">
     <div style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
-        <h5 style="color: white; margin: 0; padding: 1rem;font-size:25px;font-weight:600;">Customer List</h5>
+        <h5 style="color: white; margin: 0; padding: 1rem;font-size:25px;font-weight:600;">Lender List</h5>
     </div>
     <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
 
@@ -19,21 +19,12 @@
                 <thead>
                     <tr>
                         <th>Sr.No</th>
-                        <th>Company Name</th>
-                        <th>Director Name</th>
-                        <th>Director Email</th>
-                        <th>Director Phone</th>
-                        <th>ABN Registration Date</th>
-                        <th>Time in Business</th>
-                        <th>GST Registration Time</th>
-                        <th>Entity Type</th>
-                        <th>Company Credit Score</th>
-                        <th>Loan Amount Needed</th>
-                        <th>Monthly Revenue</th>
-                        <th>Industry</th>
-                        <th>Submission Date</th>
-                        <th>Actions</th>
-                        <th>Lenders</th>
+                        <th>Lender Name</th>
+                        <th>Lender Logo</th>
+                        <th>Email</th>
+                        <th>Mobile Number</th>
+                        <th>Website</th>
+                        <th>Products</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +40,7 @@
         <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" style="max-height: 90vh;">
             <div class="modal-content" style="border: 3px solid #d8b4fe; z-index: 1050; min-height: 90vh;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="lenderModalLabel">Applicable Lenders</h5>
+                    <h5 class="modal-title" id="lenderModalLabel">Lender Products</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -91,7 +82,7 @@
                 </div>
                 <hr>
 
-                <h4 style="color: #852aa3;font-family:'Times New Roman', Times, serif;font-weight:500" class="p-3">MATCHED LENDERS</h4>
+                <h4 style="color: #852aa3;font-family:'Times New Roman', Times, serif;font-weight:500" class="p-3">Lender Subproducts</h4>
                 <div id="loanProductsContainer" class="row g-3" style="padding: 20px;">
 
                 </div>
@@ -164,7 +155,7 @@ $baseImageUrl = "{{ url('assets/images') }}";
 
 <!-- <script src="{{ asset('assets/js/index.js') }}"></script> -->
 <!-- <script src="{{ asset('assets/js/customer.js') }}"></script> -->
-<script src="{{ url('assets/js/customer.js') }}"></script>
+<script src="{{ url('assets/js/lender.js') }}"></script>
 
 
 <!-- Include jQuery (required for DataTables) and DataTables JS -->

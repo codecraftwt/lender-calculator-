@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: "/get-customers",
+        url: "/get-lenders",
         method: "GET",
         success: function (data) {
             const tableBody = $("#lenderTable tbody");
@@ -15,54 +15,26 @@ $(document).ready(function () {
             tableBody.empty(); // Clear existing rows
 
             if (data.length > 0) {
+                console.log(data);
                 data.forEach((item, index) => {
-                    const applicableLendersStr = JSON.stringify(
-                        item.applicable_lenders
+                    const product_id_arr = JSON.stringify(
+                        item.product_ids
                     ).replace(/'/g, "&#39;");
-
                     const row = `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>${item.company_name || ""}</td>
-                    <td>${item.director_name || ""}</td>
-                    <td>${item.director_email || ""}</td>
-                    <td>${item.director_phone || ""}</td>
-                    <td>${item.abn_date || ""}</td>
-                     <td>${item.time_in_business || ""} Months</td>
-                    <td>${
-                        item.gst_time ? item.gst_time + " Months" : "Null"
-                    }</td>
-                     <td>${item.entity_type || ""}</td>
-                     <td>${
-                         item.company_credit_score && item.credit_score
-                             ? item.company_credit_score +
-                               " (" +
-                               item.credit_score +
-                               ")"
-                             : ""
-                     }</td>
-                    <td>$${item.loan_amt_needed || ""}</td>
-                    <td>$${item.monthly_revenue || ""}</td>
-                    <td>${item.industry_type}</td>
-                    <td>${
-                        item.created_at ? item.created_at.substring(0, 10) : ""
-                    }</td>
-                    
-                   
-                    <td>
-                       
-                    <a href="/customer-edit/${item.id}"><button 
-                            type="button" 
-                            data-id='${applicableLendersStr}'
-                            class="btn btn-sm btn-info"
-                            style=" color:white;">
-                            <i class="fas fa-pencil"></i>
-                        </button><a>
-                    </td>
+                    <td>${item.lender_name || ""}</td>
+                    <td><img src="${baseImageUrl}/${item.lender_logo.toLowerCase()}" alt="${
+                        item.lender_name
+                    }" 
+    class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;"></td>
+                    <td>${item.email || ""}</td>
+                    <td>${item.mobile_number || ""}</td>
+                    <td>${item.website_url || ""}</td>
                      <td>
                         <button 
                             type="button" 
-                            data-id='${applicableLendersStr}'
+                            data-id='${product_id_arr}'
                             class="btn btn-sm btn-info view-btn"
                             style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">
                             View
@@ -93,22 +65,17 @@ $(document).ready(function () {
                         extend: "excelHtml5",
                         text: "Export to Excel",
                         exportOptions: {
-                            columns: [
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                            ],
+                            columns: [0, 1, 3, 4, 5],
                         },
-                        title: "Customer List",
+                        title: "Lender List",
                     },
                     {
                         extend: "print",
                         text: "Print Table",
-                        orientation: "landscape",
                         exportOptions: {
-                            columns: [
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                            ],
+                            columns: [0, 1, 3, 4, 5],
                         },
-                        title: "Customer List",
+                        title: "Lender List",
                     },
                 ],
             });
@@ -118,18 +85,20 @@ $(document).ready(function () {
         },
     });
 
+    // js to view products modal
+
     $(document).on("click", ".view-btn", function () {
         const dataId = $(this).attr("data-id");
         console.log(dataId);
-        let cidArray = [];
+        let pidArray = [];
 
         try {
-            cidArray = JSON.parse(dataId);
+            pidArray = JSON.parse(dataId);
         } catch (e) {
             console.error("Invalid JSON in data-id", e);
         }
 
-        console.log("Clicked IDs:", cidArray);
+        console.log("Clicked IDs:", pidArray);
 
         const modal = new bootstrap.Modal(
             document.getElementById("lenderModal")
@@ -137,24 +106,17 @@ $(document).ready(function () {
         modal.show();
 
         // Call AJAX
-        triggerAjax(cidArray);
+        triggerAjax(pidArray);
     });
 
-    //function to get the main lenders
-    function triggerAjax(cidArray) {
+    // js to get products data from server
+    function triggerAjax(pidArray) {
         const formData = {
-            trading_time: $("#time_in_business").val(),
-            loan_amt: $("#loan_amt").val(),
-            credit_score: $("#credit_score").val(),
-            monthly_income: $("#monthly_revenue").val(),
-            negative_days: $("#negative_days").val(),
-            number_of_dishonours: $("#number_of_dishonours").val(),
-            asset_backed: $("#asset_backed").val(),
-            cid: cidArray,
+            pid: pidArray,
         };
         console.log(formData);
         $.ajax({
-            url: "/get-applicable-lenders",
+            url: "/get-lender-products",
             method: "GET",
             data: formData,
             beforeSend: function () {
@@ -211,24 +173,26 @@ $(document).ready(function () {
                     }
                     data.forEach(function (lender) {
                         const productTypeIds = JSON.stringify(
-                            lender.product_type_ids
+                            lender.subproduct_ids
                         ); // Store array as JSON string
 
                         const cardHtml = `
         <div class="col-6 col-md-6 mb-4 d-flex justify-content-center view-product-btn" 
              data-product-type-id='${productTypeIds}'>
             <div class="lender-box d-flex flex-column align-items-center justify-content-center p-3"
-                data-lender-id="${lender.lender_id}"
-                id="lenderCard${lender.lender_id}"
-                style="background-color: #ffffff; height: 124px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
+                data-lender-id="${lender.product_id}"
+                id="lenderCard${lender.product_id}"
+                style="background-color: #ffffff; height: 162px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
                 
                <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="${
                             lender.lender_name
                         }" 
     class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
+
+                <h4>${lender.product_name}</h4>
                 
                 <a href="#" class="view-options text-decoration-underline " 
-                   data-id="${lender.lender_id}"
+                   data-id="${lender.product_id}"
                    style="font-size:15px; font-weight:700; color: #821a99">
                    View Options
                 </a>
@@ -254,7 +218,7 @@ $(document).ready(function () {
         });
     }
 
-    // triggers the function to get the sub products
+    // js to view subproduct modal
     $(document).on("click", ".view-product-btn", function (e) {
         e.preventDefault();
 
@@ -289,23 +253,16 @@ $(document).ready(function () {
         getSubProductData(productTypeIds);
     });
 
-    // function for the subproducts modal
+    //  js to get subproduct data from the server
     function getSubProductData(products) {
         const formData = {
-            trading_time: $("#time_in_business").val(),
-            loan_amt: $("#loan_amt").val(),
-            credit_score: $("#credit_score").val(),
-            monthly_income: $("#monthly_revenue").val(),
-            negative_days: $("#negative_days").val(),
-            number_of_dishonours: $("#number_of_dishonours").val(),
-            asset_backed: $("#asset_backed").val(),
             product_ids: products,
         };
 
         console.log(formData); // Debugging the request payload
 
         $.ajax({
-            url: "/get-sub-products",
+            url: "/get-lender-subproducts",
             method: "GET",
             data: formData,
             beforeSend: function () {
@@ -356,9 +313,8 @@ $(document).ready(function () {
                         const productHtml = `
                     <div class="col-md-6">
                     
-                   
-                        <div class="card sub-product-card border col-md-10  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
-                        <div class="row">
+                        <div class="card sub-product-card border  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
+                         <div class="row">
                          <div class="col-md-2">
                           <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" class="" alt" style="width: 73px;height: 35px;">
                          </div>
@@ -381,7 +337,6 @@ $(document).ready(function () {
                             
                             <a style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i> </a>
                         </div>
-                        </div>
                     </div>`;
                         $container.append(productHtml);
                     });
@@ -401,18 +356,3 @@ $(document).ready(function () {
         });
     }
 });
-
-//  <div class="row">
-//                             <div class="col-md-6">
-//                             <p><strong> </strong> $${
-//                                 product.min_amount || 0
-//                             }</p>
-//                             </div>
-//                             <div class="col-md-6">
-//                             <p><strong> </strong> $${
-//                                 product.max_amount || 0
-//                             }</p> </div>
-//                             </div>
-//                               <strong>Credit Score: ${
-//                                   product.credit_score || "500+"
-//                               } </strong>
