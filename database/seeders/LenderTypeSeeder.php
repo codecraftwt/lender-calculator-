@@ -44,33 +44,33 @@ class LenderTypeSeeder extends Seeder
             'annual_income' => 120000,
             'credit_score' => 500,
             'property_owner' => 'No',
-            'negative_days' => null,
+            'negative_days' => 8,
             'number_of_dishonours' => null,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode(['Fitness', 'Beauty', 'Property Development']),
         ]);
 
-        ProductTypeModel::create([
-            'product_id' => 3,
-            'sub_product_name' => 'Corporate',
-            'trading_time' => 12,
-            'GST_registration' => 'Yes',
-            'gst_time' => 12,
-            'min_loan_amount' => 200000,
-            'max_loan_amount' => 2000000,
-            'annual_income' => 120000,
-            'credit_score' => 500,
-            'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
-            'deleted_flag' => 0,
-            'restricted_industry' => json_encode(['Fitness', 'Beauty', 'Property Development']),
-        ]);
+        // ProductTypeModel::create([
+        //     'product_id' => 3,
+        //     'sub_product_name' => 'Corporate',
+        //     'trading_time' => 12,
+        //     'GST_registration' => 'Yes',
+        //     'gst_time' => 12,
+        //     'min_loan_amount' => 200000,
+        //     'max_loan_amount' => 2000000,
+        //     'annual_income' => 120000,
+        //     'credit_score' => 500,
+        //     'property_owner' => 'No',
+        //     'negative_days' => null,
+        //     'number_of_dishonours' => null,
+        //     'deleted_flag' => 0,
+        //     'restricted_industry' => json_encode(['Fitness', 'Beauty', 'Property Development']),
+        // ]);
 
 
         //ondeck
         ProductTypeModel::create([
-            'product_id' => 4,
+            'product_id' => 3,
             'sub_product_name' => 'Teir 1',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -87,7 +87,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 4,
+            'product_id' => 3,
             'sub_product_name' => 'Teir 2',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -104,7 +104,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 4,
+            'product_id' => 3,
             'sub_product_name' => 'Teir 3',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -121,7 +121,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 4,
+            'product_id' => 3,
             'sub_product_name' => 'Teir 4',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -140,7 +140,7 @@ class LenderTypeSeeder extends Seeder
 
         //shift
         ProductTypeModel::create([
-            'product_id' => 5,
+            'product_id' => 4,
             'sub_product_name' => 'Teir 1',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -157,7 +157,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 5,
+            'product_id' => 4,
             'sub_product_name' => 'Teir 2',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -174,7 +174,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 5,
+            'product_id' => 4,
             'sub_product_name' => 'Teir 3',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -191,7 +191,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 5,
+            'product_id' => 4,
             'sub_product_name' => 'Teir 4',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -208,10 +208,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 0',
             'trading_time' => 60,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 200000,
             'max_loan_amount' => 750000,
@@ -226,10 +226,10 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 1',
             'trading_time' => 60,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 750000,
@@ -243,14 +243,14 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 2',
             'trading_time' => 36,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 750000,
-            'annual_income' => 5000000,
+            'annual_income' => 250000,
             'credit_score' => 600,
             'property_owner' => 'No',
             'negative_days' => null,
@@ -260,10 +260,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 3',
             'trading_time' => 24,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 300000,
@@ -277,10 +277,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 4',
             'trading_time' => 18,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 200000,
@@ -294,10 +294,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 6,
+            'product_id' => 5,
             'sub_product_name' => 'Teir 5',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 150000,
@@ -313,7 +313,7 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 7,
+            'product_id' => 6,
             'sub_product_name' => 'Teir 0',
             'trading_time' => 60,
             'GST_registration' => 'No',
@@ -330,7 +330,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 7,
+            'product_id' => 6,
             'sub_product_name' => 'Teir 1',
             'trading_time' => 60,
             'GST_registration' => 'No',
@@ -347,7 +347,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 7,
+            'product_id' => 6,
             'sub_product_name' => 'Teir 2',
             'trading_time' => 36,
             'GST_registration' => 'No',
@@ -364,7 +364,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 7,
+            'product_id' => 6,
             'sub_product_name' => 'Teir 3',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -381,7 +381,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 8,
+            'product_id' => 7,
             'sub_product_name' => 'Teir 1',
             'trading_time' => 60,
             'GST_registration' => 'No',
@@ -389,10 +389,10 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 10000,
             'max_loan_amount' => 250000,
             'annual_income' => 5000000,
-            'credit_score' => 600,
+            'credit_score' => 601,
             'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 0,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode([
                 'Fitness',
@@ -405,7 +405,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 8,
+            'product_id' => 7,
             'sub_product_name' => 'Teir 2',
             'trading_time' => 36,
             'GST_registration' => 'No',
@@ -413,10 +413,10 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 10000,
             'max_loan_amount' => 250000,
             'annual_income' => 1000000,
-            'credit_score' => 600,
+            'credit_score' => 601,
             'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 0,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode([
                 'Fitness',
@@ -429,7 +429,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 8,
+            'product_id' => 7,
             'sub_product_name' => 'Teir 3',
             'trading_time' => 24,
             'GST_registration' => 'No',
@@ -437,10 +437,10 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 10000,
             'max_loan_amount' => 250000,
             'annual_income' => 200000,
-            'credit_score' => 600,
+            'credit_score' => 601,
             'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 0,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode([
                 'Fitness',
@@ -453,7 +453,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 8,
+            'product_id' => 7,
             'sub_product_name' => 'Teir 4',
             'trading_time' => 18,
             'GST_registration' => 'No',
@@ -461,10 +461,10 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 10000,
             'max_loan_amount' => 250000,
             'annual_income' => 75000,
-            'credit_score' => 600,
+            'credit_score' => 601,
             'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 0,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode([
                 'Fitness',
@@ -477,7 +477,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 8,
+            'product_id' => 7,
             'sub_product_name' => 'Teir 5',
             'trading_time' => 6,
             'GST_registration' => 'No',
@@ -485,10 +485,10 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 10000,
             'max_loan_amount' => 250000,
             'annual_income' => 75000,
-            'credit_score' => 600,
+            'credit_score' => 601,
             'property_owner' => 'No',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 0,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode([
                 'Fitness',
@@ -502,7 +502,7 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 10,
+            'product_id' => 9,
             'sub_product_name' => 'Propsa Business Line of Credit',
             'trading_time' => 6,
             'GST_registration' => 'No',
@@ -519,7 +519,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 9,
+            'product_id' => 8,
             'sub_product_name' => 'Propsa Small Business Loan',
             'trading_time' => 6,
             'GST_registration' => 'No',
@@ -536,13 +536,13 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 9,
+            'product_id' => 8,
             'sub_product_name' => 'Propsa Business Loan Plus Tier 1',
             'trading_time' => 74,
             'GST_registration' => 'No',
             'gst_time' => 0,
             'min_loan_amount' => 150000,
-            'max_loan_amount' => 5000000,
+            'max_loan_amount' => 500000,
             'annual_income' => 4000000,
             'credit_score' => 800,
             'property_owner' => 'No',
@@ -553,13 +553,13 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 9,
+            'product_id' => 8,
             'sub_product_name' => 'Propsa Business Loan Plus Tier 2',
             'trading_time' => 60,
             'GST_registration' => 'No',
             'gst_time' => 0,
             'min_loan_amount' => 150000,
-            'max_loan_amount' => 5000000,
+            'max_loan_amount' => 500000,
             'annual_income' => 2500000,
             'credit_score' => 800,
             'property_owner' => 'No',
@@ -570,13 +570,13 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 9,
+            'product_id' => 8,
             'sub_product_name' => 'Propsa Business Loan Plus Tier 3',
             'trading_time' => 36,
             'GST_registration' => 'No',
             'gst_time' => 0,
             'min_loan_amount' => 150000,
-            'max_loan_amount' => 5000000,
+            'max_loan_amount' => 500000,
             'annual_income' => 1000000,
             'credit_score' => 700,
             'property_owner' => 'No',
@@ -588,10 +588,10 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 11,
+            'product_id' => 10,
             'sub_product_name' => 'Lightning Loan',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 175000,
@@ -605,10 +605,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 11,
+            'product_id' => 10,
             'sub_product_name' => 'Lightning Loan Plus',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 175000,
             'max_loan_amount' => 250000,
@@ -623,16 +623,16 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 12,
+            'product_id' => 11,
             'sub_product_name' => 'Tier 1',
             'trading_time' => 48,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 10000,
             'max_loan_amount' => 100000,
             'annual_income' => 120000,
             'credit_score' => 625,
-            'property_owner' => 'yes',
+            'property_owner' => 'no',
             'negative_days' => null,
             'number_of_dishonours' => null,
             'deleted_flag' => 0,
@@ -641,10 +641,10 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 12,
+            'product_id' => 11,
             'sub_product_name' => 'Tier 2',
             'trading_time' => 48,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 100000,
             'max_loan_amount' => 200000,
@@ -658,10 +658,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 12,
-            'sub_product_name' => 'Tier 2',
+            'product_id' => 11,
+            'sub_product_name' => 'Tier 3',
             'trading_time' => 36,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 200000,
             'max_loan_amount' => 500000,
@@ -675,7 +675,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 13,
+            'product_id' => 12,
             'sub_product_name' => 'Diamond',
             'trading_time' => 24,
             'GST_registration' => 'Yes',
@@ -685,52 +685,52 @@ class LenderTypeSeeder extends Seeder
             'annual_income' => 120000,
             'credit_score' => 650,
             'property_owner' => 'no',
-            'negative_days' => null,
+            'negative_days' => 0,
             'number_of_dishonours' => 2,
             'deleted_flag' => 0,
             'restricted_industry' => null,
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 13,
+            'product_id' => 12,
             'sub_product_name' => 'Platinum',
             'trading_time' => 18,
             'GST_registration' => 'Yes',
             'gst_time' => 6,
             'min_loan_amount' => 5000,
             'max_loan_amount' => 50000,
-            'annual_income' => 120000,
-            'credit_score' => 500,
+            'annual_income' => null,
+            'credit_score' => null,
             'property_owner' => 'no',
-            'negative_days' => null,
-            'number_of_dishonours' => 2,
+            'negative_days' => 15,
+            'number_of_dishonours' => 0,
             'deleted_flag' => 0,
             'restricted_industry' => null,
         ]);
 
 
         ProductTypeModel::create([
-            'product_id' => 13,
+            'product_id' => 12,
             'sub_product_name' => 'Gold',
             'trading_time' => 12,
             'GST_registration' => 'Yes',
             'gst_time' => 3,
             'min_loan_amount' => 5000,
             'max_loan_amount' => 35000,
-            'annual_income' => 120000,
-            'credit_score' => 500,
+            'annual_income' => null,
+            'credit_score' => null,
             'property_owner' => 'no',
-            'negative_days' => null,
-            'number_of_dishonours' => 2,
+            'negative_days' => 30,
+            'number_of_dishonours' => 3,
             'deleted_flag' => 0,
             'restricted_industry' => null,
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 14,
+            'product_id' => 13,
             'sub_product_name' => 'Tier 1',
             'trading_time' => 60,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 0,
             'max_loan_amount' => 500000,
@@ -744,10 +744,10 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 14,
+            'product_id' => 13,
             'sub_product_name' => 'Tier 2',
             'trading_time' => 24,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 0,
             'max_loan_amount' => 300000,
@@ -762,10 +762,10 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 14,
+            'product_id' => 13,
             'sub_product_name' => 'Tier 3',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 0,
             'max_loan_amount' => 150000,
@@ -780,13 +780,13 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 14,
+            'product_id' => 13,
             'sub_product_name' => 'Tier 4',
             'trading_time' => 6,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 0,
-            'max_loan_amount' => 120000,
+            'max_loan_amount' => 50000,
             'annual_income' => 50000,
             'credit_score' => 0,
             'property_owner' => 'no',
@@ -799,7 +799,7 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 15,
+            'product_id' => 14,
             'sub_product_name' => 'Line of Credit',
             'trading_time' => 9,
             'GST_registration' => 'No',
@@ -816,7 +816,7 @@ class LenderTypeSeeder extends Seeder
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 17,
+            'product_id' => 16,
             'sub_product_name' => 'Unsecured Loan',
             'trading_time' => 12,
             'GST_registration' => 'No',
@@ -834,7 +834,7 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 17,
+            'product_id' => 16,
             'sub_product_name' => 'Innovice Finance',
             'trading_time' => 3,
             'GST_registration' => 'No',
@@ -842,8 +842,8 @@ class LenderTypeSeeder extends Seeder
             'min_loan_amount' => 2000,
             'max_loan_amount' => 100000,
             'annual_income' => 0,
-            'credit_score' => 300,
-            'property_owner' => 'yes',
+            'credit_score' => 0,
+            'property_owner' => 'no',
             'negative_days' => 14,
             'number_of_dishonours' => null,
             'deleted_flag' => 0,
@@ -852,51 +852,51 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 21,
+            'product_id' => 20,
             'sub_product_name' => 'Tier A',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 20000,
             'max_loan_amount' => 150000,
             'annual_income' => 600000,
             'credit_score' => 500,
             'property_owner' => 'no',
-            'negative_days' => null,
+            'negative_days' => 5,
             'number_of_dishonours' => 8,
             'deleted_flag' => 0,
             'restricted_industry' => null,
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 21,
+            'product_id' => 20,
             'sub_product_name' => 'Tier B',
             'trading_time' => 12,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 20000,
             'max_loan_amount' => 150000,
             'annual_income' => 600000,
             'credit_score' => 500,
             'property_owner' => 'no',
-            'negative_days' => null,
+            'negative_days' => 5,
             'number_of_dishonours' => 8,
             'deleted_flag' => 0,
             'restricted_industry' => null,
         ]);
 
         ProductTypeModel::create([
-            'product_id' => 21,
+            'product_id' => 20,
             'sub_product_name' => 'Tier C',
             'trading_time' => 10,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
             'min_loan_amount' => 15000,
             'max_loan_amount' => 1000000,
             'annual_income' => 360000,
             'credit_score' => 300,
             'property_owner' => 'no',
-            'negative_days' => null,
+            'negative_days' => 5,
             'number_of_dishonours' => 8,
             'deleted_flag' => 0,
             'restricted_industry' => null,
@@ -904,15 +904,32 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 21,
+            'product_id' => 20,
             'sub_product_name' => 'Tier D',
             'trading_time' => 10,
-            'GST_registration' => 'No',
+            'GST_registration' => 'Yes',
             'gst_time' => 0,
-            'min_loan_amount' => 20000,
-            'max_loan_amount' => 250000,
+            'min_loan_amount' => 15000,
+            'max_loan_amount' => 1000000,
             'annual_income' => 600000,
-            'credit_score' => 500,
+            'credit_score' => 300,
+            'property_owner' => 'no',
+            'negative_days' => 5,
+            'number_of_dishonours' => 8,
+            'deleted_flag' => 0,
+            'restricted_industry' => null,
+        ]);
+
+        ProductTypeModel::create([
+            'product_id' => 21,
+            'sub_product_name' => 'Tier A',
+            'trading_time' => 12,
+            'GST_registration' => 'Yes',
+            'gst_time' => 0,
+            'min_loan_amount' => 5000,
+            'max_loan_amount' => 100000,
+            'annual_income' => 84000,
+            'credit_score' => null,
             'property_owner' => 'no',
             'negative_days' => null,
             'number_of_dishonours' => 8,
@@ -922,23 +939,6 @@ class LenderTypeSeeder extends Seeder
 
         ProductTypeModel::create([
             'product_id' => 22,
-            'sub_product_name' => 'Tier A',
-            'trading_time' => 12,
-            'GST_registration' => 'No',
-            'gst_time' => 0,
-            'min_loan_amount' => 5000,
-            'max_loan_amount' => 100000,
-            'annual_income' => 84000,
-            'credit_score' => 500,
-            'property_owner' => 'no',
-            'negative_days' => null,
-            'number_of_dishonours' => 8,
-            'deleted_flag' => 0,
-            'restricted_industry' => null,
-        ]);
-
-        ProductTypeModel::create([
-            'product_id' => 23,
             'sub_product_name' => 'Tier A',
             'trading_time' => 3,
             'GST_registration' => 'No',
@@ -956,18 +956,18 @@ class LenderTypeSeeder extends Seeder
 
 
         ProductTypeModel::create([
-            'product_id' => 24,
+            'product_id' => 23,
             'sub_product_name' => 'Tier A',
             'trading_time' => 6,
             'GST_registration' => 'No',
             'gst_time' => 0,
             'min_loan_amount' => 20000,
             'max_loan_amount' => 500000,
-            'annual_income' => 240000,
-            'credit_score' => 200,
+            'annual_income' => 0,
+            'credit_score' => 350,
             'property_owner' => 'no',
-            'negative_days' => null,
-            'number_of_dishonours' => null,
+            'negative_days' => 4,
+            'number_of_dishonours' => 10,
             'deleted_flag' => 0,
             'restricted_industry' => json_encode(['Property Development', 'Non-Profits Charities', 'Adult Entertainment', 'Debt Collection & Repair Services', 'Payday Lenders', 'Pawn Shops', 'Medical Marijuana', 'Travel Agencies', 'Multi-level Marketing & Rewards Schemes', 'Residential Builders']),
         ]);
