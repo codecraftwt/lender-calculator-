@@ -158,6 +158,7 @@ class CustomerController extends Controller
                         'main_lender_tables.email',
                         'main_lender_tables.mobile_number',
                         'main_lender_tables.website_url',
+                        'main_lender_tables.product_guide',
 
                         'main_lender_tables.lender_logo',
                         'product_type_models.id as subproduct_id',
@@ -166,6 +167,7 @@ class CustomerController extends Controller
                         'product_type_models.max_loan_amount',
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
+
 
 
                     )
@@ -187,6 +189,7 @@ class CustomerController extends Controller
                         'email'    => $product->email,
                         'mobile_number' => $product->mobile_number,
                         'website_url' => $product->website_url,
+                        'product_guide' => $product->product_guide,
 
                     ];
                 });

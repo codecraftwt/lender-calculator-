@@ -353,6 +353,20 @@ $(document).ready(function () {
 
                     // Loop through each sub-product and render
                     data.forEach(function (product) {
+                        let guideUrl = "#"; // Default if guide is not available
+                        const guide = product.product_guide;
+
+                        if (guide) {
+                            // Check if it's a full URL (starts with http or https)
+                            if (/^https?:\/\//i.test(guide)) {
+                                guideUrl = guide;
+                            } else {
+                                // It's a file name stored on the server
+                                const encodedFileName =
+                                    encodeURIComponent(guide);
+                                guideUrl = `${base_product_guide_url}/${encodedFileName}`;
+                            }
+                        }
                         const productHtml = `
                     <div class="col-md-6">
                     
@@ -376,10 +390,12 @@ $(document).ready(function () {
                         <strong>Minimum Score Required:  ${
                             product.credit_score || "500+"
                         }</strong>
-
-                           
-                            
-                            <a style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i> </a>
+                              <a href="${guideUrl}" 
+                          target="_blank" 
+                          style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" 
+                          class="text-decoration-underline">
+                          View Product Guide <i class="fas fa-download"></i>
+                       </a>
                         </div>
                         </div>
                     </div>`;

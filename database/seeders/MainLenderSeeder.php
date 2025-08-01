@@ -20,6 +20,7 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'sales@dynamoney.com',
                 'mobile_number'     => '1300 001 420',
                 'website_url'  => 'www.dynamoney.com',
+                'product_guide' => 'Dynamoney Business-Loans-Product-Guide-July.pdf',
 
             ]
         );
@@ -30,6 +31,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'shift@gmail.com',
                 'mobile_number'     => '741852963',
                 'website_url'  => 'www.shift.com',
+                'product_guide' => 'https://www.shift.com.au/product-guide/',
+
 
 
             ]
@@ -41,6 +44,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'sales@lumi.com.au',
                 'mobile_number'     => '1300 015 864',
                 'website_url'  => 'www.lumi.com.au',
+                'product_guide' => 'Lumi Pricing Guide November 2024.pdf',
+
 
 
             ]
@@ -52,6 +57,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'moula@gmail.com',
                 'mobile_number'     => '852741963',
                 'website_url'  => 'www.moula.com',
+                'product_guide' => 'Moula-Product-Guide.pdf',
+
 
             ]
         );
@@ -62,6 +69,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'propsa@gmail.com',
                 'mobile_number'     => '47485966',
                 'website_url'  => 'www.propsa.com',
+                'product_guide' => 'Prospa Product Guide.pdf',
+
 
 
             ]
@@ -73,6 +82,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'ondeck@gmail.com',
                 'mobile_number'     => '85241963',
                 'website_url'  => 'www.ondeck.com',
+                'product_guide' => 'OnDeck Lending Criteria.pdf',
+
 
             ]
         );
@@ -83,6 +94,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'scotpac@gmail.com',
                 'mobile_number'     => '963852741',
                 'website_url'  => 'www.scotpac.com',
+                'product_guide' => 'ScotPac-Solutions-eBook.pdf',
+
 
             ]
         );
@@ -93,6 +106,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'brokers@financeone.com.au',
                 'mobile_number'     => '(07) 4723 5044',
                 'website_url'  => 'financeone.com.au',
+                'product_guide' => 'Finance-One-Unsecured Product Guide.pdf     ',
+
 
             ]
         );
@@ -103,6 +118,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'info@biigga.au',
                 'mobile_number'     => '1300 472 663',
                 'website_url'  => 'www.biigga.au',
+                'product_guide' => 'BiiGGA Product Guide.pdf',
+
 
             ]
         );
@@ -113,6 +130,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'info@bizcap.com.au',
                 'mobile_number'     => '1300 922 223',
                 'website_url'  => 'www.bizcap.com.au',
+                'product_guide' => 'Bizcap Cheat Sheet.pdf',
+
 
             ]
         );
@@ -123,6 +142,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'info@bizcap.com.au',
                 'mobile_number'     => '1300 922 223',
                 'website_url'  => 'www.bizcap.com.au',
+                'product_guide' => 'Bizcap Cheat Sheet.pdf',
+
 
             ]
         );
@@ -133,6 +154,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'info@capify.com.au',
                 'mobile_number'     => '1300 531 587',
                 'website_url'  => 'www.capify.com.au',
+                'product_guide' => 'Capify Broker Product Guide (March 2025).pdf',
+
 
             ]
         );
@@ -143,6 +166,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'trucap@gmail.com',
                 'mobile_number'     => '12345679',
                 'website_url'  => 'www.trucap.com',
+                'product_guide' => 'Trucap - Product Update 2025.pdf',
+
 
 
             ]
@@ -154,6 +179,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'skyecap@gmail.com',
                 'mobile_number'     => '1234567890',
                 'website_url'  => 'www.skyecap.com',
+                'product_guide' => 'Skyecap_Broker Cheat Sheet.png',
+
 
 
             ]
@@ -165,6 +192,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'info@bizfund.com.au',
                 'mobile_number'     => '07 3521 5684',
                 'website_url'  => 'www.bizfund.com.au',
+                'product_guide' => 'Bizfund Broker Guidelines.pdf',
+
 
 
             ]
@@ -176,6 +205,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'rapital@gmail.com',
                 'mobile_number'     => '1234567890',
                 'website_url'  => 'www.rapital.com',
+                'product_guide' => 'Rapital Broker Product Guide (March 2025).pdf',
+
 
 
             ]
@@ -187,6 +218,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'applications@fundsnow.com.au',
                 'mobile_number'     => '1300 183 359',
                 'website_url'  => 'fundsnow.com.au',
+                'product_guide' => 'https://www.shift.com.au/product-guide/',
+
 
 
             ]
@@ -198,6 +231,8 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'partners@banjoloans.com',
                 'mobile_number'     => '1300 226 565',
                 'website_url'  => 'www.banjoloans.com',
+                'product_guide' => 'https://www.banjoloans.com/partners/solutions-hub/business-loan-pricing-matrix/',
+
 
 
             ]
@@ -209,8 +244,7 @@ class MainLenderSeeder extends Seeder
                 'email'     => 'broker@moneytech.com.au',
                 'mobile_number'     => '1300 858 904',
                 'website_url'  => 'www.moneytech.com.au',
-
-
+                'product_guide' => 'Moneytech Product Guide.pdf',
             ]
         );
     }

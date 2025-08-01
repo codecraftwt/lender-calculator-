@@ -135,7 +135,7 @@ $(document).ready(function () {
                     // $container.empty();
                     if (data.length < 1) {
                         $container.html(
-                            `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No lenders appicable.</p></div></div>`
+                            `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No Products Available.</p></div></div>`
                         );
                         $(".loan-info .from-amount").text("$0");
                         $(".loan-info .from-frequency").text("credit score:");
@@ -189,7 +189,7 @@ $(document).ready(function () {
                         }" 
     class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
 
-                <h4>${lender.product_name}</h4>
+                <h4 style="text-align: center;">${lender.product_name}</h4>
                 
                 <a href="#" class="view-options text-decoration-underline " 
                    data-id="${lender.product_id}"
@@ -289,7 +289,7 @@ $(document).ready(function () {
                     <div class="text-danger text-center py-4">
                         <div class="no-lenders-container">
                             <div class="emoji">❌</div>
-                            <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No products found for this lender.</p>
+                            <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No sub products found for this lender.</p>
                         </div>
                     </div>`);
                         return;
@@ -310,13 +310,27 @@ $(document).ready(function () {
 
                     // Loop through each sub-product and render
                     data.forEach(function (product) {
+                        let guideUrl = "#"; // Default if guide is not available
+                        const guide = product.product_guide;
+
+                        if (guide) {
+                            // Check if it's a full URL (starts with http or https)
+                            if (/^https?:\/\//i.test(guide)) {
+                                guideUrl = guide;
+                            } else {
+                                // It's a file name stored on the server
+                                const encodedFileName =
+                                    encodeURIComponent(guide);
+                                guideUrl = `${base_product_guide_url}/${encodedFileName}`;
+                            }
+                        }
                         const productHtml = `
                     <div class="col-md-6">
                     
                         <div class="card sub-product-card border  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
                          <div class="row">
-                         <div class="col-md-2">
-                          <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" class="" alt" style="width: 73px;height: 35px;">
+                         <div class="col-md-2" style="width:100px">
+                          <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" class="" alt" style="height: 33px;">
                          </div>
                             <h5 class="fw-bold" style="color:#852aa3;">${
                                 product.product_name || "Product"
@@ -333,9 +347,12 @@ $(document).ready(function () {
                             product.credit_score || "500+"
                         }</strong>
 
-                           
-                            
-                            <a style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i> </a>
+                            <a href="${guideUrl}" 
+                          target="_blank" 
+                          style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" 
+                          class="text-decoration-underline">
+                          View Product Guide <i class="fas fa-download"></i>
+                       </a>
                         </div>
                     </div>`;
                         $container.append(productHtml);
