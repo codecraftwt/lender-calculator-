@@ -21,9 +21,9 @@ class LenderController extends Controller
     public function get_lenders()
     {
         // Fetch all related data
-        $rawResults = DB::table('product_type_models')
-            ->join('product_models', 'product_models.id', '=', 'product_type_models.product_id')
-            ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
+        $rawResults = DB::table('main_lender_tables')
+            ->leftJoin('product_models', 'product_models.lender_id', '=', 'main_lender_tables.id')
+            ->leftJoin('product_type_models', 'product_type_models.product_id', '=', 'product_models.id')
             ->select(
                 'main_lender_tables.id as lender_id',
                 'main_lender_tables.lender_name',
@@ -41,10 +41,10 @@ class LenderController extends Controller
                 'lender_id' => $group[0]->lender_id,
                 'lender_name' => $group[0]->lender_name,
                 'lender_logo' => $group[0]->lender_logo,
-                'email'    => $group[0]->email,
+                'email' => $group[0]->email,
                 'mobile_number' => $group[0]->mobile_number,
                 'website_url' => $group[0]->website_url,
-                'product_ids' => $group->pluck('product_id')->unique()->values()
+                'product_ids' => $group->pluck('product_id')->filter()->unique()->values() // avoid nulls
             ];
         })->values();
 
@@ -122,6 +122,7 @@ class LenderController extends Controller
                         'main_lender_tables.email',
                         'main_lender_tables.mobile_number',
                         'main_lender_tables.website_url',
+                        'main_lender_tables.product_guide',
 
                         'main_lender_tables.lender_logo',
                         'product_type_models.id as subproduct_id',
@@ -151,6 +152,7 @@ class LenderController extends Controller
                         'email'    => $product->email,
                         'mobile_number' => $product->mobile_number,
                         'website_url' => $product->website_url,
+                        'product_guide' => $product->product_guide,
                     ];
                 });
             } else {

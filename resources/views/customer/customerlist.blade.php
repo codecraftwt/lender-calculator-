@@ -115,10 +115,12 @@
 </div>
 @php
 $baseImageUrl = "{{ url('assets/images') }}";
+$base_product_guide_url = "{{ url('assets/product-guides') }}";
 @endphp
 
 <script>
     const baseImageUrl = "{{ url('assets/images') }}";
+    const base_product_guide_url = "{{ url('assets/product_guide') }}";
 </script>
 
 
