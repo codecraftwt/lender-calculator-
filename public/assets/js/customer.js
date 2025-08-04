@@ -261,6 +261,7 @@ $(document).ready(function () {
         // Step 1: Parse data-id as JSON array
         const dataId = $(this).attr("data-product-type-id");
         let productTypeIds = [];
+        const lenderId = $(this).find(".lender-box").data("lender-id");
 
         try {
             productTypeIds = JSON.parse(dataId);
@@ -272,9 +273,6 @@ $(document).ready(function () {
             return;
         }
 
-        console.log("Product Type IDs:", productTypeIds);
-
-        // Step 2: Open lenderDetailModal OVER lenderModal
         const modalElement = document.getElementById("lenderDetailModal");
 
         // Bootstrap 5 way of initializing with options (prevent backdrop close conflict)
@@ -286,11 +284,11 @@ $(document).ready(function () {
         detailModal.show();
 
         // Step 3: Fetch product data
-        getSubProductData(productTypeIds);
+        getSubProductData(productTypeIds, lenderId);
     });
 
     // function for the subproducts modal
-    function getSubProductData(products) {
+    function getSubProductData(products, lenderId) {
         const formData = {
             trading_time: $("#time_in_business").val(),
             loan_amt: $("#loan_amt").val(),
@@ -300,6 +298,7 @@ $(document).ready(function () {
             number_of_dishonours: $("#number_of_dishonours").val(),
             asset_backed: $("#asset_backed").val(),
             product_ids: products,
+            lenderId: lenderId,
         };
 
         console.log(formData); // Debugging the request payload
@@ -345,11 +344,28 @@ $(document).ready(function () {
                         "src",
                         `${baseImageUrl}/${lender.lender_logo.toLowerCase()}`
                     );
-                    // $("#modalLenderName").text(lender.lender_name || "Lender");
+                    const websiteUrl = lender.website_url
+                        ? lender.website_url.trim()
+                        : "";
 
-                    $("#modalWebsite").text(lender.website_url || "N/A");
+                    $("#modalurl").attr(
+                        "href",
+                        websiteUrl
+                            ? websiteUrl.startsWith("http")
+                                ? websiteUrl
+                                : "https://" + websiteUrl
+                            : "#"
+                    );
+                    $("#modalwebsite").text(lender.website_url);
                     $("#modalPhone").text(lender.mobile_number || "N/A");
                     $("#modalEmail").text(lender.email || "N/A");
+
+                    const btn = document.querySelector(
+                        ".view-lender-contacts-btn"
+                    );
+
+                    // Set the data attribute dynamically
+                    btn.setAttribute("data-lender-id", lender.lender_id);
 
                     // Loop through each sub-product and render
                     data.forEach(function (product) {
@@ -402,6 +418,40 @@ $(document).ready(function () {
                         $container.append(productHtml);
                     });
 
+                    // ====== ADD BDM CONTACTS SECTION =======
+                    // Assuming you have an array of contacts in the ajax response (example: lender.contacts)
+                    // If your data structure is different, adjust accordingly
+
+                    if (lender.contacts && lender.contacts.length > 0) {
+                        let contactsHtml = `<table style="width: 100%; font-family: 'Times New Roman', Times, serif; font-size: 15px; border-collapse: collapse;"> 
+                        <th style="color:#852aa3;font-size:25px">BDM Contacts </th>`;
+
+                        lender.contacts.forEach((contact) => {
+                            contactsHtml += `
+    <tr>
+      <td><strong>${contact.name}</strong>, ${contact.title}</td>
+      <td style="margin"><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
+          contact.mobile_number || "N/A"
+      }</td>
+      <td><i class="fas fa-envelope" style="color: #852aa3;"></i> ${
+          contact.email || "N/A"
+      }</td>
+    </tr>`;
+                        });
+
+                        $("#lendercontactbuton").css("display", "block");
+
+                        contactsHtml += `</table>`;
+                        $container.append(contactsHtml);
+                        $("#lendercontactbuton").css("display", "block");
+                    } else {
+                        // Optional: if no contacts
+                        $container.append(`
+            <p class="text-muted mt-3" style="font-style: italic;">No contacts available.</p>
+            `);
+                        $("#lendercontactbuton").css("display", "none");
+                    }
+
                     $("#loader").hide();
                 }, 1000);
 
@@ -413,6 +463,123 @@ $(document).ready(function () {
                 $("#loanProductsContainer").html(
                     `<div class="text-danger text-center py-4">Unable to load product details. Please try again.</div>`
                 );
+            },
+        });
+    }
+
+    $(document).on("click", ".view-lender-contacts-btn", function (e) {
+        e.preventDefault();
+
+        // Step 1: Parse data-id as JSON array
+        const dataId = $(this).attr("data-lender-id");
+        // let productTypeIds = [];
+
+        // console.log("Lender ID:", lenderId);
+
+        // try {
+        //     productTypeIds = JSON.parse(dataId);
+        // } catch (err) {
+        //     console.error(
+        //         "Invalid data-product-type-id format. Expected JSON array.",
+        //         err
+        //     );
+        //     return;
+        // }
+
+        console.log("Product Type IDs:", dataId);
+
+        // Step 2: Open lenderDetailModal OVER lenderModal
+        const modalElement = document.getElementById("lenderContactModal");
+
+        // Bootstrap 5 way of initializing with options (prevent backdrop close conflict)
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false, // 🔑 allows stacking
+            keyboard: true,
+        });
+
+        detailModal.show();
+
+        // Step 3: Fetch product data
+        getLenderContactsData(dataId);
+    });
+
+    function getLenderContactsData(lenderId) {
+        const formData = {
+            lenderId: lenderId,
+        };
+
+        console.log(formData); // Debugging the request payload
+
+        $.ajax({
+            url: "/get-lender-contacts",
+            method: "GET",
+            data: formData,
+            beforeSend: function () {
+                $("#loader").show();
+            },
+            success: function (data) {
+                console.log("Lender detail data:", data);
+
+                setTimeout(function () {
+                    if (!Array.isArray(data) || data.length === 0) {
+                        $("#lenderContactTable").html(`
+                    <tr>
+                        <td colspan="3" class="text-center text-muted" style="font-style: italic;">
+                            No contacts available.
+                        </td>
+                    </tr>
+                `);
+                        $("#loader").hide();
+                        return;
+                    }
+
+                    const lenderInfo = data[0];
+
+                    // Populate lender info
+                    $("#LenderLogo").attr(
+                        "src",
+                        `${baseImageUrl}/${lenderInfo.lender_logo.toLowerCase()}`
+                    );
+                    const websiteUrl = lenderInfo.website_url?.trim() || "";
+                    $("#contactmodalurl").attr(
+                        "href",
+                        websiteUrl.startsWith("http")
+                            ? websiteUrl
+                            : `https://${websiteUrl}`
+                    );
+                    $("#contactmodalwebsite").text(
+                        lenderInfo.website_url || "N/A"
+                    );
+                    $("#phone").text(lenderInfo.lender_mobile || "N/A");
+                    $("#email").text(lenderInfo.lender_email || "N/A");
+
+                    // Build contact rows
+                    let rowsHtml = "";
+                    data.forEach((contact) => {
+                        rowsHtml += `
+                    <tr>
+                        <td><strong>${contact.name}</strong>, ${
+                            contact.title
+                        }</td>
+                        <td><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
+                            contact.contact_mobile || "N/A"
+                        }</td>
+                        <td><i class="fas fa-envelope" style="color: #852aa3;"></i> ${
+                            contact.contact_email || "N/A"
+                        }</td>
+                    </tr>`;
+                    });
+
+                    $("#lenderContactTable").html(rowsHtml);
+                    $("#loader").hide();
+                }, 1000);
+
+                // Store applicable lender data (if needed)
+                $("#applicable_lenders").val(JSON.stringify(data));
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching lender contacts:", error);
+                $("#loader").hide();
             },
         });
     }

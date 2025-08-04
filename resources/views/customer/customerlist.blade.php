@@ -75,36 +75,88 @@
     <!-- Lender Detail Modal (Overlay) -->
     <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
-            <div class="modal-content p-4  modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
-                <!-- Header <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            <div class="modal-content p-4 modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
+
+                <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="d-flex align-items-center">
-                        <img id="modalLenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3">
-
+                        <img id="modalLenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3" />
                     </div>
-                    <div class=" mb-4 ml-4">
-                        <p class="mb-1"><i class="fas fa-globe" style="color: #852aa3;font-size:20px"></i> <span id="modalWebsite"></span></p>
-                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3;font-size:20px"></i> <span id="modalPhone"></span></p>
-                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3;font-size:20px"></i> <span id="modalEmail"></span></p>
+                    <div class="mb-4 ml-4">
+                        <p>
+                            <a id="modalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
+                                <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
+                                <span id="modalwebsite" style="color: black;"></span>
+                            </a>
+                        </p>
+                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i> <span id="modalPhone"></span></p>
+                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i> <span id="modalEmail"></span></p>
                     </div>
-
-                </div>
-                <hr>
-
-                <h4 style="color: #852aa3;font-family:'Times New Roman', Times, serif;font-weight:500" class="p-3">MATCHED LENDERS</h4>
-                <div id="loanProductsContainer" class="row g-3" style="padding: 20px;">
-
                 </div>
 
-                <button type="button" class="text-white m-3" data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border-radius:20px;border:none;width: 185px;
-                  height: 28px; font-weight:600">
-                    View Lender contacts
+                <hr />
+
+                <!-- Sub-product list will be injected into this container -->
+                <div id="loanProductsContainer" class="row g-4 mb-3"></div>
+
+                <!-- View Contacts Button -->
+                <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"
+                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-radius: 20px; border: none; width: 185px; height: 28px; font-weight: 600;">
+                    View Lender Contacts
                 </button>
 
                 <!-- Footer -->
                 <div class="modal-footer mt-4">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        ← Back to Lenders
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <button type="button" class="btn btn-outline-secondary text-white m-1 " data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+
+
+    <div id="lenderContactModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
+            <div class="modal-content p-4 modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
+
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <img id="LenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3" />
+                    </div>
+                    <div class="mb-4 ml-4">
+                        <p>
+                            <a id="contactmodalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
+                                <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
+                                <span id="contactmodalwebsite" style="color: black;"></span>
+                            </a>
+                        </p>
+                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i> <span id="phone"></span></p>
+                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i> <span id="email"></span></p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <!-- Contacts Table -->
+                <div style="overflow-x: auto;">
+                    <h4 style="color:#852aa3;font-size:25px;font-weight: bold;font-family:'Times New Roman', Times, serif;
+                      unicode-bidi: isolate;">
+                        BDM Contacts
+                    </h4>
+                    <table id="lenderContactTable" class="contact-table">
+
+                        <!-- Dynamic contact rows will be injected here -->
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer mt-4">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
                         ← Back to Lenders
                     </button>
                 </div>

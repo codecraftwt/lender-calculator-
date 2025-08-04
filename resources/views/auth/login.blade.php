@@ -34,17 +34,27 @@
                         <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end" style="font-weight: 500;">{{ __('Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password"
-                                    class="form-control @error('password') is-invalid @enderror"
-                                    name="password" required autocomplete="current-password"
-                                    style="border-radius: 8px; border: 1px solid #ccc; padding: 10px; transition: all 0.3s ease;">
+
+                            <div class="col-md-6 position-relative">
+                                <div class="input-group">
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        name="password" required autocomplete="current-password"
+                                        style="border-radius: 8px 0 0 8px !important; border: 1px solid #ccc; padding: 10px; transition: all 0.3s ease;">
+
+                                    <!-- Toggle Icon -->
+                                    <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer; border-radius: 0 8px 8px 0;background-color: #e8f0fe !important;">
+                                        <i class="fas fa-eye" id="toggleIcon"></i>
+                                    </span>
+                                </div>
+
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
+
                         </div>
 
                         <div class="row mb-3">
@@ -130,6 +140,32 @@
                 toast.show();
             });
         });
+
+
+        // function togglePassword() {
+        //     const passwordInput = document.getElementById("password");
+        //     const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        //     passwordInput.setAttribute("type", type);
+        // }
     </script>
+
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+
 </div>
 @endsection
