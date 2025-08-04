@@ -701,11 +701,11 @@ label[for="purchasePrice"] {
 }
 
 .input-group-text {
-    background-color: #f0f0f0 !important;
-    border: 1px solid #d1d1d1 !important;
-    color: #666666 !important;
+    background-color: #f0f0f0;
+    border: 1px solid #d1d1d1;
+    /* color: #666666 !important; */
     font-size: 1.1rem;
-    border-radius: 0.375rem 0 0 0.375rem !important;
+    /* border-radius: 0.375rem 0 0 0.375rem !important; */
     box-shadow: none;
 }
 
@@ -912,4 +912,17 @@ span.hover-white:hover {
 
 .sub-product-card:hover {
     transform: translateY(-4px);
+}
+
+
+.contact-table {
+  width: 100%;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px;
+  border-collapse: collapse;
+}
+
+.contact-table td {
+  padding: 8px 10px;
+  vertical-align: top;
 }

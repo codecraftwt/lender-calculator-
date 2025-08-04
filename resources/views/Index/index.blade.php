@@ -10,7 +10,7 @@
     <div class="col-lg-8 mb-4">
         <div class="panel ai-loan-matching shadow-sm" style="border-radius:20px;margin-top: 20px;">
 
-            <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787;">
+            <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787; ">
                 <div class="header" style="height:62px">
                     <h5 style="border-bottom: none;color:white">Client Loan Eligibility Form</h5>
                 </div>

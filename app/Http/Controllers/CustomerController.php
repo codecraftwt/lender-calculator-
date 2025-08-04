@@ -146,9 +146,10 @@ class CustomerController extends Controller
             $idsRaw = is_array($request->product_ids) ? $request->product_ids : trim($request->product_ids, '[]');
             $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
             $ids = array_filter($ids, fn($id) => is_numeric($id));
+            $lender_id = $request->lender_id ?? null;
 
             if (!empty($ids)) {
-                // Fetch all related data without grouping them
+                // Fetch lender & product data (without joining lender_contacts)
                 $rawResults = DB::table('product_type_models')
                     ->join('product_models', 'product_models.id', '=', 'product_type_models.product_id')
                     ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
@@ -159,7 +160,6 @@ class CustomerController extends Controller
                         'main_lender_tables.mobile_number',
                         'main_lender_tables.website_url',
                         'main_lender_tables.product_guide',
-
                         'main_lender_tables.lender_logo',
                         'product_type_models.id as subproduct_id',
                         'product_models.product_name as product_name',
@@ -167,15 +167,25 @@ class CustomerController extends Controller
                         'product_type_models.max_loan_amount',
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
-
-
-
                     )
                     ->whereIn('product_type_models.id', $ids)
                     ->get();
 
+                // Get unique lender IDs from the results
+                $lenderIds = $rawResults->pluck('lender_id')->unique()->toArray();
 
-                $lenders = $rawResults->map(function ($product) {
+                // Fetch lender contacts separately with a limit of 4 per lender
+                $contactsRaw = DB::table('lender_contacts_models')
+                    ->whereIn('lender_id', $lenderIds)
+                    ->select('lender_id', 'contact_type', 'name', 'email', 'mobile_number', 'title')
+                    ->get()
+                    ->groupBy('lender_id')
+                    ->map(function ($contacts) {
+                        return $contacts->take(4); // Limit to 4 contacts per lender
+                    });
+
+                // Map lenders and attach contacts
+                $lenders = $rawResults->map(function ($product) use ($contactsRaw) {
                     return [
                         'lender_id' => $product->lender_id,
                         'lender_name' => $product->lender_name,
@@ -190,7 +200,7 @@ class CustomerController extends Controller
                         'mobile_number' => $product->mobile_number,
                         'website_url' => $product->website_url,
                         'product_guide' => $product->product_guide,
-
+                        'contacts' => $contactsRaw->get($product->lender_id, collect()),
                     ];
                 });
             } else {

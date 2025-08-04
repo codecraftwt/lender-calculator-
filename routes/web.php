@@ -51,16 +51,16 @@ Route::get('/contact-us', function () {
 Route::post('/save_data', [CustomerController::class, 'save_data']);
 Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
 Route::post('/update-customer', [CustomerController::class, 'update_customer']);
-Route::get('/customer-list', [CustomerController::class, 'list']);
-Route::get('/get-customers', [CustomerController::class, 'get_customers']);
-Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders']);
-Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products']);
+Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
+Route::get('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth');
+Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth');
+Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products'])->middleware('auth');
 
 
 // api route
 Route::get('/search-company', 'CompanySearchController@searchCompany');
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');    
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
@@ -71,3 +71,4 @@ Route::get('/lender-list', [LenderController::class, 'lender_list']);
 Route::get('/get-lenders', [LenderController::class, 'get_lenders']);
 Route::get('/get-lender-products', [LenderController::class, 'get_lender_products']);
 Route::get('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);
+Route::get('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
