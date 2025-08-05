@@ -437,7 +437,7 @@ $(document).ready(function () {
                         lender.contacts.forEach((contact) => {
                             contactsHtml += `
                            <tr>
-                            d<td><strong>${contact.name}</strong>, ${
+                            <td><strong>${contact.name}</strong>, ${
                                 contact.title
                             }</td>
                              <td style="margin"><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
