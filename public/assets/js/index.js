@@ -224,35 +224,6 @@ $(document).ready(function () {
                         showError(id, "Please enter a valid number."))
                 );
 
-            // case "restricted_industry": {
-            //     const select = document.getElementById(id);
-            //     const selectedOptions = Array.from(select.selectedOptions).map(
-            //         (opt) => opt.value
-            //     );
-
-            //     // Validation rules:
-            //     // 1) At least one option selected
-            //     // 2) If "null" selected, it must be the ONLY selection
-
-            //     const isValid =
-            //         selectedOptions.length > 0 &&
-            //         ((selectedOptions.length === 1 &&
-            //             selectedOptions[0] === "null") ||
-            //             (selectedOptions.length > 0 &&
-            //                 !selectedOptions.includes("null")));
-
-            //     if (!isValid && showErrorMessage) {
-            //         showError(id, "Please select a valid option.");
-            //     } else {
-            //         // Hide error if any
-            //         document
-            //             .getElementById("invalid_restricted_industry")
-            //             .classList.add("d-none");
-            //     }
-
-            //     return isValid;
-            // }
-
             case "company_credit_score":
             case "property_owner":
             case "industry_type":

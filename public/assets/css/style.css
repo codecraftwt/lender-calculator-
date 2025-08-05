@@ -883,7 +883,7 @@ span.hover-white:hover {
 }
 
 /* Allow stacking of modals */
-.modal-backdrop.show:nth-child(n + 3) {
+/* .modal-backdrop.show:nth-child(n + 3) {
     z-index: 1049;
 }
 
@@ -906,23 +906,71 @@ span.hover-white:hover {
 }
 
 .modal-body {
-    overflow-y: scroll !important; /* Always show scrollbar */
-    max-height: 65vh; /* Adjust based on your layout */
-}
+    overflow-y: scroll !important;  
+    max-height: 65vh;  
+} */
 
 .sub-product-card:hover {
     transform: translateY(-4px);
 }
 
-
 .contact-table {
-  width: 100%;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 15px;
-  border-collapse: collapse;
+    width: 100%;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    border-collapse: collapse;
 }
 
 .contact-table td {
-  padding: 8px 10px;
-  vertical-align: top;
+    padding: 8px 10px;
+    vertical-align: top;
+}
+
+/* modal css */
+
+#lenderModal .modal-content {
+    z-index: 1050 !important;
+    min-height: 92vh !important;
+    width: 95% !important;
+}
+
+#lenderDetailModal .modal-content {
+    z-index: 1060 !important;
+    min-height: 90vh !important;
+    width: 90% !important;
+    margin-top: 1vh !important;
+}
+
+#lenderContactModal .modal-content {
+    z-index: 1070 !important;
+    min-height: 88vh !important;
+    width: 85% !important;
+    margin-top: 2vh !important;
+}
+
+#lenderTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+#lenderTable th,
+#lenderTable td {
+    border: 1px solid #ccc;
+}
+
+#lenderTable thead th {
+    background-color: #f8f9fa;
+}
+/* Odd rows */
+#lenderTable tbody tr.odd {
+    background-color: #f3f3ff !important;
+}
+
+#lenderTable tbody tr.even {
+    background-color: linear-gradient(
+        90deg,
+        #e5d4f2 0%,
+        #f7a0f5 100%
+    ) !important;
 }

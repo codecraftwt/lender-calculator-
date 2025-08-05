@@ -37,8 +37,10 @@
     <!-- Lender Modal (Main List) -->
     <!-- Lender Modal (Background) -->
     <div class="modal fade" id="lenderModal" tabindex="-1" aria-labelledby="lenderModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" style="max-height: 90vh;">
-            <div class="modal-content" style="border: 3px solid #d8b4fe; z-index: 1050; min-height: 90vh;">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+            style="width: 95%; max-width: 1200px; z-index: 1050;">
+            <div class="modal-content" style="min-height: 90vh;">
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="lenderModalLabel">Lender Products</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -65,30 +67,53 @@
 
     <!-- Lender Detail Modal (Overlay) -->
     <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
-            <div class="modal-content p-4 modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+            style="width: 85%; max-width: 1050px; z-index: 1060;">
+            <div class="modal-content" style="min-height: 80vh !important; margin-top: 2vh !important;padding:20px;max-height: 85vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+
 
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="d-flex align-items-center">
-                        <img id="modalLenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3" />
+                    <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                        <!-- Loader (shown initially) -->
+                        <span id="logoLoader" class="" role="status" style="width: 2rem; height: 2rem;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                        </span>
+
+                        <!-- Lender Logo (hidden initially) -->
+                        <img id="modalLenderLogo" src="" alt="Lender Logo"
+                            style="height: 80px; width: auto; display: none;" class="me-3" />
                     </div>
+
                     <div class="mb-4 ml-4">
                         <p>
                             <a id="modalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
                                 <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
-                                <span id="modalwebsite" style="color: black;"></span>
+                                <span id="modalwebsite" style="color: black;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                </span>
                             </a>
                         </p>
-                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i> <span id="modalPhone"></span></p>
-                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i> <span id="modalEmail"></span></p>
+                        <p class="mb-1">
+                            <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
+                            <span id="modalPhone">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                            </span>
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i>
+                            <span id="modalEmail">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                            </span>
+                        </p>
+
                     </div>
                 </div>
 
-                <hr />
+                <hr>
 
                 <!-- Sub-product list will be injected into this container -->
-                <div id="loanProductsContainer" class="row g-4 mb-3"></div>
+                <div id="loanProductsContainer" class="row g-4 mb-3" style="overflow-y: auto;padding-left: 15px;padding-right:15px"></div>
 
                 <!-- View Contacts Button -->
                 <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"
@@ -110,23 +135,43 @@
 
 
     <div id="lenderContactModal" class="modal fade" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="max-height: 90vh;">
-            <div class="modal-content p-4 modal-body" style="z-index: 1060; border: 2px solid #ddd; min-height: 90vh;">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+            style="width: 75%; max-width: 1015px;; z-index: 1070;">
+            <div class="modal-content" style="min-height: 70vh !important; margin-top: 4vh !important;padding:20px;max-height: 78vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);margin-left: 18px;">
+
 
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="d-flex align-items-center">
-                        <img id="LenderLogo" src="" alt="Lender Logo" style="height: 80px;" class="me-3" />
+                    <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                        <!-- Loader (shown initially) -->
+                        <span id="logoLoader2" class="" role="status" style="width: 2rem; height: 2rem;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                        </span>
+                        <!-- Lender Logo (hidden initially) -->
+                        <img id="modalLenderLogo2" src="" alt="Lender Logo"
+                            style="height: 80px; width: auto; display: none;" class="me-3" />
                     </div>
                     <div class="mb-4 ml-4">
                         <p>
                             <a id="contactmodalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
                                 <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
-                                <span id="contactmodalwebsite" style="color: black;"></span>
+                                <span id="contactmodalwebsite" style="color: black;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                </span>
                             </a>
                         </p>
-                        <p class="mb-1"><i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i> <span id="phone"></span></p>
-                        <p class="mb-0"><i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i> <span id="email"></span></p>
+                        <p class="mb-1">
+                            <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
+                            <span id="phone">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                            </span>
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i>
+                            <span id="email">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                            </span>
+                        </p>
                     </div>
                 </div>
 
@@ -198,6 +243,18 @@ $base_product_guide_url = "{{ url('assets/product-guides') }}";
         document.querySelectorAll('.toast').forEach(function(toastEl) {
             const toast = new bootstrap.Toast(toastEl);
             toast.show();
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modals = ['#lenderModal', '#lenderDetailModal', '#lenderContactModal'];
+
+        modals.forEach((modalId) => {
+            const modalEl = document.querySelector(modalId);
+            modalEl.addEventListener('show.bs.modal', function() {
+                document.body.classList.add('modal-open');
+            });
         });
     });
 </script>
