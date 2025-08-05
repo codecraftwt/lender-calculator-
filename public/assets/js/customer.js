@@ -7,12 +7,11 @@ $(document).ready(function () {
 
             var table = $("#lenderTable").DataTable();
 
-            // Destroy DataTable before clearing rows
             if ($.fn.DataTable.isDataTable("#lenderTable")) {
                 $("#lenderTable").DataTable().clear().destroy();
             }
 
-            tableBody.empty(); // Clear existing rows
+            tableBody.empty();
 
             if (data.length > 0) {
                 data.forEach((item, index) => {
@@ -76,18 +75,35 @@ $(document).ready(function () {
             } else {
             }
 
-            // Initialize DataTable only once
             $("#lenderTable").DataTable({
                 paging: true,
                 lengthChange: false,
                 searching: true,
                 ordering: false,
                 info: true,
-                autoWidth: false,
+                autoWidth: false, // IMPORTANT: disables automatic width calculation
                 responsive: true,
                 lengthMenu: [100, 120, 140, 160],
                 pageLength: 80,
                 dom: "Blfrtip",
+                columnDefs: [
+                    { width: "40px", targets: 0 },
+                    { width: "150px", targets: 1 },
+                    { width: "120px", targets: 2 },
+                    { width: "150px", targets: 3 },
+                    { width: "100px", targets: 4 },
+                    { width: "100px", targets: 5 },
+                    { width: "100px", targets: 6 },
+                    { width: "100px", targets: 7 },
+                    { width: "120px", targets: 8 },
+                    { width: "130px", targets: 9 },
+                    { width: "100px", targets: 10 },
+                    { width: "100px", targets: 11 },
+                    { width: "130px", targets: 12 },
+                    { width: "100px", targets: 13 },
+                    { width: "60px", targets: 14 },
+                    { width: "60px", targets: 15 },
+                ],
                 buttons: [
                     {
                         extend: "excelHtml5",
@@ -136,11 +152,9 @@ $(document).ready(function () {
         );
         modal.show();
 
-        // Call AJAX
         triggerAjax(cidArray);
     });
 
-    //function to get the main lenders
     function triggerAjax(cidArray) {
         const formData = {
             trading_time: $("#time_in_business").val(),
@@ -165,12 +179,9 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 setTimeout(function () {
-                    // const $container = $(".lender-cards");
                     const $container = $("#applicableLenderCards");
-                    $container.empty(); // before appending
+                    $container.empty();
 
-                    // $("#matchedLenders").text(data.length);
-                    // $container.empty();
                     if (data.length < 1) {
                         $container.html(
                             `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No lenders appicable.</p></div></div>`
@@ -212,8 +223,7 @@ $(document).ready(function () {
                     data.forEach(function (lender) {
                         const productTypeIds = JSON.stringify(
                             lender.product_type_ids
-                        ); // Store array as JSON string
-
+                        );
                         const cardHtml = `
         <div class="col-6 col-md-6 mb-4 d-flex justify-content-center view-product-btn" 
              data-product-type-id='${productTypeIds}'>
@@ -235,7 +245,7 @@ $(document).ready(function () {
             </div>
         </div>`;
 
-                        $container.append(cardHtml); // append here
+                        $container.append(cardHtml);
                     });
 
                     $("#loader").hide();
@@ -254,11 +264,9 @@ $(document).ready(function () {
         });
     }
 
-    // triggers the function to get the sub products
     $(document).on("click", ".view-product-btn", function (e) {
         e.preventDefault();
 
-        // Step 1: Parse data-id as JSON array
         const dataId = $(this).attr("data-product-type-id");
         let productTypeIds = [];
         const lenderId = $(this).find(".lender-box").data("lender-id");
@@ -275,7 +283,6 @@ $(document).ready(function () {
 
         const modalElement = document.getElementById("lenderDetailModal");
 
-        // Bootstrap 5 way of initializing with options (prevent backdrop close conflict)
         const detailModal = new bootstrap.Modal(modalElement, {
             backdrop: false, // 🔑 allows stacking
             keyboard: true,
@@ -283,7 +290,6 @@ $(document).ready(function () {
 
         detailModal.show();
 
-        // Step 3: Fetch product data
         getSubProductData(productTypeIds, lenderId);
     });
 
@@ -302,6 +308,7 @@ $(document).ready(function () {
         };
 
         console.log(formData); // Debugging the request payload
+        resetLenderContactInfo();
 
         $.ajax({
             url: "/get-sub-products",
@@ -337,7 +344,6 @@ $(document).ready(function () {
                         return;
                     }
 
-                    // Set top section (assuming all products belong to one lender)
                     const lender = data[0];
 
                     $("#modalLenderLogo").attr(
@@ -364,25 +370,27 @@ $(document).ready(function () {
                         ".view-lender-contacts-btn"
                     );
 
-                    // Set the data attribute dynamically
                     btn.setAttribute("data-lender-id", lender.lender_id);
 
-                    // Loop through each sub-product and render
                     data.forEach(function (product) {
                         let guideUrl = "#"; // Default if guide is not available
                         const guide = product.product_guide;
 
                         if (guide) {
-                            // Check if it's a full URL (starts with http or https)
                             if (/^https?:\/\//i.test(guide)) {
                                 guideUrl = guide;
                             } else {
-                                // It's a file name stored on the server
                                 const encodedFileName =
                                     encodeURIComponent(guide);
                                 guideUrl = `${base_product_guide_url}/${encodedFileName}`;
                             }
                         }
+
+                        loadLenderLogo(
+                            baseImageUrl +
+                                "/" +
+                                lender.lender_logo.toLowerCase()
+                        );
                         const productHtml = `
                     <div class="col-md-6">
                     
@@ -428,15 +436,17 @@ $(document).ready(function () {
 
                         lender.contacts.forEach((contact) => {
                             contactsHtml += `
-    <tr>
-      <td><strong>${contact.name}</strong>, ${contact.title}</td>
-      <td style="margin"><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
-          contact.mobile_number || "N/A"
-      }</td>
-      <td><i class="fas fa-envelope" style="color: #852aa3;"></i> ${
-          contact.email || "N/A"
-      }</td>
-    </tr>`;
+                           <tr>
+                            d<td><strong>${contact.name}</strong>, ${
+                                contact.title
+                            }</td>
+                             <td style="margin"><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
+                                 contact.mobile_number || "N/A"
+                             }</td>
+                             <td><i class="fas fa-envelope" style="color: #852aa3;"></i> ${
+                                 contact.email || "N/A"
+                             }</td>
+                           </tr>`;
                         });
 
                         $("#lendercontactbuton").css("display", "block");
@@ -470,36 +480,16 @@ $(document).ready(function () {
     $(document).on("click", ".view-lender-contacts-btn", function (e) {
         e.preventDefault();
 
-        // Step 1: Parse data-id as JSON array
         const dataId = $(this).attr("data-lender-id");
-        // let productTypeIds = [];
-
-        // console.log("Lender ID:", lenderId);
-
-        // try {
-        //     productTypeIds = JSON.parse(dataId);
-        // } catch (err) {
-        //     console.error(
-        //         "Invalid data-product-type-id format. Expected JSON array.",
-        //         err
-        //     );
-        //     return;
-        // }
-
-        console.log("Product Type IDs:", dataId);
-
-        // Step 2: Open lenderDetailModal OVER lenderModal
+        // console.log("Product Type IDs:", dataId);
         const modalElement = document.getElementById("lenderContactModal");
-
-        // Bootstrap 5 way of initializing with options (prevent backdrop close conflict)
         const detailModal = new bootstrap.Modal(modalElement, {
-            backdrop: false, // 🔑 allows stacking
+            backdrop: false,
             keyboard: true,
         });
 
         detailModal.show();
 
-        // Step 3: Fetch product data
         getLenderContactsData(dataId);
     });
 
@@ -508,7 +498,8 @@ $(document).ready(function () {
             lenderId: lenderId,
         };
 
-        console.log(formData); // Debugging the request payload
+        console.log(formData);
+        resetLenderContactInfo2();
 
         $.ajax({
             url: "/get-lender-contacts",
@@ -534,6 +525,12 @@ $(document).ready(function () {
                     }
 
                     const lenderInfo = data[0];
+
+                    loadLenderLogo2(
+                        baseImageUrl +
+                            "/" +
+                            lenderInfo.lender_logo.toLowerCase()
+                    );
 
                     // Populate lender info
                     $("#LenderLogo").attr(
@@ -574,7 +571,6 @@ $(document).ready(function () {
                     $("#loader").hide();
                 }, 1000);
 
-                // Store applicable lender data (if needed)
                 $("#applicable_lenders").val(JSON.stringify(data));
             },
             error: function (xhr, status, error) {
@@ -585,17 +581,80 @@ $(document).ready(function () {
     }
 });
 
-//  <div class="row">
-//                             <div class="col-md-6">
-//                             <p><strong> </strong> $${
-//                                 product.min_amount || 0
-//                             }</p>
-//                             </div>
-//                             <div class="col-md-6">
-//                             <p><strong> </strong> $${
-//                                 product.max_amount || 0
-//                             }</p> </div>
-//                             </div>
-//                               <strong>Credit Score: ${
-//                                   product.credit_score || "500+"
-//                               } </strong>
+function loadLenderLogo(imageUrl) {
+    const $logoImg = $("#modalLenderLogo");
+    const $loader = $("#logoLoader");
+
+    $logoImg.hide();
+    $logoImg.attr("src", imageUrl);
+
+    $logoImg
+        .on("load", function () {
+            $loader.hide();
+            $logoImg.show();
+        })
+        .on("error", function () {
+            $loader.hide();
+            $logoImg.hide();
+        });
+}
+
+function loadLenderLogo2(imageUrl) {
+    const $logoImg = $("#modalLenderLogo2");
+    const $loader = $("#logoLoader2");
+
+    $logoImg.hide();
+    $logoImg.attr("src", imageUrl);
+
+    $logoImg
+        .on("load", function () {
+            $loader.hide();
+            $logoImg.show();
+        })
+        .on("error", function () {
+            $loader.hide();
+            $logoImg.hide();
+        });
+}
+
+function resetLenderContactInfo2() {
+    console.log("asdfj");
+
+    $("#modalLenderLogo2").hide();
+    $("#logoLoader2")
+        .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')
+        .show();
+
+    $("#contactmodalwebsite").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+    $("#contactmodalurl").attr("href", "#");
+
+    $("#phone").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+
+    $("#email").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+}
+
+function resetLenderContactInfo() {
+    $("#modalLenderLogo").hide();
+    $("#logoLoader")
+        .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')
+        .show();
+
+    $("#modalwebsite").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+    $("#modalurl").attr("href", "#");
+
+    $("#modalPhone").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+
+    $("#modalEmail").html(
+        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+    );
+}
