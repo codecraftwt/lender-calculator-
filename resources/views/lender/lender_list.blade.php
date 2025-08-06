@@ -25,6 +25,7 @@
                         <th>Mobile Number</th>
                         <th>Website</th>
                         <th>Products</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -201,6 +202,136 @@
     </div>
 
 
+    <!-- lender edit modals -->
+
+    <div id="Main_Lender_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 1060;">
+            <div class="modal-content" style="min-height: 80vh !important; margin-top: 2vh !important;padding:20px;max-height: 100vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+
+                <!-- 📝 Form Start -->
+                <form id="MainLenderEditForm" method="POST" enctype="multipart/form-data">
+                    <!-- CSRF Token (if using Laravel Blade) -->
+                    @csrf
+
+                    <!-- Header -->
+                    <div class="row mb-3">
+                        <div class="col-md-4 mb-3">
+                            <span id="main_lender_modal_logo" class="" role="status" style="width: 2rem; height: 2rem;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                            </span>
+                            <img id="main_lender_logo" src="" style="height: 50px;" alt="">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_logo" class="form-label">Lender Logo</label>
+                            <div class="input-group">
+                                <input type="file" id="lender_logo" name="lender_logo" class="form-control" autocomplete="off" />
+                            </div>
+                            <p class="text-danger d-none" id="invalid_lender_logo">Please upload valid name.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_name" class="form-label">Lender Name</label>
+                            <div class="input-group">
+                                <input type="text" id="lender_name" name="lender_name" class="form-control" autocomplete="off" />
+                            </div>
+                            <p class="text-danger d-none" id="invalid_lender_name">Please enter valid name.</p>
+                        </div>
+                        <!-- s -->
+
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_website" class="form-label"> Website</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                                <input type="text" id="lender_website" name="lender_website" class="form-control" />
+                            </div>
+                            <p class="text-danger d-none" id="invalid_lender_website">Please enter valid URL.</p>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_email" class="form-label"> Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" id="lender_email" name="lender_email" class="form-control" />
+                            </div>
+                            <p class="text-danger d-none" id="invalid_lender_email">Please enter valid email.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_mobile_number" class="form-label">Mobile Number</label>
+                            <div class="input-group">
+                                <input type="text" id="mobile_number" name="mobile_number" class="form-control" autocomplete="off" />
+                            </div>
+                            <p class="text-danger d-none" id="invalid_mobile_number">Please enter valid mobile number.</p>
+                        </div>
+                        <div class=" col-md-4 mb-3">
+                            <label class="form-label">Lender Product Guide</label>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="product_guide_type" id="guideFile" value="file" checked>
+                                <label class="form-check-label" for="guideFile">Upload File</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="product_guide_type" id="guideUrl" value="url">
+                                <label class="form-check-label" for="guideUrl">Enter URL</label>
+                            </div>
+
+                            <div id="fileInputGroup" class="input-group mt-2">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input type="file" id="product_guide_file" name="product_guide_file" class="form-control" required>
+                            </div>
+
+                            <div id="urlInputGroup" class="input-group mt-2" style="display:none;">
+                                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                <input type="url" id="product_guide_url" name="product_guide_url" class="form-control" placeholder="Enter URL">
+                            </div>
+
+                            <p class="text-danger d-none" id="invalid_product_guide">Please upload a valid file or enter a valid URL.</p>
+                        </div>
+                        <!-- <div class="col-md-4 mb-3">
+                            <label for="lender_mobile_number" class="form-label"> </label>
+                            <button type="submit" class="btn btn-success m-5">
+                                Save Changes
+                            </button>
+                        </div> -->
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_mobile_number" class="form-label"> </label>
+                            <button type="submit" class="btn btn-success m-5" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                                Save Changes
+                            </button>
+                        </div>
+                </form>
+            </div>
+            <hr>
+            <h5 class="text-center">Sub Products</h5>
+            <hr>
+
+            <!-- Loan Products Container -->
+            <div id="MainLenderloanProductsContainer" class="row g-4 mb-3" style="padding-left: 15px; padding-right:15px">
+                <!-- Loader -->
+                <div id="MainLenderModalloader" class="text-center my-4" style="display: none;">
+                    <img src="{{ asset('assets/images/loader.gif') }}" alt="Loading...">
+                </div>
+                <!-- Product cards will be appended here dynamically -->
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer mt-4">
+                <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                    ← Back to Lenders
+                </button>
+
+            </div>
+
+            <!-- 📝 Form End -->
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Loader (shown initially) -->
+
+
 
 </div>
 @php
@@ -269,6 +400,8 @@ $base_product_guide_url = "{{ url('assets/product-guides') }}";
 <!-- <script src="{{ asset('assets/js/index.js') }}"></script> -->
 <!-- <script src="{{ asset('assets/js/customer.js') }}"></script> -->
 <script src="{{ url('assets/js/lender.js') }}"></script>
+<script src="{{ url('assets/js/lender_edit.js') }}"></script>
+
 
 
 <!-- Include jQuery (required for DataTables) and DataTables JS -->

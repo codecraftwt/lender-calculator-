@@ -17,27 +17,17 @@ class ProductModelSeeder extends Seeder
 
         ProductModel::create([
             'lender_id' => 1,
-            'product_name' => 'TERM',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 1,
-            'product_name' => 'OVERDRAFT',
+            'product_name' => 'Overdraft Loan',
 
         ]);
 
-        // ProductModel::create([
-        //     'lender_id' => 1,
-        //     'product_name' => 'CORPORATE',
 
-        // ]);
-
-        ProductModel::create([
-            'lender_id' => 2,
-            'product_name' => 'Business Overdraft',
-
-        ]);
 
         ProductModel::create([
             'lender_id' => 2,
@@ -46,8 +36,14 @@ class ProductModelSeeder extends Seeder
         ]);
 
         ProductModel::create([
+            'lender_id' => 2,
+            'product_name' => 'Overdraft Loan',
+
+        ]);
+
+        ProductModel::create([
             'lender_id' => 3,
-            'product_name' => 'Business Loan',
+            'product_name' => 'Term Loan',
 
         ]);
 
@@ -57,15 +53,16 @@ class ProductModelSeeder extends Seeder
 
         ]);
 
+
         ProductModel::create([
             'lender_id' => 4,
-            'product_name' => 'Business Loan',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 5,
-            'product_name' => 'Business Loan',
+            'product_name' => 'Term Loan',
 
         ]);
 
@@ -83,57 +80,81 @@ class ProductModelSeeder extends Seeder
 
         ProductModel::create([
             'lender_id' => 7,
-            'product_name' => 'Business Loan',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 8,
-            'product_name' => 'Unsecured Cash Flow Loan',
+            'product_name' => 'Diamond Loan',
+
+        ]);
+
+        ProductModel::create([
+            'lender_id' => 8,
+            'product_name' => 'Platinum Loan',
+
+        ]);
+
+        ProductModel::create([
+            'lender_id' => 8,
+            'product_name' => 'Gold Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 9,
-            'product_name' => 'Cash Advance & Line of Credit',
+            'product_name' => 'Bigga',
 
         ]);
 
+        // ProductModel::create([
+        //     'lender_id' => 10,
+        //     'product_name' => 'Line of Credit',
+
+        // ]);
+
         ProductModel::create([
-            'lender_id' => 10,
-            'product_name' => 'Line of Credit',
+            'lender_id' => 11,
+            'product_name' => 'Business Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 11,
-            'product_name' => 'Bizcap',
+            'product_name' => 'Line of Credit',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 12,
-            'product_name' => 'Capify',
+            'product_name' => 'Business Loan',
+
+        ]);
+
+        ProductModel::create([
+            'lender_id' => 12,
+            'product_name' => 'Invoive Finance',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 13,
-            'product_name' => 'Position Criteria',
+            'product_name' => 'Term Loan',
 
         ]);
 
-        ProductModel::create([
-            'lender_id' => 13,
-            'product_name' => 'Unsecured & Secured Term Loans',
+        // ProductModel::create([
+        //     'lender_id' => 13,
+        //     'product_name' => 'Unsecured & Secured Term Loans',
 
-        ]);
+        // ]);
 
-        ProductModel::create([
-            'lender_id' => 13,
-            'product_name' => 'Consolidation Loans',
+        // ProductModel::create([
+        //     'lender_id' => 13,
+        //     'product_name' => 'Consolidation Loans',
 
-        ]);
+        // ]);
 
         ProductModel::create([
             'lender_id' => 15,
@@ -143,31 +164,37 @@ class ProductModelSeeder extends Seeder
 
         ProductModel::create([
             'lender_id' => 14,
-            'product_name' => 'Skyecap',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 16,
-            'product_name' => 'Rapital',
+            'product_name' => 'Term  Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 17,
-            'product_name' => 'Funds now',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 18,
-            'product_name' => 'Banjo Business Loan Express',
+            'product_name' => 'Term Loan',
 
         ]);
 
         ProductModel::create([
             'lender_id' => 19,
-            'product_name' => 'Moneytech',
+            'product_name' => 'Term Loan',
+
+        ]);
+
+        ProductModel::create([
+            'lender_id' => 19,
+            'product_name' => 'Line Of Credit',
 
         ]);
     }

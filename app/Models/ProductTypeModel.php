@@ -28,6 +28,7 @@ class ProductTypeModel extends Model
         'industry',
         'restricted_industry',
         'gst_time',
-        'sub_product_name'
+        'sub_product_name',
+        'interest_rate',
     ];
 }

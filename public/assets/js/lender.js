@@ -38,6 +38,18 @@ $(document).ready(function () {
                             style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">
                             View
                         </button>
+                        
+                    </td>
+
+                     <td>
+                       
+                     <button 
+                            type="button" 
+                            data-main-lender-id='${product_id_arr}'
+                            class="btn btn-sm btn-info edit-main-lender-info"
+                            style=" color:white;">
+                            <i class="fas fa-pencil"></i>
+                        </button> 
                     </td>
 
 
@@ -191,7 +203,7 @@ $(document).ready(function () {
                    View Options
                 </a>
             </div>
-        </div>`;
+            </div>`;
 
                         $container.append(cardHtml);
                     });
@@ -529,8 +541,7 @@ function loadLenderLogo2(imageUrl) {
 }
 
 function resetLenderContactInfo2() {
-    console.log("asdfj");
-
+ 
     $("#modalLenderLogo2").hide();
     $("#logoLoader2")
         .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')

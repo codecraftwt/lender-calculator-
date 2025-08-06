@@ -28,9 +28,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Shift',
                 'lender_logo'            => 'shift.png',
-                'email'     => 'shift@gmail.com',
-                'mobile_number'     => '741852963',
-                'website_url'  => 'www.shift.com',
+                'email'     => 'partners@shift.com.au',
+                'mobile_number'     => '1300 249 649',
+                'website_url'  => 'https://www.shift.com.au/',
                 'product_guide' => 'https://www.shift.com.au/product-guide/',
 
 
@@ -54,9 +54,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Moula',
                 'lender_logo'            => 'moula.webp',
-                'email'     => 'moula@gmail.com',
-                'mobile_number'     => '852741963',
-                'website_url'  => 'www.moula.com',
+                'email'     => 'partners@moula.com.au',
+                'mobile_number'     => '1300 880 972',
+                'website_url'  => 'moula.com.au',
                 'product_guide' => 'Moula-Product-Guide.pdf',
 
 
@@ -66,9 +66,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Propsa',
                 'lender_logo'            => 'prospa.png',
-                'email'     => 'propsa@gmail.com',
-                'mobile_number'     => '47485966',
-                'website_url'  => 'www.propsa.com',
+                'email'     => 'partners@prospa.com',
+                'mobile_number'     => '1300 964 808',
+                'website_url'  => 'www.prospa.com',
                 'product_guide' => 'Prospa Product Guide.pdf',
 
 
@@ -79,9 +79,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'On Deck',
                 'lender_logo'            => 'on_deck.webp',
-                'email'     => 'ondeck@gmail.com',
-                'mobile_number'     => '85241963',
-                'website_url'  => 'www.ondeck.com',
+                'email'     => 'broker@ondeck.com.au',
+                'mobile_number'     => '1800 676 652',
+                'website_url'  => 'www.ondeck.com.au',
                 'product_guide' => 'OnDeck Lending Criteria.pdf',
 
 
@@ -91,9 +91,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'ScotPac',
                 'lender_logo'            => 'scotpac.png',
-                'email'     => 'scotpac@gmail.com',
-                'mobile_number'     => '963852741',
-                'website_url'  => 'www.scotpac.com',
+                'email'     => 'enquiries@businessfuel.com.au',
+                'mobile_number'     => '1300 660 681',
+                'website_url'  => 'businessfuel.com.au',
                 'product_guide' => 'ScotPac-Solutions-eBook.pdf',
 
 
@@ -163,9 +163,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Trucap',
                 'lender_logo'            => 'trucap.png',
-                'email'     => 'trucap@gmail.com',
-                'mobile_number'     => '12345679',
-                'website_url'  => 'www.trucap.com',
+                'email'     => 'partner@trucap.com.au',
+                'mobile_number'     => '1300 261 154',
+                'website_url'  => 'www.trucap.com.au',
                 'product_guide' => 'Trucap - Product Update 2025.pdf',
 
 
@@ -176,9 +176,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Skyecap',
                 'lender_logo'            => 'skyecap.png',
-                'email'     => 'skyecap@gmail.com',
-                'mobile_number'     => '1234567890',
-                'website_url'  => 'www.skyecap.com',
+                'email'     => ' partnerships@skyecap.com.au',
+                'mobile_number'     => '1300 089 964',
+                'website_url'  => 'skyecap.com.au',
                 'product_guide' => 'Skyecap_Broker Cheat Sheet.png',
 
 
@@ -202,9 +202,9 @@ class MainLenderSeeder extends Seeder
             [
                 'lender_name'             => 'Rapital',
                 'lender_logo'            => 'rapital.png',
-                'email'     => 'rapital@gmail.com',
-                'mobile_number'     => '1234567890',
-                'website_url'  => 'www.rapital.com',
+                'email'     => 'rokers@gmail.rapital.com.au',
+                'mobile_number'     => '1300 308 142',
+                'website_url'  => 'rapital.com.au',
                 'product_guide' => 'Rapital Broker Product Guide (March 2025).pdf',
 
 
