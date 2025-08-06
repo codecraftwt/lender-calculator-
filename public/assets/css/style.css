@@ -974,3 +974,90 @@ span.hover-white:hover {
         #f7a0f5 100%
     ) !important;
 }
+/* 
+#Main_Lender_Edit_Modal .modal-content {
+    z-index: 1070 !important;
+    min-height: 88vh !important;
+    width: 100% !important;
+    margin-top: 2vh !important;
+} */
+
+.lender-box-container {
+    position: relative;
+    width: 440px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.lender-box {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    transition: opacity 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Shutters */
+.shutter {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.left-shutter {
+    left: 0;
+    transform: translateX(-100%);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+}
+
+.right-shutter {
+    right: 0;
+    transform: translateX(100%);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+     background: linear-gradient(90deg, #d15de8 0%, #4a3f9a  100%);
+}
+
+/* Content inside shutters */
+.shutter-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.3s;
+    pointer-events: none;
+}
+
+/* Hover effects */
+.lender-box-container:hover .left-shutter {
+    transform: translateX(0);
+}
+
+.lender-box-container:hover .right-shutter {
+    transform: translateX(0);
+}
+
+.lender-box-container:hover .shutter-content {
+    opacity: 1;
+}
+
+.lender-box-container:hover .lender-box {
+    opacity: 0.1;
+}

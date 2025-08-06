@@ -60,8 +60,8 @@ class LenderController extends Controller
 
             if (!empty($ids)) {
                 // Fetch all related data
-                $rawResults = DB::table('product_type_models')
-                    ->join('product_models', 'product_models.id', '=', 'product_type_models.product_id')
+                $rawResults = DB::table('product_models')
+                    ->leftJoin('product_type_models', 'product_models.id', '=', 'product_type_models.product_id')
                     ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
                     ->select(
                         'main_lender_tables.id as lender_id',
@@ -76,6 +76,7 @@ class LenderController extends Controller
                     )
                     ->whereIn('product_models.id', $ids)
                     ->get();
+
 
                 // Group by product_id
                 $products = $rawResults->groupBy('product_id')->map(function ($group) {
@@ -206,5 +207,25 @@ class LenderController extends Controller
 
 
         return response()->json($contactsWithLender);
+    }
+
+
+    public function lender_edit($id = null)
+    {
+        $lender_data = MainLenderTable::where('id', $id)->get();
+        $lender_products = ProductModel::where('lender_id', $id)->get();
+        $pid = $lender_products->pluck('id')->toArray();
+        $lender_subproducts = ProductTypeModel::whereIn('product_id', $pid)->get();
+        $spid =  $lender_subproducts->pluck('id')->toArray();
+
+        $result = [
+            'lender_data' => $lender_data,
+            'lender_products_ids' => $pid,
+            'lender_subproducts_ids' => $spid,
+        ];
+
+
+        // return response()->json($result);
+        return view('lender.lender_edit', compact('lender_data', 'pid', 'spid'));
     }
 }

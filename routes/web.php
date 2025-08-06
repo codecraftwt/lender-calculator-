@@ -72,3 +72,5 @@ Route::get('/get-lenders', [LenderController::class, 'get_lenders']);
 Route::get('/get-lender-products', [LenderController::class, 'get_lender_products']);
 Route::get('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);
 Route::get('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
+
+Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
