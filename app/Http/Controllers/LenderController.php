@@ -213,7 +213,9 @@ class LenderController extends Controller
                 'product_type_models.max_loan_amount',
                 'product_type_models.sub_product_name',
                 'product_type_models.credit_score',
-            )
+                'product_type_models.interest_rate',
+
+                )
             ->whereIn('product_type_models.id', $ids)
             ->get();
 
