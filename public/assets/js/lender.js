@@ -1,99 +1,71 @@
 $(document).ready(function () {
-    $.ajax({
-        url: "/get-lenders",
-        method: "GET",
-        success: function (data) {
-            const tableBody = $("#lenderTable tbody");
+    window.mainLenderTable = $("#lenderTable").DataTable({
+        paging: true,
+        lengthChange: false,
+        searching: true,
+        ordering: false,
+        info: true,
+        autoWidth: false,
+        stripeClasses: ["odd", "even"],
+        responsive: true,
+        lengthMenu: [100, 120, 140, 160],
+        pageLength: 80,
+        dom: "Blfrtip",
+        buttons: [
+            {
+                extend: "excelHtml5",
+                text: "Export to Excel",
+                exportOptions: { columns: [0, 1, 3, 4, 5] },
+                title: "Lender List",
+            },
+            {
+                extend: "print",
+                text: "Print Table",
+                exportOptions: { columns: [0, 1, 3, 4, 5] },
+                title: "Lender List",
+            },
+        ],
 
-            var table = $("#lenderTable").DataTable();
-
-            if ($.fn.DataTable.isDataTable("#lenderTable")) {
-                $("#lenderTable").DataTable().clear().destroy();
-            }
-
-            tableBody.empty();
-
-            if (data.length > 0) {
-                console.log(data);
-                data.forEach((item, index) => {
-                    const product_id_arr = JSON.stringify(
-                        item.product_ids
-                    ).replace(/'/g, "&#39;");
-                    const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.lender_name || ""}</td>
-                    <td><img src="${baseImageUrl}/${item.lender_logo.toLowerCase()}" alt="${
-                        item.lender_name
-                    }" 
-    class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;"></td>
-                    <td>${item.email || ""}</td>
-                    <td>${item.mobile_number || ""}</td>
-                    <td>${item.website_url || ""}</td>
-                     <td>
-                        <button 
-                            type="button" 
-                            data-id='${product_id_arr}'
-                            class="btn btn-sm btn-info view-btn"
-                            style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">
-                            View
-                        </button>
-                        
-                    </td>
-
-                     <td>
-                       
-                     <button 
-                            type="button" 
-                            data-main-lender-id='${product_id_arr}'
-                            class="btn btn-sm btn-info edit-main-lender-info"
-                            style=" color:white;">
-                            <i class="fas fa-pencil"></i>
-                        </button> 
-                    </td>
-
-
-                </tr>`;
-                    tableBody.append(row);
-                });
-            } else {
-            }
-
-            $("#lenderTable").DataTable({
-                paging: true,
-                lengthChange: false,
-                searching: true,
-                ordering: false,
-                info: true,
-                autoWidth: false,
-                stripeClasses: ["odd", "even"],
-                responsive: true,
-                lengthMenu: [100, 120, 140, 160],
-                pageLength: 80,
-                dom: "Blfrtip",
-                buttons: [
-                    {
-                        extend: "excelHtml5",
-                        text: "Export to Excel",
-                        exportOptions: {
-                            columns: [0, 1, 3, 4, 5],
-                        },
-                        title: "Lender List",
-                    },
-                    {
-                        extend: "print",
-                        text: "Print Table",
-                        exportOptions: {
-                            columns: [0, 1, 3, 4, 5],
-                        },
-                        title: "Lender List",
-                    },
-                ],
-            });
+        ajax: {
+            url: "/get-lenders",
+            dataSrc: "", // assuming your response is an array of lender objects
         },
-        error: function () {
-            alert("Failed to fetch data.");
-        },
+
+        columns: [
+            { data: null, render: (data, type, row, meta) => meta.row + 1 },
+            { data: "lender_name" },
+            {
+                data: "lender_logo",
+                render: function (data, type, row) {
+                    return `<img src="${baseImageUrl}/${data.toLowerCase()}" alt="${
+                        row.lender_name
+                    }" class="img-fluid mb-3" style="max-height:60px; max-width:130px;">`;
+                },
+            },
+            { data: "email" },
+            { data: "mobile_number" },
+            { data: "website_url" },
+            {
+                data: "product_ids",
+                render: function (data) {
+                    const product_id_arr = JSON.stringify(data).replace(
+                        /'/g,
+                        "&#39;"
+                    );
+                    return `<button type="button" data-id='${product_id_arr}' class="btn btn-sm btn-info view-btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">View</button>`;
+                },
+            },
+            {
+                data: "product_ids",
+                render: function (data) {
+                    const product_id_arr = JSON.stringify(data).replace(
+                        /'/g,
+                        "&#39;"
+                    );
+                    return `<button type="button" data-main-lender-id='${product_id_arr}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;"><i class="fas fa-pencil"></i></button>`;
+                },
+            },
+        ],
     });
 
     $(document).on("click", ".view-btn", function () {
@@ -339,13 +311,13 @@ $(document).ready(function () {
                         btn.setAttribute("data-lender-id", product.lender_id);
 
                         const productHtml = `
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card sub-product-card border p-3 h-100" style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center;">
                                     <div class="row">
                                         <div class="col-md-2" style="width:100px">
                                             <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="" style="height: 33px;">
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-12">
                                             <h5 class="fw-bold" style="color:#852aa3;">${
                                                 product.product_name ||
                                                 "Product"
@@ -353,14 +325,14 @@ $(document).ready(function () {
                                             <h6 class="fw-bold" style="color:#852aa3;">${
                                                 product.sub_product_name || ""
                                             }</h6>
-                                            <strong>$${
+                                            <p class="m-0" style="font-weight:500">$${
                                                 product.min_amount || 0
-                                            } - $${
-                            product.max_amount || 0
-                        }</strong><br>
-                                            <strong>Minimum Score Required: ${
+                                            } - $${product.max_amount || 0}</p> 
+                                            <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                                 product.credit_score || "500+"
-                                            }</strong><br>
+                                            }</p ><pclass="m-0" style="font-weight:600">APR: ${
+                            parseFloat(product.interest_rate).toFixed(2) || ""
+                        }</p > 
                                             <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size: 15px; margin-top: 10px; font-weight: 500;" class="text-decoration-underline">
                                                 View Product Guide <i class="fas fa-download"></i>
                                             </a>
@@ -541,7 +513,6 @@ function loadLenderLogo2(imageUrl) {
 }
 
 function resetLenderContactInfo2() {
- 
     $("#modalLenderLogo2").hide();
     $("#logoLoader2")
         .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')

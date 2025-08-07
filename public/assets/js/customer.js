@@ -392,7 +392,7 @@ $(document).ready(function () {
                                 lender.lender_logo.toLowerCase()
                         );
                         const productHtml = `
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     
                    
                         <div class="card sub-product-card border col-md-10  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
@@ -407,13 +407,16 @@ $(document).ready(function () {
                                 product.sub_product_name || ""
                             }</h6>
 
-                            <strong>$${product.min_amount || 0} - $${
-                            product.max_amount || 0
-                        }</strong>
+                            <p class="m-0" style="font-weight:500">$${
+                                product.min_amount || 0
+                            } - $${product.max_amount || 0}</p>
 
-                        <strong>Minimum Score Required:  ${
+                        <p class="m-0" style="font-weight:500">Minimum Score Required:  ${
                             product.credit_score || "500+"
-                        }</strong>
+                        }</p>
+                        </p ><pclass="m-0" style="font-weight:600">APR: ${
+                            parseFloat(product.interest_rate).toFixed(2) || ""
+                        }</p >
                               <a href="${guideUrl}" 
                           target="_blank" 
                           style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" 

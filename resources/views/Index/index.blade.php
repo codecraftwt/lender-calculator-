@@ -152,7 +152,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="property_owner" class="form-label">Are you a property owner? </label>
+                                <label for="property_owner" class="form-label">Is your client asset-backed ?</label>
                                 <select id="property_owner" name="property_owner" class="form-control" required>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
@@ -237,24 +237,15 @@
                                 <p class="text-danger d-none" id="invalid_industry_type">Please select a valid option.</p>
                             </div>
                             <div class="col-md-6 mb-3 loan-details">
-                                <!-- Top line as requested -->
-                                <!-- <small class="mb-1 mt-1 text-warning">Some industries may be subject to stricter lending criteria or are excluded by certain lenders.</small> -->
-
-                                <!-- Label as second line -->
                                 <label for="restricted_industry" class="form-label">
                                     Please select if your client operates in any of the following commonly restricted or excluded industries:
                                 </label>
-
-                                <!-- Select field -->
                                 <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
                                     <option value="null">None of the below</option>
                                     @foreach ($restricted_industries as $industry)
                                     <option value="{{ $industry }}">{{ $industry }}</option>
                                     @endforeach
                                 </select>
-
-
-                                <!-- Validation message -->
                                 <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
                             </div>
 

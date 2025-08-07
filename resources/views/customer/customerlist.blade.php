@@ -43,10 +43,10 @@
         </div>
         <!-- </div> -->
     </div>
-     
+
     <div class="modal fade" id="lenderModal" tabindex="-1" aria-labelledby="lenderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-            style="width: 95%; max-width: 1200px; z-index: 1050;">
+            style="width: 97%; max-width: 1600px; z-index: 1050;">
             <div class="modal-content" style="min-height: 90vh;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="lenderModalLabel">Applicable Lenders</h5>
@@ -72,11 +72,11 @@
         </div>
     </div>
 
-     <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-            style="width: 85%; max-width: 1050px; z-index: 1060;">
-            <div class="modal-content" style="min-height: 80vh !important; margin-top: 2vh !important;padding:20px;max-height: 85vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
-
+            style="width: 90%; max-width: 1500px; z-index: 1060;">
+            <div class="modal-content" style="min-height: 80vh !important; margin-top: 2vh !important;padding:29px;max-height: 85vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
@@ -141,9 +141,9 @@
 
     <div id="lenderContactModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-            style="width: 75%; max-width: 1015px;; z-index: 1070;">
-            <div class="modal-content" style="min-height: 70vh !important; margin-top: 4vh !important;padding:20px;max-height: 78vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);margin-left: 18px;">
-
+            style="width: 85%; max-width: 1400px;; z-index: 1070;">
+            <div class="modal-content" style="min-height: 70vh !important; margin-top: 4vh !important;padding:30px;max-height: 78vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);margin-left: 18px;">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
@@ -154,7 +154,7 @@
 
                         <!-- Lender Logo (hidden initially) -->
                         <img id="modalLenderLogo2" src="" alt="Lender Logo"
-                            style="height: 80px; width: auto; display: none;" class="me-3" />
+                            style="height: 60px; width: auto; display: none;" class="me-3" />
                     </div>
                     <div class="mb-4 ml-4">
 
@@ -186,8 +186,7 @@
 
                 <!-- Contacts Table -->
                 <div style="overflow-x: auto;">
-                    <h4 style="color:#852aa3;font-size:25px;font-weight: bold;font-family:'Times New Roman', Times, serif;
-                      unicode-bidi: isolate;">
+                    <h4 style="color:#852aa3;font-size:25px;font-weight: bold; ">
                         BDM Contacts
                     </h4>
                     <table id="lenderContactTable" class="contact-table">

@@ -167,6 +167,8 @@ class CustomerController extends Controller
                         'product_type_models.max_loan_amount',
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
+                        'product_type_models.interest_rate',
+
                     )
                     ->whereIn('product_type_models.id', $ids)
                     ->get();
@@ -200,6 +202,7 @@ class CustomerController extends Controller
                         'mobile_number' => $product->mobile_number,
                         'website_url' => $product->website_url,
                         'product_guide' => $product->product_guide,
+                        'interest_rate' => $product->interest_rate,
                         'contacts' => $contactsRaw->get($product->lender_id, collect()),
                     ];
                 });
