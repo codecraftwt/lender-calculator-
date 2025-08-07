@@ -71,6 +71,13 @@ Route::get('/lender-list', [LenderController::class, 'lender_list']);
 Route::get('/get-lenders', [LenderController::class, 'get_lenders']);
 Route::get('/get-lender-products', [LenderController::class, 'get_lender_products']);
 Route::get('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);
+Route::get('/get-product-data-with-subproducts', [LenderController::class, 'get_product_data_with_subproducts']);
+Route::get('/get-sub-product-data', [LenderController::class, 'get_sub_product_data']);
+
 Route::get('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
 
 Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
+
+Route::post('/update-main-lender-data', [LenderController::class, 'update_main_lender_data']);
+Route::post('/update-product-data', [LenderController::class, 'update_product_data']);
+Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data']);

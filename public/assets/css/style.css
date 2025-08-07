@@ -1025,7 +1025,7 @@ span.hover-white:hover {
     transform: translateX(100%);
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-     background: linear-gradient(90deg, #d15de8 0%, #4a3f9a  100%);
+    background: linear-gradient(90deg, #d15de8 0%, #4a3f9a 100%);
 }
 
 /* Content inside shutters */
@@ -1059,5 +1059,50 @@ span.hover-white:hover {
 }
 
 .lender-box-container:hover .lender-box {
+    opacity: 0.1;
+}
+
+/* Shutter container */
+.sub-product-card {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Left and right shutters */
+.left-shutter,
+.right-shutter {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+    z-index: 2;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.right-shutter {
+    right: 0;
+    transform: translateX(100%);
+    background: linear-gradient(90deg, #d15de8 0%, #4a3f9a 100%);
+}
+
+/* Shutter content (Edit Subproduct text) */
+ 
+
+/* Hover effects */
+.sub-product-card:hover .left-shutter {
+    transform: translateX(0);
+}
+
+.sub-product-card:hover .right-shutter {
+    transform: translateX(0);
+}
+
+.sub-product-card:hover .shutter-content {
+    opacity: 1;
+}
+
+.sub-product-card:hover .card {
     opacity: 0.1;
 }
