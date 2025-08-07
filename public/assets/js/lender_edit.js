@@ -216,12 +216,14 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                 <h6 class="fw-bold" style="color:#852aa3;">${
                     lender.sub_product_name || ""
                 }</h6>
-                <strong>$${lender.min_loan_amount || 0} - $${
-                        lender.max_loan_amount || 0
-                    }</strong><br>
-                <strong>Minimum Score Required: ${
+                <p class="m-0" style="font-weight:500">$${
+                    lender.min_loan_amount || 0
+                } - $${lender.max_loan_amount || 0}</p><br>
+                <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                     lender.credit_score || "500+"
-                }</strong><br>
+                }</p><p class="m-0" style="font-weight:600">APR: ${
+                        parseFloat(lender.interest_rate).toFixed(2) || ""
+                    }</p > 
                 
             </div>
         </div>
@@ -276,7 +278,7 @@ $(document).on("click", ".view-sub-product-edit-modal-btn", function () {
     Sub_Product_Edit_Modal.show();
     resetSubProductEditModalInfo();
     getSubProductData(sub_product_id);
- });
+});
 
 function getSubProductData(sub_product_id) {
     const formData = {
@@ -299,7 +301,6 @@ function getSubProductData(sub_product_id) {
             console.log(data);
 
             setTimeout(function () {
-                
                 const $container = $("#SubProductEditModalContainer");
                 // $container.empty();
 

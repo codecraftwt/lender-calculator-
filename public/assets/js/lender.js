@@ -330,7 +330,7 @@ $(document).ready(function () {
                                             } - $${product.max_amount || 0}</p> 
                                             <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                                 product.credit_score || "500+"
-                                            }</p ><pclass="m-0" style="font-weight:600">APR: ${
+                                            }</p ><p class="m-0" style="font-weight:600">APR: ${
                             parseFloat(product.interest_rate).toFixed(2) || ""
                         }</p > 
                                             <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size: 15px; margin-top: 10px; font-weight: 500;" class="text-decoration-underline">
