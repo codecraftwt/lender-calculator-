@@ -218,6 +218,12 @@ $(document).ready(function () {
 
             case "negative_days":
             case "number_of_dishonours":
+                // Allow empty value
+                if (!val) {
+                    return true;
+                }
+
+                // Validate only if value is not empty
                 return (
                     /^[0-9]+$/.test(val) ||
                     (showErrorMessage &&
@@ -236,12 +242,9 @@ $(document).ready(function () {
             case "abn_gst":
                 const abnGstVal = val?.toLowerCase().trim(); // safely get and normalize value
 
-                // Step 1: Check if abn_gst is empty
+                // ✅ Allow empty value — no error message
                 if (!abnGstVal) {
-                    return (
-                        showErrorMessage &&
-                        showError(id, "Please select a valid GST option.")
-                    );
+                    return true;
                 }
 
                 // Step 2: If "yes", gst_date must be filled

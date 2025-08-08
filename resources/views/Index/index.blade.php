@@ -10,8 +10,8 @@
     <div class="col-lg-8 mb-4">
         <div class="panel ai-loan-matching shadow-sm" style="border-radius:20px;margin-top: 20px;">
 
-            <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787; ">
-                <div class="header" style="height:62px">
+            <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787;border-top-left-radius:20px;border-top-right-radius:20px ">
+                <div class="header" style="height:62px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); text-align: center;border-top-left-radius:20px;border-top-right-radius:20px">
                     <h5 style="border-bottom: none;color:white">Client Loan Eligibility Form</h5>
                 </div>
                 <form method="POST" action="{{ url('/save_data') }}" id="lender_form" class="car-bike-boat-form p-4">
