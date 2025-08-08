@@ -30,5 +30,6 @@ class ProductTypeModel extends Model
         'gst_time',
         'sub_product_name',
         'interest_rate',
+        'security_requirement'
     ];
 }

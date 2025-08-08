@@ -204,43 +204,57 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                     const cardHtml = `<div class="col-md-4 view-sub-product-edit-modal-btn" data-sub-product-id="${
                         lender.subproduct_id
                     }">
-    <div class="card sub-product-card border p-3 h-100" style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center; position: relative;">
-        <div class="row">
-            <div class="col-md-2" style="width:100px">
-                <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="" style="height: 33px;">
-            </div>
-            <div class="col-md-10">
-                <h5 class="fw-bold" style="color:#852aa3;">${
-                    lender.product_name || "Product"
-                }</h5>
-                <h6 class="fw-bold" style="color:#852aa3;">${
-                    lender.sub_product_name || ""
-                }</h6>
-                <p class="m-0" style="font-weight:500">$${
-                    lender.min_loan_amount || 0
-                } - $${lender.max_loan_amount || 0}</p><br>
-                <p class="m-0" style="font-weight:500">Minimum Score Required: ${
-                    lender.credit_score || "500+"
-                }</p><p class="m-0" style="font-weight:600">APR: ${
-                        parseFloat(lender.interest_rate).toFixed(2) || ""
-                    }</p > 
-                
-            </div>
-        </div>
-        
-        <!-- Shutter effect - Left and Right -->
-        <div class="left-shutter"></div>
-        <div class="right-shutter"></div>
-        
-        <!-- Content inside shutters -->
-        <div class="shutter-content d-flex flex-column align-items-center justify-content-center">
-            <i class="fas fa-pencil-alt"></i> Edit Subproduct
-        </div>
-      </div>
-     </div>
-     `;
+                  <div class="card sub-product-card border p-3 h-100" style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center; position: relative;">
+                    <div class="row">
+                      <div class="col-md-2" style="width:100px">
+                        <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="" style="height: 33px;">
+                      </div>
+                      <div class="col-md-12">
+                        <h5 class="fw-bold" style="color:#852aa3;">${
+                            lender.product_name || "Product"
+                        }</h5>
+                        <h6 class="fw-bold" style="color:#852aa3;">${
+                            lender.sub_product_name || ""
+                        }</h6>
+                        <p class="m-0" style="font-weight:500">$${
+                            lender.min_loan_amount || 0
+                        } - $${lender.max_loan_amount || 0}</p><br>
+                                       <p class="m-0" style="font-weight:500">Minimum Score Required: ${
+                                           lender.credit_score || "500+"
+                                       }</p>
+                        <p class="m-0" style="font-weight:600">APR: ${
+                            parseFloat(lender.interest_rate).toFixed(2) || ""
+                        }</p>
+                        <small class="text-warning security_text d-none" style="font-weight:600">
+                          security required for loan amounts over $${
+                              lender.security_requirement
+                          } in this tier
+                        </small>
+                      </div>
+                    </div>
+                    <div class="left-shutter"></div>
+                    <div class="right-shutter"></div>
+                    <div class="shutter-content d-flex flex-column align-items-center justify-content-center">
+                      <i class="fas fa-pencil-alt"></i> Edit Subproduct
+                    </div>
+                  </div>
+                </div>`;
 
                     $container.append(cardHtml);
+
+                    const $newCard = $container.children().last();
+                    $newCard
+                        .find(".security_text")
+                        .toggleClass(
+                            "d-none",
+                            lender.security_requirement <= 0
+                        );
+                    $newCard
+                        .find(".security_text")
+                        .toggleClass(
+                            "d-block",
+                            lender.security_requirement > 0
+                        );
                 });
 
                 $("#ProductModalloader").hide();
@@ -326,6 +340,8 @@ function getSubProductData(sub_product_id) {
                     $("#number_of_dishonours").val(lender.number_of_dishonours);
                     $("#negative_days").val(lender.negative_days);
                     $("#interest_rate").val(lender.interest_rate);
+                    $("#security_requirement").val(lender.security_requirement);
+
                     $("#sub_product_modal_lender_logo").attr("src", final_url);
 
                     if (
@@ -466,7 +482,7 @@ function resetSubProductEditModalInfo() {
     $("#number_of_dishonours").val("");
     $("#negative_days").val("");
     $("#interest_rate").val("");
-
+    $("#security_requirement").val("");
     $("#sub_product_modal_lender_logo").attr("src", "");
 }
 
@@ -882,6 +898,7 @@ $(document).ready(function () {
             case "gst_time":
             case "min_loan_amount":
             case "max_loan_amount":
+            case "security_requirement":
             case "annual_income":
             case "credit_score":
             case "number_of_dishonours":
@@ -924,7 +941,7 @@ $(document).ready(function () {
                             .removeClass("d-none")
                             .text("Please select at least one option.");
                     }
-                    return false;
+                    return true;
                 }
 
             default:
@@ -954,6 +971,7 @@ $(document).ready(function () {
             "negative_days",
             "interest_rate",
             "restricted_industry",
+            "security_requirement",
         ];
 
         for (const field of fieldsToValidate) {

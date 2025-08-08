@@ -808,8 +808,8 @@ select.form-control:focus {
 }
 
 #lenderTable_filter {
-    margin-top: 10px;
-    margin-right: 5px;
+    /* margin-top: 10px;
+    margin-right: 5px; */
 }
 
 .panel {
@@ -819,10 +819,10 @@ select.form-control:focus {
 }
 
 .header {
-    background: linear-gradient(90deg, #4a3f9ade 0%, #d15de8de 100%);
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    background: #dedede;
+
     padding: 1rem;
+    padding-left: 60px;
     color: white;
     font-size: 1.25rem;
     text-align: center;
@@ -954,16 +954,25 @@ span.hover-white:hover {
     border: 1px solid #ccc;
 }
 
-#lenderTable th,
+/* #lenderTable th, */
 #lenderTable td {
-    border: 1px solid #ccc;
+    /* border: 0.5px solid black !important; */
+}
+
+#lenderTable td,
+#lenderTable th {
+    border-left: none !important;
+    border-right: none !important;
 }
 
 #lenderTable thead th {
-    background-color: #f8f9fa;
+    background-color: white !important;
+}
+#lenderTable thead td {
+    background-color: white !important;
 }
 /* Odd rows */
-#lenderTable tbody tr.odd {
+/* #lenderTable tbody tr.odd {
     background-color: #f3f3ff !important;
 }
 
@@ -973,7 +982,7 @@ span.hover-white:hover {
         #e5d4f2 0%,
         #f7a0f5 100%
     ) !important;
-}
+} */
 /* 
 #Main_Lender_Edit_Modal .modal-content {
     z-index: 1070 !important;
@@ -1088,7 +1097,6 @@ span.hover-white:hover {
 }
 
 /* Shutter content (Edit Subproduct text) */
- 
 
 /* Hover effects */
 .sub-product-card:hover .left-shutter {
@@ -1105,4 +1113,63 @@ span.hover-white:hover {
 
 .sub-product-card:hover .card {
     opacity: 0.1;
+}
+
+.dataTables_filter label {
+    font-size: 0;
+}
+
+.dataTables_filter label input {
+    font-size: 1rem;
+}
+
+.dataTables_filter input {
+    height: 36px; /* desired height */
+    border-radius: 5px; /* rounded corners */
+    border: 1px solid #ccc; /* border color */
+    padding: 0 10px; /* horizontal padding */
+    font-size: 14px; /* font size */
+    outline: none; /* remove default outline */
+    transition: border-color 0.3s ease;
+    margin-top: -5px;
+    width: 500px;
+}
+
+.dataTables_filter input:focus {
+    border-color: #8659f6; /* focus border color */
+    box-shadow: 0 0 5px #8659f6;
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    padding-left: 35px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Important to prevent overflow */
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+#lenderTable_wrapper {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+.no-arrow {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
 }

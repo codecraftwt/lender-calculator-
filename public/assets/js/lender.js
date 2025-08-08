@@ -333,6 +333,11 @@ $(document).ready(function () {
                                             }</p ><p class="m-0" style="font-weight:600">APR: ${
                             parseFloat(product.interest_rate).toFixed(2) || ""
                         }</p > 
+                        <small class="text-warning security_text d-none" style="font-weight:600">
+                          security required for loan amounts over $${
+                              product.security_requirement
+                          } in this tier
+                        </small><br>
                                             <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size: 15px; margin-top: 10px; font-weight: 500;" class="text-decoration-underline">
                                                 View Product Guide <i class="fas fa-download"></i>
                                             </a>
@@ -341,6 +346,19 @@ $(document).ready(function () {
                                 </div>
                             </div>`;
                         $container.append(productHtml);
+                        const $newCard = $container.children().last();
+                        $newCard
+                            .find(".security_text")
+                            .toggleClass(
+                                "d-none",
+                                product.security_requirement <= 0
+                            );
+                        $newCard
+                            .find(".security_text")
+                            .toggleClass(
+                                "d-block",
+                                product.security_requirement > 0
+                            );
                     });
 
                     // ====== ADD BDM CONTACTS SECTION =======

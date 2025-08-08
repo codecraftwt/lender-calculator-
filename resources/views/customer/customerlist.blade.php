@@ -3,35 +3,49 @@
 @section('title', 'matrix Loan Matching')
 
 @section('content')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- Main content starts here -->
 <div class="row px-0">
-    <div style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-top-left-radius: 15px;border-top-right-radius: 15px;height:76px" class="header">
-        <h5 style="color: white; margin: 0; padding: 1rem;font-size:25px;font-weight:600;">Customer List</h5>
+
+    <div
+        class="header d-flex justify-content-center align-items-center"
+        style="height: 76px; background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); text-align: center;">
+        <h3 class="text-white m-0">Submission History</h3>
     </div>
+
     <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
 
         <!-- Left Panel -->
-        <div class="col-lg-12 mb-4 ">
+        <div class="col-lg-12 mb-4 p-4 " style="background-color: #dedede;min-width:1500px;margin-left:auto;margin-right:auto">
+
+            <div style="height:76px;" class="header d-flex align-items-center ml-4">
+                <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Members</h3>
+                <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px;" class="m-5 rounded border-none text-white p-1">
+                        <small>Add new</small>
+                    </button></a>
+                <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
+
+                <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                    <small style="color: white;">
+                        < &nbsp;Filter</small>
+                </button>
+            </div>
 
 
             <!-- <hr> -->
-            <table id="lenderTable" class="table table-striped p-1 table-bordered">
+            <table id="lenderTable" class="table p-1 " style="table-layout: fixed;font-family:sans-serif;background-color:white">
                 <thead>
                     <tr>
-                        <th>Sr.No</th>
-                        <th>Company Name</th>
-                        <th>Director Name</th>
-                        <th>Director Email</th>
-                        <th>Director Phone</th>
-                        <th>ABN Registration Date</th>
-                        <th>Time in Business</th>
-                        <th>GST Registration Time</th>
-                        <th>Entity Type</th>
-                        <th>Company Credit Score</th>
-                        <th>Loan Amount Needed</th>
-                        <th>Monthly Revenue</th>
-                        <th>Industry</th>
-                        <th>Submission Date</th>
+                        <!-- <th>Sr.No</th> -->
+                        <th> Date</th>
+                        <th> Name</th>
+                        <th>Business Name</th>
+                        <th> Email</th>
+                        <th> Phone</th>
+                        <th>Loan Amount </th>
+                        <th>status</th>
                         <th>Actions</th>
                         <th>Lenders</th>
                     </tr>
@@ -118,7 +132,9 @@
                 <hr />
 
                 <!-- Sub-product list will be injected into this container -->
-                <div id="loanProductsContainer" style="overflow-y: auto;padding-left: 15px;padding-right:15px" class="row g-4 mb-3"></div>
+                <div id="loanProductsContainer" style="overflow-y: auto;padding-left: 15px;padding-right:15px" class="row g-4 mb-3">
+
+                </div>
 
                 <!-- View Contacts Button -->
                 <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"

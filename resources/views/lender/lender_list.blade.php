@@ -551,6 +551,14 @@
                         <p class="text-danger d-none" id="invalid_interest_rate">Please enter valid interest rate.</p>
                     </div>
 
+                    <div class="col-md-4 mb-3">
+                        <label for="security_requirement" class="form-label">Security Threshold Amount <small>(if not apllicable then keep it empty)</small> </label>
+                        <div class="input-group">
+                            <input type="text" id="security_requirement" name="security_requirement" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_security_requirement">Please enter valid security amount.</p>
+                    </div>
+
                     <div class="col-md-4 mb-3 loan-details">
                         <label for="restricted_industry" class="form-label">
                             Restricted or excluded industries:

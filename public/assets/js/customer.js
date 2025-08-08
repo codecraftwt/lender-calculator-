@@ -1,138 +1,124 @@
 $(document).ready(function () {
-    $.ajax({
-        url: "/get-customers",
-        method: "GET",
-        success: function (data) {
-            const tableBody = $("#lenderTable tbody");
+    function getCustomerData() {
+        $.ajax({
+            url: "/get-customers",
+            method: "GET",
+            success: function (data) {
+                const tableBody = $("#lenderTable tbody");
 
-            var table = $("#lenderTable").DataTable();
+                // Destroy existing DataTable instance safely
+                if ($.fn.DataTable.isDataTable("#lenderTable")) {
+                    $("#lenderTable").DataTable().clear().destroy();
+                }
 
-            if ($.fn.DataTable.isDataTable("#lenderTable")) {
-                $("#lenderTable").DataTable().clear().destroy();
-            }
+                tableBody.empty();
 
-            tableBody.empty();
+                // Append your data rows
+                if (data.length > 0) {
+                    const getStatusColor = (status) => {
+                        if (status == 0) return "#fcc110fa"; // Bootstrap warning
+                        if (status == 1) return "#e35966"; // Bootstrap danger
+                        if (status == 2) return "#25f253"; // Bootstrap success
+                        return "#6af56ab0"; // default
+                    };
 
-            if (data.length > 0) {
-                data.forEach((item, index) => {
-                    const applicableLendersStr = JSON.stringify(
-                        item.applicable_lenders
-                    ).replace(/'/g, "&#39;");
+                    data.forEach((item, index) => {
+                        const applicableLendersStr = JSON.stringify(
+                            item.applicable_lenders
+                        ).replace(/'/g, "&#39;");
 
-                    const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.company_name || ""}</td>
-                    <td>${item.director_name || ""}</td>
-                    <td>${item.director_email || ""}</td>
-                    <td>${item.director_phone || ""}</td>
-                    <td>${item.abn_date || ""}</td>
-                     <td>${item.time_in_business || ""} Months</td>
-                    <td>${
-                        item.gst_time ? item.gst_time + " Months" : "Null"
-                    }</td>
-                     <td>${item.entity_type || ""}</td>
-                     <td>${
-                         item.company_credit_score && item.credit_score
-                             ? item.company_credit_score +
-                               " (" +
-                               item.credit_score +
-                               ")"
-                             : ""
-                     }</td>
-                    <td>$${item.loan_amt_needed || ""}</td>
-                    <td>$${item.monthly_revenue || ""}</td>
-                    <td>${item.industry_type}</td>
-                    <td>${
-                        item.created_at ? item.created_at.substring(0, 10) : ""
-                    }</td>
-                    
-                   
-                    <td>
-                       
-                    <a href="/customer-edit/${item.id}"><button 
-                            type="button" 
-                            data-id='${applicableLendersStr}'
-                            class="btn btn-sm btn-info"
-                            style=" color:white;">
-                            <i class="fas fa-pencil"></i>
-                        </button><a>
-                    </td>
-                     <td>
-                        <button 
-                            type="button" 
-                            data-id='${applicableLendersStr}'
-                            class="btn btn-sm btn-info view-btn"
-                            style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">
-                            View
-                        </button>
-                    </td>
+                        const row = `
+    <tr>
+    <td>${item.created_at ? item.created_at.substring(0, 10) : ""}</td>
+    <td>${item.director_name || ""}</td>
+    <td>${item.company_name || ""}</td>
+    <td>${item.director_email || ""}</td>
+    <td>${item.director_phone || ""}</td>
+    <td>$${item.loan_amt_needed || ""}</td>
+    <th><select name="status" 
+        style="width: 107px; border-radius:25px; border:none; background-color:${getStatusColor(
+            item.status
+        )}; color:white; height:35px"
+        class="btn no-arrow status" data-customer-id="${item.id}">
+    <option value="2" ${item.status == 2 ? "selected" : ""}>settled</option>
+    <option value="1" ${item.status == 1 ? "selected" : ""}>in-progress</option>
+    <option value="0" ${item.status == 0 ? "selected" : ""}>submitted</option>
+ </select></th>
+    <td>
+        <a href="/customer-edit/${item.id}">
+            <button
+                type="button"
+                data-id='${applicableLendersStr}'
+                class="btn btn-sm me-1"
+                style="color:rgb(86 66 161);">
+                <i class="fas fa-pencil"></i>
+            </button></a>
+            <button
+    type="button"
+    data-id="${item.id}"
+    class="btn btn-sm delete-btn"
+    style="color:rgb(86 66 161);">
+    <i class="fas fa-trash"></i>
+ </button>
+    </td>
+    <td>
+        <button
+            type="button"
+            data-id='${applicableLendersStr}'
+            class="btn btn-sm btn-info view-btn"
+            style="background: rgb(86 66 161);
+                   color:white;
+                   border:1px solid #8455d9">
+            View
+        </button>
+    </td>
+    </tr>`;
 
+                        tableBody.append(row);
+                    });
+                }
 
-                </tr>`;
-                    tableBody.append(row);
+                // ✅ Reinitialize DataTable with search enabled
+                const table = $("#lenderTable").DataTable({
+                    searching: true,
+                    dom: "rtip", // 'f' removed to hide default search
+                    columnDefs: [
+                        { targets: 0, width: "50px" }, // Date
+                        { targets: 1, width: "50px" }, // Director Name
+                        { targets: 2, width: "50px" }, // Company
+                        { targets: 3, width: "50px" }, // Email
+                        { targets: 4, width: "50px" }, // Phone
+                        { targets: 5, width: "50px" }, // Loan Amount
+                        { targets: 6, width: "50px" }, // Status
+                        { targets: 7, width: "50px" }, // Actions
+                        { targets: 8, width: "50px" }, // View
+                    ],
+                    autoWidth: false,
                 });
-            } else {
-            }
 
-            $("#lenderTable").DataTable({
-                paging: true,
-                lengthChange: false,
-                searching: true,
-                ordering: false,
-                info: true,
-                autoWidth: false, // IMPORTANT: disables automatic width calculation
-                responsive: true,
-                lengthMenu: [100, 120, 140, 160],
-                pageLength: 80,
-                dom: "Blfrtip",
-                columnDefs: [
-                    { width: "40px", targets: 0 },
-                    { width: "150px", targets: 1 },
-                    { width: "120px", targets: 2 },
-                    { width: "150px", targets: 3 },
-                    { width: "100px", targets: 4 },
-                    { width: "100px", targets: 5 },
-                    { width: "100px", targets: 6 },
-                    { width: "100px", targets: 7 },
-                    { width: "120px", targets: 8 },
-                    { width: "130px", targets: 9 },
-                    { width: "100px", targets: 10 },
-                    { width: "100px", targets: 11 },
-                    { width: "130px", targets: 12 },
-                    { width: "100px", targets: 13 },
-                    { width: "60px", targets: 14 },
-                    { width: "60px", targets: 15 },
-                ],
-                buttons: [
-                    {
-                        extend: "excelHtml5",
-                        text: "Export to Excel",
-                        exportOptions: {
-                            columns: [
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                            ],
-                        },
-                        title: "Customer List",
-                    },
-                    {
-                        extend: "print",
-                        text: "Print Table",
-                        orientation: "landscape",
-                        exportOptions: {
-                            columns: [
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                            ],
-                        },
-                        title: "Customer List",
-                    },
-                ],
-            });
-        },
-        error: function () {
-            alert("Failed to fetch data.");
-        },
-    });
+                // ✅ Create custom search box
+                const $customSearch = $(`
+            <div class="search-input-wrapper position-relative d-inline-block">
+                <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
+                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 30px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+            </div>
+        `);
+
+                // ✅ Insert it into placeholder
+                $("#customSearchWrapper").html($customSearch);
+
+                // ✅ Wire search input to DataTable instance
+                $("#customSearchInput").on("keyup", function () {
+                    table.search(this.value).draw();
+                });
+            },
+            error: function () {
+                alert("Failed to fetch data.");
+            },
+        });
+    }
+
+    getCustomerData();
 
     $(document).on("click", ".view-btn", function () {
         const dataId = $(this).attr("data-id");
@@ -224,23 +210,26 @@ $(document).ready(function () {
                         const productTypeIds = JSON.stringify(
                             lender.product_type_ids
                         );
+
                         const cardHtml = `
         <div class="col-6 col-md-6 mb-4 d-flex justify-content-center view-product-btn" 
              data-product-type-id='${productTypeIds}'>
             <div class="lender-box d-flex flex-column align-items-center justify-content-center p-3"
                 data-lender-id="${lender.lender_id}"
                 id="lenderCard${lender.lender_id}"
-                style="background-color: #ffffff; height: 124px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
-                
+                style="background-color: #ffffff; height: 150px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
+                <p style="color: #821a99;font-weight:700">${
+                    lender.product_type_ids.length
+                } Products Matched !</p>
                <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="${
                             lender.lender_name
                         }" 
     class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
                 
-                <a href="#" class="view-options text-decoration-underline " 
+                <a href="#"  style="text-decoration:none"><button class="view-options" 
                    data-id="${lender.lender_id}"
-                   style="font-size:15px; font-weight:700; color: #821a99">
-                   View Options
+                   style="font-size:15px; font-weight:700; color:white ;border-radius:10px;background-color:#821a99;border:none;width:170px">
+                   View Options</button>
                 </a>
             </div>
         </div>`;
@@ -395,7 +384,7 @@ $(document).ready(function () {
                     <div class="col-md-4">
                     
                    
-                        <div class="card sub-product-card border col-md-10  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
+                        <div class="card sub-product-card border col-md-12  p-3 h-100 " style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px;text-align: center;">
                         <div class="row">
                          <div class="col-md-2">
                           <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" class="" alt" style="width: 73px;height: 35px;">
@@ -416,7 +405,11 @@ $(document).ready(function () {
                         }</p>
                         </p ><pclass="m-0" style="font-weight:600">APR: ${
                             parseFloat(product.interest_rate).toFixed(2) || ""
-                        }</p >
+                        }</p >  <small class="text-warning security_text d-none" style="font-weight:600">
+                          security required for loan amounts over $${
+                              product.security_requirement
+                          } in this tier
+                        </small> <br>
                               <a href="${guideUrl}" 
                           target="_blank" 
                           style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" 
@@ -427,6 +420,20 @@ $(document).ready(function () {
                         </div>
                     </div>`;
                         $container.append(productHtml);
+
+                        const $newCard = $container.children().last();
+                        $newCard
+                            .find(".security_text")
+                            .toggleClass(
+                                "d-none",
+                                product.security_requirement <= 0
+                            );
+                        $newCard
+                            .find(".security_text")
+                            .toggleClass(
+                                "d-block",
+                                product.security_requirement > 0
+                            );
                     });
 
                     // ====== ADD BDM CONTACTS SECTION =======
@@ -582,82 +589,208 @@ $(document).ready(function () {
             },
         });
     }
+
+    function loadLenderLogo(imageUrl) {
+        const $logoImg = $("#modalLenderLogo");
+        const $loader = $("#logoLoader");
+
+        $logoImg.hide();
+        $logoImg.attr("src", imageUrl);
+
+        $logoImg
+            .on("load", function () {
+                $loader.hide();
+                $logoImg.show();
+            })
+            .on("error", function () {
+                $loader.hide();
+                $logoImg.hide();
+            });
+    }
+
+    function loadLenderLogo2(imageUrl) {
+        const $logoImg = $("#modalLenderLogo2");
+        const $loader = $("#logoLoader2");
+
+        $logoImg.hide();
+        $logoImg.attr("src", imageUrl);
+
+        $logoImg
+            .on("load", function () {
+                $loader.hide();
+                $logoImg.show();
+            })
+            .on("error", function () {
+                $loader.hide();
+                $logoImg.hide();
+            });
+    }
+
+    function resetLenderContactInfo2() {
+        console.log("asdfj");
+
+        $("#modalLenderLogo2").hide();
+        $("#logoLoader2")
+            .html(
+                '<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>'
+            )
+            .show();
+
+        $("#contactmodalwebsite").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+        $("#contactmodalurl").attr("href", "#");
+
+        $("#phone").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+
+        $("#email").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+    }
+
+    function resetLenderContactInfo() {
+        $("#modalLenderLogo").hide();
+        $("#logoLoader")
+            .html(
+                '<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>'
+            )
+            .show();
+
+        $("#modalwebsite").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+        $("#modalurl").attr("href", "#");
+
+        $("#modalPhone").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+
+        $("#modalEmail").html(
+            '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
+        );
+    }
+
+    $(document).ready(function () {
+        const table = $("#lenderTable").DataTable({
+            // your DataTable config
+            searching: true,
+            dom: "lrtip", // 'f' removed so default search isn't shown
+        });
+
+        // Get the default search input (this still exists even with dom: 'lrtip')
+        const $defaultInput = $(
+            '<input type="search"  aria-controls="lenderTable" class="form-control">'
+        );
+
+        // Listen to search manually
+        $defaultInput.on("keyup", function () {
+            table.search(this.value).draw();
+        });
+
+        // Create the wrapper with icon
+        const $customSearch = $(`
+    <div class="search-input-wrapper position-relative d-inline-block">
+      <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
+    </div>
+  `);
+
+        // Style input and append it
+        $defaultInput
+            .css({
+                paddingLeft: "30px",
+                height: "36px",
+                borderRadius: "25px",
+                border: "1px solid #ccc",
+            })
+            .appendTo($customSearch);
+
+        // Place the custom search in your wrapper
+        $("#customSearchWrapper").html($customSearch);
+    });
+
+    $(document).on("click", ".delete-btn", function () {
+        const customerId = $(this).data("id");
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action will delete the customer!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to delete route
+                window.location.href = `/customer-delete/${customerId}`;
+            }
+        });
+    });
+
+    $(document).on("change", ".status", function () {
+        const status = $(this).val();
+        const customerId = $(this).data("customer-id");
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+        });
+
+        $.ajax({
+            url: "/update-customer-status",
+            method: "POST",
+            data: {
+                status: status,
+                customer_id: customerId,
+            },
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "Customer Status updated successfully!",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                getCustomerData();
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    const firstError = Object.values(errors)[0][0];
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "error",
+                        title: firstError || "Validation failed!",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
+
+                    $.each(errors, function (key, messages) {
+                        $(`#invalid_${key}`)
+                            .removeClass("d-none")
+                            .text(messages[0]);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                    });
+                }
+            },
+        });
+    });
 });
-
-function loadLenderLogo(imageUrl) {
-    const $logoImg = $("#modalLenderLogo");
-    const $loader = $("#logoLoader");
-
-    $logoImg.hide();
-    $logoImg.attr("src", imageUrl);
-
-    $logoImg
-        .on("load", function () {
-            $loader.hide();
-            $logoImg.show();
-        })
-        .on("error", function () {
-            $loader.hide();
-            $logoImg.hide();
-        });
-}
-
-function loadLenderLogo2(imageUrl) {
-    const $logoImg = $("#modalLenderLogo2");
-    const $loader = $("#logoLoader2");
-
-    $logoImg.hide();
-    $logoImg.attr("src", imageUrl);
-
-    $logoImg
-        .on("load", function () {
-            $loader.hide();
-            $logoImg.show();
-        })
-        .on("error", function () {
-            $loader.hide();
-            $logoImg.hide();
-        });
-}
-
-function resetLenderContactInfo2() {
-    console.log("asdfj");
-
-    $("#modalLenderLogo2").hide();
-    $("#logoLoader2")
-        .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')
-        .show();
-
-    $("#contactmodalwebsite").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-    $("#contactmodalurl").attr("href", "#");
-
-    $("#phone").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-
-    $("#email").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-}
-
-function resetLenderContactInfo() {
-    $("#modalLenderLogo").hide();
-    $("#logoLoader")
-        .html('<i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>')
-        .show();
-
-    $("#modalwebsite").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-    $("#modalurl").attr("href", "#");
-
-    $("#modalPhone").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-
-    $("#modalEmail").html(
-        '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
-    );
-}

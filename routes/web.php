@@ -50,6 +50,8 @@ Route::get('/contact-us', function () {
 // customer routes
 Route::post('/save_data', [CustomerController::class, 'save_data']);
 Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
+Route::get('/customer-delete/{id}', [CustomerController::class, 'customer_delete']);
+Route::post('/update-customer-status', [CustomerController::class, 'update_customer_status']);
 Route::post('/update-customer', [CustomerController::class, 'update_customer']);
 Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
 Route::get('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth');

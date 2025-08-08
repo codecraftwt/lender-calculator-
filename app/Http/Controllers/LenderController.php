@@ -136,6 +136,8 @@ class LenderController extends Controller
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
                         'product_type_models.interest_rate',
+                        'product_type_models.security_requirement',
+
 
                     )
                     ->whereIn('product_type_models.id', $ids)
@@ -171,6 +173,7 @@ class LenderController extends Controller
                         'website_url' => $product->website_url,
                         'product_guide' => $product->product_guide,
                         'interest_rate' => $product->interest_rate,
+                        'security_requirement' => $product->security_requirement,
                         'contacts' => $contactsRaw->get($product->lender_id, collect()),
                     ];
                 });
@@ -214,8 +217,10 @@ class LenderController extends Controller
                 'product_type_models.sub_product_name',
                 'product_type_models.credit_score',
                 'product_type_models.interest_rate',
+                'product_type_models.security_requirement',
 
-                )
+
+            )
             ->whereIn('product_type_models.id', $ids)
             ->get();
 
@@ -264,6 +269,8 @@ class LenderController extends Controller
                 'product_type_models.GST_registration',
                 'product_type_models.trading_time',
                 'product_type_models.restricted_industry',
+                'product_type_models.security_requirement',
+
             )
             ->where('product_type_models.id', $subProductId)
             ->get();
@@ -478,8 +485,10 @@ class LenderController extends Controller
             'number_of_dishonours' => ['nullable', 'integer', 'min:0'],
             'negative_days' => ['nullable', 'integer', 'min:0'],
             'interest_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
-            'restricted_industry' => ['required', 'array', 'min:1'],
+            'restricted_industry' => ['nullable', 'array', 'min:1'],
             'restricted_industry.*' => ['string'],
+            'security_requirement' => ['nullable', 'numeric'],
+
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -504,6 +513,7 @@ class LenderController extends Controller
             'number_of_dishonours' => $request->number_of_dishonours,
             'negative_days' => $request->negative_days,
             'interest_rate' => $request->interest_rate,
+            'security_requirement' => $request->security_requirement,
             'restricted_industry' => json_encode($request->restricted_industry),
         ];
 

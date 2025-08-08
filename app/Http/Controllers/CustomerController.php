@@ -168,6 +168,8 @@ class CustomerController extends Controller
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
                         'product_type_models.interest_rate',
+                        'product_type_models.security_requirement',
+
 
                     )
                     ->whereIn('product_type_models.id', $ids)
@@ -203,6 +205,7 @@ class CustomerController extends Controller
                         'website_url' => $product->website_url,
                         'product_guide' => $product->product_guide,
                         'interest_rate' => $product->interest_rate,
+                        'security_requirement' => $product->security_requirement,
                         'contacts' => $contactsRaw->get($product->lender_id, collect()),
                     ];
                 });
@@ -252,8 +255,8 @@ class CustomerController extends Controller
                 'credit_score'         => 'required|numeric',
                 'monthly_revenue'      => 'required|numeric',
                 'negative_days'        => 'required|numeric',
-                'number_of_dishonours' => 'required|numeric',
-                'abn_gst'              => 'required|in:Yes,No',
+                'number_of_dishonours' => 'nullable|numeric',
+                'abn_gst'              => 'nullable|in:Yes,No',
                 'company_name'         => 'required|string',
                 'director_name'        => 'required|string',
                 'director_email'       => 'required|email',
@@ -309,5 +312,36 @@ class CustomerController extends Controller
         } else {
             return redirect('/customer-edit/' . $validated['customer_id'] . '')->with('error', 'Failed to Update the Data');
         }
+    }
+
+    public function customer_delete($id = null)
+    {
+        $customer_id = $id;
+
+        $data = CustomerModel::where('id', $customer_id)->update(['deleted_flag' => 1]);
+
+        if ($data) {
+            return redirect('/customer-list')->with('success', 'Customer Deleted Successfully');
+        } else {
+            return redirect('/customer-list')->with('error', 'Failed to Delete the Customer');
+        }
+    }
+
+    public function update_customer_status(Request $request)
+    {
+        $status = $request->input('status');
+        $customer_id = $request->input('customer_id');
+
+        // You can update the record here
+        CustomerModel::where('id', $customer_id)->update(['status' => $status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully.',
+            'data' => [
+                'status' => $status,
+                'customer_id' => $customer_id,
+            ]
+        ]);
     }
 }
