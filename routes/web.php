@@ -88,3 +88,9 @@ Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_pr
 // add user
 Route::get('/add-user', [UserController::class, 'add_user'])->middleware(['auth', 'admin']);
 Route::post('/store-user', [UserController::class, 'store_user'])->middleware(['auth', 'admin']);
+
+
+
+Route::get('/slider', function () {
+    return view('lender.slider');
+});
