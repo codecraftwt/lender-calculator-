@@ -936,15 +936,15 @@ span.hover-white:hover {
 
 #lenderDetailModal .modal-content {
     z-index: 1060 !important;
-    min-height: 90vh !important;
-    width: 90% !important;
+    min-height: 94vh !important;
+    width: 95% !important;
     margin-top: 1vh !important;
 }
 
 #lenderContactModal .modal-content {
     z-index: 1070 !important;
-    min-height: 88vh !important;
-    width: 85% !important;
+    min-height: 94vh !important;
+    width: 95% !important;
     margin-top: 2vh !important;
 }
 
@@ -1172,4 +1172,41 @@ span.hover-white:hover {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: none;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 8px;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    background-color: #c9aed4;
+    margin: 3px;
+}
+.contact-name {
+    /* background-color: #c9aed4; */
+    color: #4a2670;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 150px;
+}
+.contact-role {
+    flex: 1;
+    padding-left: 15px;
+    font-weight: 500;
+}
+.contact-phone,
+.contact-email {
+    display: flex;
+    align-items: center;
+    color: #555;
+    font-weight: 500;
+    margin-left: 20px;
+    white-space: nowrap;
+}
+.contact-phone i,
+.contact-email i {
+    margin-right: 6px;
+    color: #852aa3;
 }

@@ -86,44 +86,65 @@
 
     <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-            style="width: 90%; max-width: 1500px; z-index: 1060;">
-            <div class="modal-content" style="min-height: 80vh !important; margin-top: 2vh !important;padding:29px;max-height: 85vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            style="width: 97%; max-width: 1600px; z-index: 1060;">
+            <div class="modal-content p-5" style="min-height: 90vh;">
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
-                        <!-- Loader (shown initially) -->
-                        <span id="logoLoader" class="" role="status" style="width: 2rem; height: 2rem;">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
-                        </span>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                                <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                                    <!-- Loader (shown initially) -->
+                                    <span id="logoLoader" class="" role="status" style="width: 2rem; height: 2rem;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                                    </span>
 
-                        <!-- Lender Logo (hidden initially) -->
-                        <img id="modalLenderLogo" src="" alt="Lender Logo"
-                            style="height: 80px; width: auto; display: none;" class="me-3" />
-                    </div>
+                                    <!-- Lender Logo (hidden initially) -->
+                                    <img id="modalLenderLogo" src="" alt="Lender Logo"
+                                        style="height: 80px; width: auto; display: none;" class="me-3" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                                <div style="display: flex;" class="mt-3">
+                                    <p>
+                                        <a id="modalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
+                                            <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
+                                            <span id="modalwebsite" style="color: black;">
+                                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                            </span>
+                                        </a>
+                                    </p>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <p class="mb-1">
+                                        <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
+                                        <span id="modalPhone">
+                                            <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4   justify-content-center align-items-center h-100">
+                                <p class="mb-0 " style="margin-left: 17px;">
+                                    <i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i>
+                                    <span id="modalEmail">
+                                        <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                    </span>
+                                </p>
 
-                    <div class="mb-4 ml-4">
-                        <p>
-                            <a id="modalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
-                                <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
-                                <span id="modalwebsite" style="color: black;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                                </span>
-                            </a>
-                        </p>
-                        <p class="mb-1">
-                            <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
-                            <span id="modalPhone">
-                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                            </span>
-                        </p>
-                        <p class="mb-0">
-                            <i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i>
-                            <span id="modalEmail">
-                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                            </span>
-                        </p>
+                                <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"
+                                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-radius: 20px; border: none; width: 185px; height: 28px; font-weight: 600;" data-lender-id="">
+                                    View Lender Contacts
+                                </button>
+                            </div>
 
+
+                            <!-- <div class="mb-4">
+
+
+
+                            </div> -->
+                        </div>
                     </div>
                 </div>
 
@@ -135,10 +156,7 @@
                 </div>
 
                 <!-- View Contacts Button -->
-                <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"
-                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-radius: 20px; border: none; width: 185px; height: 28px; font-weight: 600;">
-                    View Lender Contacts
-                </button>
+
 
                 <!-- Footer -->
                 <div class="modal-footer mt-4">
@@ -155,67 +173,171 @@
 
     <div id="lenderContactModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-            style="width: 85%; max-width: 1400px;; z-index: 1070;">
-            <div class="modal-content" style="min-height: 70vh !important; margin-top: 4vh !important;padding:30px;max-height: 78vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);margin-left: 18px;">
+            style="width: 97%; max-width: 1600px; z-index: 1060;">
+            <div class="modal-content p-5" style="min-height: 90vh;">
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
-                        <!-- Loader (shown initially) -->
-                        <span id="logoLoader2" class="" role="status" style="width: 2rem; height: 2rem;">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
-                        </span>
 
-                        <!-- Lender Logo (hidden initially) -->
-                        <img id="modalLenderLogo2" src="" alt="Lender Logo"
-                            style="height: 60px; width: auto; display: none;" class="me-3" />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                                <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                                    <!-- Loader (shown initially) -->
+                                    <span id="logoLoader2" class="" role="status" style="width: 2rem; height: 2rem;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                                    </span>
+
+                                    <!-- Lender Logo (hidden initially) -->
+                                    <img id="modalLenderLogo2" src="" alt="Lender Logo"
+                                        style="height: 80px; width: auto; display: none;" class="me-3" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                                <div style="display: flex;" class="mt-5">
+                                    <p>
+                                        <a id="contactmodalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
+                                            <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
+                                            <span id="contactmodalwebsite" style="color: black;">
+                                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                            </span>
+                                        </a>
+                                    </p>
+                                    &nbsp;&nbsp;
+                                    <p class="mb-1">
+                                        <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
+                                        <span id="phone">
+                                            <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                        </span>
+                                    </p>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
                     </div>
-                    <div class="mb-4 ml-4">
 
-
-                        <p>
-                            <a id="contactmodalurl" href="#" target="_blank" style="text-decoration: none; cursor: pointer;">
-                                <i class="fas fa-globe" style="color: #852aa3; font-size: 20px;"></i>
-                                <span id="contactmodalwebsite" style="color: black;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                                </span>
-                            </a>
-                        </p>
-                        <p class="mb-1">
-                            <i class="fas fa-mobile" style="color: #852aa3; font-size: 20px;"></i>
-                            <span id="phone">
-                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                            </span>
-                        </p>
-                        <p class="mb-0">
-                            <i class="fas fa-envelope" style="color: #852aa3; font-size: 20px;"></i>
-                            <span id="email">
-                                <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
-                            </span>
-                        </p>
-                    </div>
                 </div>
 
                 <hr />
 
-                <!-- Contacts Table -->
-                <div style="overflow-x: auto;">
-                    <h4 style="color:#852aa3;font-size:25px;font-weight: bold; ">
-                        BDM Contacts
-                    </h4>
-                    <table id="lenderContactTable" class="contact-table">
 
-                        <!-- Dynamic contact rows will be injected here -->
-                    </table>
+                <div class="container mt-3" style="max-width: 600px;">
+                    <div class="bg-purple p-2 text-white fw-bold d-flex justify-content-between align-items-center" style="background-color:#6a4b8c;">
+                        <span>CONTACTS</span>
+                        <input type="search" class="form-control form-control-sm" style="width: 200px;" placeholder="Search">
+                    </div>
+
+                    <div class="accordion mt-2" id="contactsAccordion">
+
+                        <!-- New South Wales -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingNSW">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNSW" aria-expanded="false" aria-controls="collapseNSW">
+                                    New South Wales
+                                </button>
+                            </h2>
+                            <div id="collapseNSW" class="accordion-collapse collapse" aria-labelledby="headingNSW" data-bs-parent="#contactsAccordion">
+                                <div class="contact-row">
+                                    <div class="contact-name">Stewart Hickey</div>
+                                    <div class="contact-role">Head of Commercial (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0432 968 138
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
+                                    </div>
+                                </div>
+
+                                <div class="contact-row">
+                                    <div class="contact-name">Caitie McCann</div>
+                                    <div class="contact-role">Business Development Manager (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0412 123 123
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Queensland -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingQLD">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQLD" aria-expanded="false" aria-controls="collapseQLD">
+                                    Queensland
+                                </button>
+                            </h2>
+                            <div id="collapseQLD" class="accordion-collapse collapse" aria-labelledby="headingQLD" data-bs-parent="#contactsAccordion">
+                                <div class="contact-row">
+                                    <div class="contact-name">Stewart Hickey</div>
+                                    <div class="contact-role">Head of Commercial (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0432 968 138
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
+                                    </div>
+                                </div>
+
+                                <div class="contact-row">
+                                    <div class="contact-name">Caitie McCann</div>
+                                    <div class="contact-role">Business Development Manager (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0412 123 123
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Victoria / Tasmania -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingVIC">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVIC" aria-expanded="false" aria-controls="collapseVIC">
+                                    Victoria / Tasmania
+                                </button>
+                            </h2>
+                            <div id="collapseVIC" class="accordion-collapse collapse" aria-labelledby="headingVIC" data-bs-parent="#contactsAccordion">
+                                <div class="contact-row">
+                                    <div class="contact-name">Stewart Hickey</div>
+                                    <div class="contact-role">Head of Commercial (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0432 968 138
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
+                                    </div>
+                                </div>
+
+                                <div class="contact-row">
+                                    <div class="contact-name">Caitie McCann</div>
+                                    <div class="contact-role">Business Development Manager (NSW)</div>
+                                    <div class="contact-phone">
+                                        <i class="fas fa-phone"></i> 0412 123 123
+                                    </div>
+                                    <div class="contact-email">
+                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- South Australia / Western Australia -->
+
+
+                    </div>
                 </div>
 
                 <!-- Footer -->
-                <div class="modal-footer mt-4">
-                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
-                        ← Back to Lenders
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
