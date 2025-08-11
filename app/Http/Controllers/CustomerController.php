@@ -78,6 +78,7 @@ class CustomerController extends Controller
             'property_owner'        => $validated['property_owner'],
             'industry_type'         => $validated['industry_type'],
             'gst_time'              => $validated['gst_time'],
+            'added_by' => auth()->id(),
         ]);
 
 
@@ -96,9 +97,24 @@ class CustomerController extends Controller
 
     public function get_customers()
     {
-        $customers = CustomerModel::where('deleted_flag', 0)->get();
+        $user = auth()->user();
+
+        if ($user->role === 'Broker') {
+            // Broker: get only customers added by this user
+            $customers = CustomerModel::where('deleted_flag', 0)
+                ->where('added_by', $user->id)
+                ->get();
+        } elseif ($user->role === 'Admin') {
+            // Admin: get all customers not deleted
+            $customers = CustomerModel::where('deleted_flag', 0)->get();
+        } else {
+            // Optionally, handle other roles or deny access
+            $customers = collect(); // empty collection or handle as needed
+        }
+
         return response()->json($customers);
     }
+
 
     public function get_applicable_lenders(Request $request)
     {
@@ -230,10 +246,25 @@ class CustomerController extends Controller
             ->unique()
             ->values();
 
-        $data = CustomerModel::where('id', $id)->where('deleted_flag', 0)->get();
-        // print_r($data);
 
-        return view('customer.customer_edit', compact('restricted_industries', 'data'));
+        $user = auth()->user();
+
+        if ($user->role === 'Broker') {
+            $data = CustomerModel::where('id', $id)->where('deleted_flag', 0)->where('added_by', auth()->id())->get();
+        } elseif ($user->role === 'Admin') {
+            // Admin: get all customers not deleted
+            $data = CustomerModel::where('id', $id)->where('deleted_flag', 0)->get();
+        }
+
+
+
+
+        // print_r($data);
+        if (count($data) > 0) {
+            return view('customer.customer_edit', compact('restricted_industries', 'data'));
+        } else {
+            return redirect()->back()->with('error', 'Authorization denied.');
+        }
     }
 
     public function update_customer(Request $request)
@@ -316,9 +347,16 @@ class CustomerController extends Controller
 
     public function customer_delete($id = null)
     {
-        $customer_id = $id;
 
-        $data = CustomerModel::where('id', $customer_id)->update(['deleted_flag' => 1]);
+        $user = auth()->user();
+
+        if ($user->role === 'Broker') {
+            $data = CustomerModel::where('id', $id)->where('added_by', auth()->id())->update(['deleted_flag' => 1]);
+        } elseif ($user->role === 'Admin') {
+            // Admin: get all customers not deleted
+            $data = CustomerModel::where('id', $id)->update(['deleted_flag' => 1]);
+        }
+
 
         if ($data) {
             return redirect('/customer-list')->with('success', 'Customer Deleted Successfully');

@@ -218,12 +218,7 @@ $(document).ready(function () {
 
             case "negative_days":
             case "number_of_dishonours":
-                // Allow empty value
-                if (!val) {
-                    return true;
-                }
-
-                // Validate only if value is not empty
+                // Always validate (empty is invalid)
                 return (
                     /^[0-9]+$/.test(val) ||
                     (showErrorMessage &&

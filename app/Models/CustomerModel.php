@@ -35,6 +35,7 @@ class CustomerModel extends Model
         'industry_type',
         'gst_time',
         'number_of_dishonours',
-        'GST_registration'
+        'GST_registration',
+        'added_by'
     ];
 }

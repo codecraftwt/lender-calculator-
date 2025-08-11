@@ -32,8 +32,7 @@ $(document).ready(function () {
     <td>${item.created_at ? item.created_at.substring(0, 10) : ""}</td>
     <td>${item.director_name || ""}</td>
     <td>${item.company_name || ""}</td>
-    <td>${item.director_email || ""}</td>
-    <td>${item.director_phone || ""}</td>
+    
     <td>$${item.loan_amt_needed || ""}</td>
     <th><select name="status" 
         style="width: 107px; border-radius:25px; border:none; background-color:${getStatusColor(
@@ -82,17 +81,7 @@ $(document).ready(function () {
                 const table = $("#lenderTable").DataTable({
                     searching: true,
                     dom: "rtip", // 'f' removed to hide default search
-                    columnDefs: [
-                        { targets: 0, width: "50px" }, // Date
-                        { targets: 1, width: "50px" }, // Director Name
-                        { targets: 2, width: "50px" }, // Company
-                        { targets: 3, width: "50px" }, // Email
-                        { targets: 4, width: "50px" }, // Phone
-                        { targets: 5, width: "50px" }, // Loan Amount
-                        { targets: 6, width: "50px" }, // Status
-                        { targets: 7, width: "50px" }, // Actions
-                        { targets: 8, width: "50px" }, // View
-                    ],
+
                     autoWidth: false,
                 });
 

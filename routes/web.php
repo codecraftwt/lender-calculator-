@@ -86,5 +86,5 @@ Route::post('/update-product-data', [LenderController::class, 'update_product_da
 Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data']);
 
 // add user
-Route::get('/add-user', [UserController::class, 'add_user']);
-Route::post('/store-user', [UserController::class, 'store_user']);
+Route::get('/add-user', [UserController::class, 'add_user'])->middleware(['auth', 'admin']);
+Route::post('/store-user', [UserController::class, 'store_user'])->middleware(['auth', 'admin']);
