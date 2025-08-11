@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LenderController;
+use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -60,9 +61,9 @@ Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products'])
 
 
 // api route
-Route::get('/search-company', 'CompanySearchController@searchCompany');
+// Route::get('/search-company', 'CompanySearchController@searchCompany');
 Auth::routes();
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');    
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
@@ -83,3 +84,7 @@ Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
 Route::post('/update-main-lender-data', [LenderController::class, 'update_main_lender_data']);
 Route::post('/update-product-data', [LenderController::class, 'update_product_data']);
 Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data']);
+
+// add user
+Route::get('/add-user', [UserController::class, 'add_user']);
+Route::post('/store-user', [UserController::class, 'store_user']);
