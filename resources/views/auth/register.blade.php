@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center" style="min-height: 100vh; padding-top: 50px;">
@@ -10,7 +12,7 @@
                 </div>
 
                 <div class="card-body" style="background-color: #fff; border-radius: 0 0 10px 10px;">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ url('store-user') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -44,6 +46,27 @@
                                     style="border-radius: 8px; border: 1px solid #ccc; padding: 10px;">
 
                                 @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end" style="font-weight: 500;">
+                                {{ __('Role') }}
+                            </label>
+
+                            <div class="col-md-6">
+                                <select name="role" id="role" class="col-md-4 col-form-label text-md-start form-control" style="font-weight: 500;">
+                                    <option value="">Select role</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Broker">Broker</option>
+
+                                </select>
+
+                                @error('role')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -93,6 +116,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
