@@ -19,6 +19,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0432 968 138',
                 'title' => 'Senior Partner | Head of Commercial NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 1,
@@ -28,6 +29,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0480 039 366',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 1,
@@ -37,6 +39,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0480 039 500',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 1,
@@ -46,6 +49,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0480 039 368',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 1,
@@ -55,6 +59,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0432 964 611',
                 'title' => 'Senior Partner | Head of Commercial QLD',
                 'deleted_flag' => 0,
+                'state'  => 'Queensland'
             ],
             [
                 'lender_id' => 1,
@@ -64,6 +69,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0459 457 297',
                 'title' => 'Business Development Manager - QLD',
                 'deleted_flag' => 0,
+                'state'  => 'Queensland'
+
             ],
             [
                 'lender_id' => 1,
@@ -73,6 +80,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0432 955 779',
                 'title' => 'Business Development Manager - QLD',
                 'deleted_flag' => 0,
+                'state'  => 'Queensland'
+
             ],
             [
                 'lender_id' => 1,
@@ -82,6 +91,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0484 790 456',
                 'title' => 'Senior Partner | Head of Commercial VIC/TAS',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria/Tasmania'
+
             ],
             [
                 'lender_id' => 1,
@@ -91,6 +102,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0460 747 627',
                 'title' => 'Business Development Manager - VIC',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria/Tasmania'
+
             ],
             [
                 'lender_id' => 1,
@@ -100,6 +113,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0474 444 878',
                 'title' => 'Business Development Manager - VIC',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria/Tasmania'
+
             ],
 
             [
@@ -110,6 +125,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0460 892 035',
                 'title' => 'Business Development Manager – SA & WA',
                 'deleted_flag' => 0,
+                'state'  => 'South Australia / Western Australia'
+
             ],
 
             // Lumi contacts
@@ -122,6 +139,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – Nationwide',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 3,
@@ -131,6 +149,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – National',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 3,
@@ -140,6 +159,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 072 068',
                 'title' => 'Sales Team Lead – Broker Accounts',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 3,
@@ -149,6 +169,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0415 427 695',
                 'title' => 'Head of Broker',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 3,
@@ -158,6 +179,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 093 924',
                 'title' => '',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 3,
@@ -167,6 +189,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0420 506 530',
                 'title' => 'Senior BDM - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales',
+
             ],
             [
                 'lender_id' => 3,
@@ -176,6 +200,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0477 573 377',
                 'title' => 'BDM – NSW & ACT',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 3,
@@ -185,6 +210,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 078 255',
                 'title' => 'BDM – NSW & ACT',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 3,
@@ -194,6 +220,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – QLD/SA/WA',
                 'deleted_flag' => 0,
+                'state'  => 'QueensLand / South Australia / Western Australia'
             ],
             [
                 'lender_id' => 3,
@@ -203,6 +230,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – VIC/TAS/SA',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania'
             ],
             [
                 'lender_id' => 3,
@@ -212,6 +240,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – VIC/TAS/SA',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania'
             ],
             [
                 'lender_id' => 3,
@@ -221,6 +250,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM – VIC',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania'
             ],
 
 
@@ -232,6 +262,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0477 893 411',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
+
             ],
             [
                 'lender_id' => 18,
@@ -241,6 +273,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0428 628 765',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 18,
@@ -250,6 +283,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0466 778 998',
                 'title' => 'Business Development Manager - NSW',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 18,
@@ -259,6 +293,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0411 326 245',
                 'title' => 'Direct Business Development Manager',
                 'deleted_flag' => 0,
+                'state'  => 'New South Wales'
             ],
             [
                 'lender_id' => 18,
@@ -268,6 +303,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0434 019 725',
                 'title' => 'Southern Region Sales Manager',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania / South Australia'
             ],
             [
                 'lender_id' => 18,
@@ -277,6 +313,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0493 576 991',
                 'title' => 'Business Development Manager - VIC',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania / South Australia'
             ],
             [
                 'lender_id' => 18,
@@ -286,6 +323,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0493 371 194',
                 'title' => 'Business Development Manager - VIC/SA/TAS',
                 'deleted_flag' => 0,
+                'state'  => 'Victoria / Tasmania / South Australia'
             ],
             [
                 'lender_id' => 18,
@@ -295,6 +333,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0433 075 561',
                 'title' => 'Business Development Manager - QLD',
                 'deleted_flag' => 0,
+                'state'  => 'Queensland'
             ],
             [
                 'lender_id' => 18,
@@ -304,7 +343,9 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0422 867 909',
                 'title' => 'Business Development Manager - WA',
                 'deleted_flag' => 0,
+                'state'  => 'Western Australia'
             ],
+
 
             [
                 'lender_id' => 9,
@@ -314,6 +355,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0497 357 354',
                 'title' => 'Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
 
@@ -326,6 +368,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0420 234 805',
                 'title' => 'Senior Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 11,
@@ -335,6 +378,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0438 461 710',
                 'title' => 'Senior Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 11,
@@ -344,6 +388,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0483 916 858',
                 'title' => 'Senior Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 11,
@@ -353,6 +398,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0485 878 364',
                 'title' => 'Broker Relationships - Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 11,
@@ -362,6 +408,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0483 914 151',
                 'title' => 'Broker Relationship Specialist',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             [
@@ -372,6 +419,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0433 182 449',
                 'title' => 'Sales Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
 
@@ -385,6 +433,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 096 691',
                 'title' => 'Business Development Manager – NSW, QLD & ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Queensland / Australian Capital Territory'
             ],
             [
                 'lender_id' => 12,
@@ -394,6 +443,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0433 604 876',
                 'title' => 'Business Development Manager – VIC, TAS, SA & WA',
                 'deleted_flag' => 0,
+                'state' => null
+
             ],
             [
                 'lender_id' => 12,
@@ -403,6 +454,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 089 027',
                 'title' => 'Senior Business Development Manager – NSW, QLD & ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Queensland / Australian Capital Territory'
             ],
             [
                 'lender_id' => 12,
@@ -412,6 +464,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 085 987',
                 'title' => 'Business Development Manager – NSW, QLD & ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Queensland / Australian Capital Territory'
             ],
             [
                 'lender_id' => 12,
@@ -421,6 +474,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 095 957',
                 'title' => 'Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             [
@@ -431,6 +485,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0400 782 820',
                 'title' => 'National BDM Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             // finance one
@@ -442,6 +497,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0476 902 871',
                 'title' => 'BDM – NSW, ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales'
             ],
             [
                 'lender_id' => 8,
@@ -451,6 +507,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0437 628 778',
                 'title' => 'BDM – NSW',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales'
             ],
             [
                 'lender_id' => 8,
@@ -460,6 +517,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0447 226 833',
                 'title' => 'BDM – NSW',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales'
             ],
             [
                 'lender_id' => 8,
@@ -469,6 +527,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0419 943 461',
                 'title' => 'BDM – QLD North',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Western Australia'
             ],
             [
                 'lender_id' => 8,
@@ -478,6 +537,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0428 274 762',
                 'title' => 'BDM – QLD South',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Western Australia'
             ],
             [
                 'lender_id' => 8,
@@ -487,6 +547,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0460 556 568',
                 'title' => 'BDM – QLD & WA',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Western Australia'
             ],
             [
                 'lender_id' => 8,
@@ -496,6 +557,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0488 208 060',
                 'title' => 'BDM – VIC & TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia'
             ],
             [
                 'lender_id' => 8,
@@ -505,6 +567,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0428 870 297',
                 'title' => 'BDM – SA & VIC',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia'
             ],
             [
                 'lender_id' => 8,
@@ -514,6 +577,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0418 307 904',
                 'title' => 'BDM – VIC & SA',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia'
             ],
 
 
@@ -527,6 +591,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0490 784 834',
                 'title' => 'Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 17,
@@ -536,6 +601,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => '',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             // moneytech
@@ -548,6 +614,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0432 300 686',
                 'title' => 'National Sales Manager - Small Business',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 19,
@@ -557,6 +624,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0405 078 004',
                 'title' => 'BDM - Small Business NSW',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 19,
@@ -566,6 +634,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0414 640 715',
                 'title' => 'BDM - Small Business VIC, TAS & SA',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 19,
@@ -575,6 +644,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0423 860 410',
                 'title' => 'BDM - Small Business QLD & WA',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 19,
@@ -584,6 +654,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0491 221 271',
                 'title' => 'BDM',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
 
@@ -597,6 +668,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0448 253 430',
                 'title' => 'Head of Sales',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -606,6 +678,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0447 789 482',
                 'title' => 'Regional Sales Manager - VIC, SA, TAS & WA',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -615,6 +688,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0419 675 792',
                 'title' => 'Regional Sales Manager - NSW, ACT & QLD',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -624,6 +698,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0418 276 391',
                 'title' => 'BDM - VIC & TAS',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -633,6 +708,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0498 073 583',
                 'title' => 'BDM - QLD',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -642,6 +718,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0457 090 612',
                 'title' => 'BDM - SA & WA',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 4,
@@ -651,6 +728,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0429 185 386',
                 'title' => 'BDM - NSW',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             // ondeck
@@ -663,6 +741,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'Head of Partnerships',
                 'deleted_flag' => 0,
+                'state' => null
+
             ],
             [
                 'lender_id' => 6,
@@ -672,6 +752,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0482 094 050',
                 'title' => 'BDM - NSW, ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Australian Capital Territory',
             ],
             [
                 'lender_id' => 6,
@@ -681,6 +762,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0481 609 110',
                 'title' => 'BDM - NSW, ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Australian Capital Territory'
             ],
             [
                 'lender_id' => 6,
@@ -690,6 +772,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0480 095 589',
                 'title' => 'BDM - NSW, ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Australian Capital Territory'
             ],
             [
                 'lender_id' => 6,
@@ -699,6 +782,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0483 980 889',
                 'title' => 'BDM - VIC, SA, WA, TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / South Australia / Western Australia / Tasmania'
             ],
             [
                 'lender_id' => 6,
@@ -708,6 +792,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0483 928 717',
                 'title' => 'BDM - VIC, SA, WA, TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / South Australia / Western Australia / Tasmania'
             ],
             [
                 'lender_id' => 6,
@@ -717,6 +802,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0489 088 735',
                 'title' => 'BDM - QLD, NT',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
             // Propsa
@@ -729,6 +815,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'General Manager of Sales & Partnerships',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 5,
@@ -738,6 +825,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'National Sales Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 5,
@@ -747,6 +835,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'Senior BDM - NSW/ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Australian Capital Territory'
             ],
             [
                 'lender_id' => 5,
@@ -756,6 +845,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM - NSW/ACT',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales / Australian Capital Territory'
             ],
             [
                 'lender_id' => 5,
@@ -765,6 +855,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0402 007 225',
                 'title' => 'Senior BDM - SA/NT',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 5,
@@ -774,6 +865,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM - VIC/TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania'
             ],
             [
                 'lender_id' => 5,
@@ -783,6 +875,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0415 126 128',
                 'title' => 'BDM - VIC/TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania'
             ],
             [
                 'lender_id' => 5,
@@ -792,6 +885,9 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM - QLD',
                 'deleted_flag' => 0,
+                'state' => 'Queensland'
+
+
             ],
             [
                 'lender_id' => 5,
@@ -801,6 +897,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'BDM - QLD',
                 'deleted_flag' => 0,
+                'state' => 'Queensland'
+
             ],
 
             // scotpac 
@@ -813,6 +911,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0426 992 663',
                 'title' => 'BDM',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 7,
@@ -822,6 +921,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0413 366 355',
                 'title' => 'Head of Sales - Business Lending',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
 
@@ -835,6 +935,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'Head of Broker Sales',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 2,
@@ -844,6 +945,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '',
                 'title' => 'National Manager, Strategic Partnerships',
                 'deleted_flag' => 0,
+                'state' => null
             ],
             [
                 'lender_id' => 2,
@@ -853,6 +955,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0413 454 125',
                 'title' => 'State Manager - NSW',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales',
+
             ],
             [
                 'lender_id' => 2,
@@ -862,6 +966,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0455 180 013',
                 'title' => 'BDM - NSW',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales',
+
             ],
             [
                 'lender_id' => 2,
@@ -871,6 +977,8 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0497 163 300',
                 'title' => 'BDM - NSW',
                 'deleted_flag' => 0,
+                'state' => 'New South Wales',
+
             ],
             [
                 'lender_id' => 2,
@@ -880,6 +988,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0473 061 282',
                 'title' => 'State Manager - QLD',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Northern Territory ',
             ],
             [
                 'lender_id' => 2,
@@ -889,6 +998,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0417 909 260',
                 'title' => 'BDM - QLD',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Northern Territory ',
             ],
             [
                 'lender_id' => 2,
@@ -898,6 +1008,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0488 844 033',
                 'title' => 'BDM - QLD/NT',
                 'deleted_flag' => 0,
+                'state' => 'Queensland / Northern Territory ',
             ],
             [
                 'lender_id' => 2,
@@ -907,6 +1018,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0424 246 653',
                 'title' => 'State Manager - VIC',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -916,6 +1028,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0414 373 907',
                 'title' => 'BDM - VIC/SA',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -925,6 +1038,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0481 992 508',
                 'title' => 'BDM - VIC/TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -934,6 +1048,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0493 108 368',
                 'title' => 'BDM - VIC/TAS',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -943,6 +1058,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0434 117 814',
                 'title' => 'BDM - VIC',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -952,6 +1068,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0480 040 846',
                 'title' => 'BDM - VIC',
                 'deleted_flag' => 0,
+                'state' => 'Victoria / Tasmania / South Australia',
             ],
             [
                 'lender_id' => 2,
@@ -961,6 +1078,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0412 946 050',
                 'title' => 'State Manager - WA',
                 'deleted_flag' => 0,
+                'state' => 'Western Australia',
             ],
             [
                 'lender_id' => 2,
@@ -970,6 +1088,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0432 054 190',
                 'title' => 'BDM - WA',
                 'deleted_flag' => 0,
+                'state' => 'Western Australia',
             ],
 
 
@@ -983,6 +1102,7 @@ class LenderContactsSeeder extends Seeder
                 'mobile_number' => '0426 513 618',
                 'title' => 'Business Development Manager',
                 'deleted_flag' => 0,
+                'state' => null
             ],
 
 

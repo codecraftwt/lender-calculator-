@@ -78,6 +78,9 @@ Route::get('/get-product-data-with-subproducts', [LenderController::class, 'get_
 Route::get('/get-sub-product-data', [LenderController::class, 'get_sub_product_data']);
 
 Route::get('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
+Route::get('/search-contact', [LenderController::class, 'search_contact']);
+
+
 
 Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
 
