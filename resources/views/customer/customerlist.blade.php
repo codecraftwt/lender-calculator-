@@ -69,7 +69,7 @@
                     <div class="panel ebroker-lender-panel p-4 rounded-3 shadow-sm">
                         <div class="lender-cards row g-3" id="applicableLenderCards">
                             <div id="loader" class="text-center my-4" style="display: none;">
-                                <img src="{{ asset('assets/images/loader.gif') }}" alt="Loading...">
+                                <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading...">
                             </div>
                         </div>
                     </div>
@@ -96,8 +96,8 @@
                             <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
                                 <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
                                     <!-- Loader (shown initially) -->
-                                    <span id="logoLoader" class="" role="status" style="width: 2rem; height: 2rem;">
-                                        <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                                    <span id="product_modal_lender_logo_spinner" class="" role="status" style="width: 2rem; height: 2rem;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
                                     </span>
 
                                     <!-- Lender Logo (hidden initially) -->
@@ -185,7 +185,7 @@
                                 <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
                                     <!-- Loader (shown initially) -->
                                     <span id="logoLoader2" class="" role="status" style="width: 2rem; height: 2rem;">
-                                        <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                                        <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading...">
                                     </span>
 
                                     <!-- Lender Logo (hidden initially) -->

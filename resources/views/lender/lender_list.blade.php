@@ -90,12 +90,12 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
-                                <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                                <div class="d-flex align-items-center position-relative" style="height: 80px; width: 94px;">
                                     <!-- Loader (shown initially) -->
                                     <span id="product_modal_lender_logo_spinner" class="" role="status" style="width: 2rem; height: 2rem;">
                                         <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 40px;">
                                     </span>
-                                    <img id="product_modal_lender_logo" src="" style="height: 50px;" alt="">
+                                    <img id="product_modal_lender_logo" src="" style="height: 95px;" alt="">
                                 </div>
                             </div>
                             <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
@@ -179,7 +179,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
-                            <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
+                            <div class="d-flex align-items-center position-relative" style="height: 80px; width: 94px;">
                                 <!-- Loader (shown initially) -->
                                 <span id="logoLoader2" class="" role="status" style="width: 2rem; height: 2rem;">
                                     <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
@@ -187,7 +187,7 @@
 
                                 <!-- Lender Logo (hidden initially) -->
                                 <img id="modalLenderLogo2" src="" alt="Lender Logo"
-                                    style="height: 80px; width: auto; display: none;" class="me-3" />
+                                    style="height: 95px; width: auto; display: none;" class="me-3" />
                             </div>
                         </div>
                         <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
@@ -283,9 +283,9 @@
                     <div class="row mb-3">
                         <div class="col-md-4 mb-3">
                             <span id="main_lender_modal_logo" class="" role="status" style="width: 2rem; height: 2rem;">
-                                <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 50px;">
+                                <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 94px;">
                             </span>
-                            <img id="main_lender_logo" src="" style="height: 50px;" alt="">
+                            <img id="main_lender_logo" src="" style="height: 95px;" alt="">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="lender_logo" class="form-label">Lender Logo</label>
@@ -420,7 +420,7 @@
                         <span id="product_edit_modal_lender_logo_spinner" class="" role="status" style="width: 2rem; height: 2rem;">
                             <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 40px;">
                         </span>
-                        <img id="product_edit_modal_lender_logo" src="" style="height: 50px;" alt="">
+                        <img id="product_edit_modal_lender_logo" src="" style="height: 94px;" alt="">
                     </div>
 
                     <div class="col-md-4 mb-3">

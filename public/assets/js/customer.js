@@ -494,7 +494,7 @@ $(document).ready(function () {
                     }
 
                     // Hide loader
-                    $("#loader").hide();
+                    $("#product_modal_lender_logo_spinner").hide();
                 }, 1000);
             },
             error: function (xhr, status, error) {
