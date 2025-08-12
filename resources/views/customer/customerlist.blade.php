@@ -253,18 +253,7 @@
                             </div>
                         </div>
 
-                        <!-- Queensland -->
-
-
-                        <!-- Victoria / Tasmania -->
-
-
-                        <div class="flat-contact-list mt-4">
-                            <!-- <h5 class="mt-4">Team Contacts</h5> -->
-
-                        </div>
-
-                        <!-- South Australia / Western Australia -->
+                        <div class="accordion mt-2" id="contactsAccordion"></div>
 
 
                     </div>

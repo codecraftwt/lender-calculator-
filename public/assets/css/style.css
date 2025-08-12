@@ -1210,3 +1210,7 @@ span.hover-white:hover {
     margin-right: 6px;
     color: #852aa3;
 }
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-top: 10px;
+}

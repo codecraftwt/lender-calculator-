@@ -1106,6 +1106,19 @@ class LenderContactsSeeder extends Seeder
             ],
 
 
+            // skyecap
+
+            [
+                'lender_id' => 14,
+                'contact_type' => '',
+                'name' => 'Abeer Idris Mohamed',
+                'email' => 'abeer@skyecap.com.au',
+                'mobile_number' => '0483 957 120',
+                'title' => 'Partnership Manager',
+                'deleted_flag' => 0,
+                'state' => null
+            ],
+
         ]);
     }
 }
