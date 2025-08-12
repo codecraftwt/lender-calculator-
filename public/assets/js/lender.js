@@ -85,6 +85,7 @@ $(document).ready(function () {
             document.getElementById("lenderModal")
         );
         modal.show();
+        resetMainModalLoader();
 
         triggerAjax(pidArray);
     });
@@ -99,9 +100,7 @@ $(document).ready(function () {
             method: "GET",
             data: formData,
             beforeSend: function () {
-                $("#loader").show();
-                const loaderHtml = `<div class="lender-cards-loader text-center w-100 py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><div class="mt-2 small text-white">Finding best lenders for you...</div></div>`;
-                $(".lender-cards").html(loaderHtml);
+                $("#MainModalloader").show();
             },
             success: function (data) {
                 console.log(data);
@@ -110,6 +109,7 @@ $(document).ready(function () {
                     $container.empty(); // before appending
 
                     if (data.length < 1) {
+                        $("#MainModalloader").hide();
                         $container.html(
                             `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No Products Available.</p></div></div>`
                         );
@@ -159,20 +159,21 @@ $(document).ready(function () {
                                 data-lender-id="${lender.product_id}"
                                 id="lenderCard${lender.product_id}"
                                 style="background-color: #ffffff; height: 162px; width: 319px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px">
+
                                 
                                <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="${
                             lender.lender_name
                         }" 
-                             class="img-fluid mb-3" style="max-height: 60px; max-width: 130px;">
+                             class="img-fluid mb-2" style="max-height: 60px; max-width: 130px;">
 
                        <h4 style="text-align: center;">${
                            lender.product_name
                        }</h4>
                 
-                       <a href="#" class="view-options text-decoration-underline " 
-                   data-id="${lender.product_id}"
-                   style="font-size:15px; font-weight:700; color: #821a99">
-                   View Options
+                       <a href="#"  style="text-decoration:none"><button class="view-options" 
+                   data-id="${lender.lender_id}"
+                   style="font-size:15px; font-weight:700; color:white ;border-radius:10px;background-color:#821a99;border:none;width:170px">
+                   View Options</button>
                 </a>
             </div>
             </div>`;
@@ -180,9 +181,9 @@ $(document).ready(function () {
                         $container.append(cardHtml);
                     });
 
-                    $("#loader").hide();
+                    $("#MainModalloader").hide();
                     $(".lender-cards").show();
-                }, 1500);
+                }, 2500);
 
                 $("#applicable_lenders").val(JSON.stringify(data));
             },
@@ -224,6 +225,7 @@ $(document).ready(function () {
 
         detailModal.show();
 
+        resetlenderDetailModal();
         getSubProductData(productTypeIds, lenderId);
     });
 
@@ -241,32 +243,28 @@ $(document).ready(function () {
             method: "GET",
             data: formData,
             beforeSend: function () {
-                $("#loader").show();
+                $("#ProductEditModalContainer")
+                    .children()
+                    .not("#ProductModalloader")
+                    .remove();
 
-                const loaderHtml = `
-            <div class="lender-cards-loader text-center w-100 py-5">
-                <div class="spinner-border text-primary" role="status" >
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <div class="mt-2 small text-dark">Finding best lender options...</div>
-            </div>`;
-                $("#loanProductsContainer").html(loaderHtml);
+                $("#ProductModalloader").show();
             },
             success: function (data) {
                 console.log("Lender detail data:", data);
 
                 setTimeout(function () {
                     const $container = $("#loanProductsContainer");
-                    $container.empty();
+                    $container.empty(); // Clear previous content
 
                     if (data.length < 1) {
                         $container.html(`
-            <div class="text-danger text-center py-4">
-                <div class="no-lenders-container">
-                    <div class="emoji">❌</div>
-                    <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No sub products found for this lender.</p>
-                </div>
-            </div>`);
+                    <div class="text-danger text-center py-4">
+                        <div class="no-lenders-container">
+                            <div class="emoji">❌</div>
+                            <p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No products found for this lender.</p>
+                        </div>
+                    </div>`);
                         return;
                     }
 
@@ -290,115 +288,157 @@ $(document).ready(function () {
                     $("#modalPhone").text(lender.mobile_number || "N/A");
                     $("#modalEmail").text(lender.email || "N/A");
 
-                    data.forEach(function (product) {
-                        let guideUrl = "#";
-                        const guide = product.product_guide;
+                    const btn = document.querySelector(
+                        ".view-lender-contacts-btn"
+                    );
 
-                        if (guide) {
-                            if (/^https?:\/\//i.test(guide)) {
-                                guideUrl = guide;
-                            } else {
-                                const encodedFileName =
-                                    encodeURIComponent(guide);
-                                guideUrl = `${base_product_guide_url}/${encodedFileName}`;
+                    btn.setAttribute("data-lender-id", lender.lender_id);
+                    // Check if we have more than 3 products
+                    if (data.length > 3) {
+                        let carouselHtml = `
+                     <div id="productCarousel" class="carousel slide" data-bs-ride="false">
+                         <div class="carousel-inner">`;
+
+                        let slideIndex = 0;
+                        for (let i = 0; i < data.length; i += 3) {
+                            let isActive = slideIndex === 0 ? "active" : ""; // Make the first slide active
+                            carouselHtml += `<div class="carousel-item ${isActive}">
+                         <div class="row g-3">`;
+
+                            for (let j = i; j < i + 3 && j < data.length; j++) {
+                                const product = data[j]; // Ensure `product` is inside the loop
+                                const guideUrl = product.product_guide
+                                    ? /^https?:\/\//i.test(
+                                          product.product_guide
+                                      )
+                                        ? product.product_guide
+                                        : `${base_product_guide_url}/${encodeURIComponent(
+                                              product.product_guide
+                                          )}`
+                                    : "#";
+
+                                carouselHtml += `
+                          <div class="col-md-4 mb-3">
+                          <div class="card sub-product-card border h-100 p-3" style="background-color: #ffffff; height: 300px !important; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center;">
+                        <div class="row">
+                            <div class="col-md-12 m-3 ps-0 justify-content-center text-center">
+                                <img src="${baseImageUrl}/${data[0].lender_logo.toLowerCase()}" class="img-fluid mb-3" alt="Lender Logo" style="width: 73px; height: 35px;">
+                                <h5 class="fw-bold" style="color: #852aa3;">${
+                                    product.product_name || "Product"
+                                }</h5>
+                                <h6 class="fw-bold" style="color: #852aa3;">${
+                                    product.sub_product_name || ""
+                                }</h6>
+                                <p class="m-0" style="font-weight:500">$$${
+                                    product.min_amount || 0
+                                } - $$${product.max_amount || 0}</p>
+                                <p class="m-0" style="font-weight:500">Minimum Score Required: ${
+                                    product.credit_score || "500+"
+                                }</p>
+                                <p class="m-0" style="font-weight:600">APR: ${
+                                    parseFloat(product.interest_rate).toFixed(
+                                        2
+                                    ) || ""
+                                }</p>
+                                <small class="security_text text-warning ${
+                                    product.security_requirement > 0
+                                        ? "d-block"
+                                        : "d-none"
+                                }" style="font-weight:600">
+                                    Security required for loan amounts over $$${
+                                        product.security_requirement
+                                    }
+                                </small><br>
+                                <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size:15px; margin-top:10px; font-weight:500" class="text-decoration-underline">
+                                    View Product Guide <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                                           </div>
+                                       </div>
+                                   </div>`;
                             }
+
+                            carouselHtml += `
+                               </div>
+                           </div>`;
+
+                            slideIndex++;
                         }
 
-                        const btn = document.querySelector(
-                            ".view-lender-contacts-btn"
-                        );
+                        carouselHtml += `
+                             </div>
+                             <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev" style="width:100px !important;height:50px !important;margin-left: -52px;margin-top: 121px;">
+                                 <span class="carousel-control-prev-icon rounded text-black" style="font-size:30px"><</span>
+                             </button>
+                             <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next" style="width:100px !important;height:50px !important;margin-right: -52px;margin-top: 121px;">
+                                 <span class="carousel-control-next-icon rounded text-black" style="font-size:30px">></span>
+                             </button>
+                         </div>`;
 
-                        btn.setAttribute("data-lender-id", product.lender_id);
-
-                        const productHtml = `
-                            <div class="col-md-4">
-                                <div class="card sub-product-card border p-3 h-100" style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center;">
-                                    <div class="row">
-                                        <div class="col-md-2" style="width:100px">
-                                            <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="" style="height: 33px;">
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5 class="fw-bold" style="color:#852aa3;">${
-                                                product.product_name ||
-                                                "Product"
-                                            }</h5>
-                                            <h6 class="fw-bold" style="color:#852aa3;">${
-                                                product.sub_product_name || ""
-                                            }</h6>
-                                            <p class="m-0" style="font-weight:500">$${
-                                                product.min_amount || 0
-                                            } - $${product.max_amount || 0}</p> 
-                                            <p class="m-0" style="font-weight:500">Minimum Score Required: ${
-                                                product.credit_score || "500+"
-                                            }</p ><p class="m-0" style="font-weight:600">APR: ${
-                            parseFloat(product.interest_rate).toFixed(2) || ""
-                        }</p > 
-                        <small class="text-warning security_text d-none" style="font-weight:600">
-                          security required for loan amounts over $${
-                              product.security_requirement
-                          } in this tier
-                        </small><br>
-                                            <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size: 15px; margin-top: 10px; font-weight: 500;" class="text-decoration-underline">
-                                                View Product Guide <i class="fas fa-download"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                        $container.append(productHtml);
-                        const $newCard = $container.children().last();
-                        $newCard
-                            .find(".security_text")
-                            .toggleClass(
-                                "d-none",
-                                product.security_requirement <= 0
-                            );
-                        $newCard
-                            .find(".security_text")
-                            .toggleClass(
-                                "d-block",
-                                product.security_requirement > 0
-                            );
-                    });
-
-                    // ====== ADD BDM CONTACTS SECTION =======
-                    // Assuming you have an array of contacts in the ajax response (example: lender.contacts)
-                    // If your data structure is different, adjust accordingly
-
-                    if (lender.contacts && lender.contacts.length > 0) {
-                        let contactsHtml = `<table style="width: 100%; font-family: 'Times New Roman', Times, serif; font-size: 15px; border-collapse: collapse;"> 
-                        <th style="color:#852aa3;font-size:25px">BDM Contacts </th>`;
-
-                        lender.contacts.forEach((contact) => {
-                            contactsHtml += `
-                             <tr>
-                               <td><strong>${contact.name}</strong>, ${
-                                contact.title
-                            }</td>
-                               <td style="margin"><i class="fas fa-mobile" style="color: #852aa3;"></i> ${
-                                   contact.mobile_number || "N/A"
-                               }</td>
-                               <td><i class="fas fa-envelope" style="color: #852aa3;"></i> ${
-                                   contact.email || "N/A"
-                               }</td>
-                             </tr>`;
-                        });
-
-                        $("#lendercontactbuton").css("display", "block");
-
-                        contactsHtml += `</table>`;
-                        $container.append(contactsHtml);
+                        $container.append(carouselHtml);
                     } else {
-                        $container.append(`
-                        <p class="text-muted mt-3" style="font-style: italic;">No contacts available.</p>
-                        `);
-                        $("#lendercontactbuton").css("display", "none");
+                        // If 3 or fewer products, just append them normally
+                        data.forEach(function (product) {
+                            let guideUrl = "#";
+                            const guide = product.product_guide;
+                            if (guide) {
+                                if (/^https?:\/\//i.test(guide)) {
+                                    guideUrl = guide;
+                                } else {
+                                    guideUrl = `${base_product_guide_url}/${encodeURIComponent(
+                                        guide
+                                    )}`;
+                                }
+                            }
+
+                            const productHtml = `
+                           <div class="col-md-4 mb-3">
+                           <div class="card sub-product-card border h-100 p-3 " style="background-color: #ffffff; height: 300px !important; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center;">
+                            <div class="row">
+                                
+                                   
+                               
+                                <div class="col-md-10 m-3 ps-0 justify-content-center text-center">
+                                 <img src="${baseImageUrl}/${data[0].lender_logo.toLowerCase()}" class="img-fluid" alt="Lender Logo" style="width: 73px; height: 35px;">
+                             <h5 class="fw-bold" style="color: #852aa3;">${
+                                 product.product_name || "Product"
+                             }</h5>
+                             <h6 class="fw-bold" style="color: #852aa3;">${
+                                 product.sub_product_name || ""
+                             }</h6>
+                             <p class="m-0" style="font-weight:500">$$${
+                                 product.min_amount || 0
+                             } - $${product.max_amount || 0}</p>
+                             <p class="m-0" style="font-weight:500">Minimum Score Required: ${
+                                 product.credit_score || "500+"
+                             }</p>
+                             <p class="m-0" style="font-weight:600">APR: ${
+                                 parseFloat(product.interest_rate).toFixed(2) ||
+                                 ""
+                             }</p>
+                             <small class="security_text text-warning ${
+                                 product.security_requirement > 0
+                                     ? "d-block"
+                                     : "d-none"
+                             }" style="font-weight:600">
+                                                   Security required for loan amounts over $${
+                                                       product.security_requirement
+                                                   }
+                                               </small><br>
+                             <a href="${guideUrl}" target="_blank" style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i></a>
+                           </div>
+
+                            </div>
+                        </div>
+                    </div>`;
+                            $container.append(productHtml);
+                        });
                     }
 
-                    $("#loader").hide();
-                }, 1000);
-
-                $("#applicable_lenders").val(JSON.stringify(data));
+                    // Hide loader
+                    $("#product_modal_lender_logo_spinner").hide();
+                    $("#ProductModalloader").hide();
+                }, 2500);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching sub-products:", error);
@@ -433,58 +473,179 @@ $(document).ready(function () {
             method: "GET",
             data: { lenderId },
             beforeSend() {
-                $("#loader").show();
+                $("#ContactModalloader").show();
             },
-            success(data) {
-                console.log("Lender details:", data);
+            success: function (data) {
+                console.log("Lender detail data:", data);
+
                 setTimeout(function () {
-                    if (!Array.isArray(data) || data.length === 0) {
-                        $("#lenderContactTable").html(`<tr>
-                      <td colspan="3" class="text-center text-muted" style="font-style: italic;">
-                        No contacts available.
-                      </td>
-                    </tr>`);
-                        $("#loader").hide();
-                        return;
+                    if (
+                        !data ||
+                        (Array.isArray(data) && data.length === 0) ||
+                        (typeof data === "object" &&
+                            Object.keys(data).length === 0)
+                    ) {
+                        $("#logoLoader2").hide();
+                        $("#contactmodalwebsite").hide();
+                        $("#phone").hide();
+                        $("#ContactModalloader").hide();
+
+                        $("#contactsAccordion").html(`
+                           <div class="text-center text-muted" style="font-style: italic;">
+                               No contacts available.
+                           </div>
+                         `);
+
+                        let lenderInfo;
+                        const stateKeys = Object.keys(data);
+                        for (const key of stateKeys) {
+                            if (data[key].length > 0) {
+                                lenderInfo = data[key][0];
+                                break;
+                            }
+                        }
                     }
 
-                    const lenderInfo = data[0];
-                    loadLenderLogo2(
-                        baseImageUrl +
-                            "/" +
-                            lenderInfo.lender_logo.toLowerCase()
-                    );
-                    const web = lenderInfo.website_url?.trim() || "";
-                    $("#contactmodalurl").attr(
-                        "href",
-                        web.startsWith("http") ? web : `https://${web}`
-                    );
-                    $("#contactmodalwebsite").text(
-                        lenderInfo.website_url || "N/A"
-                    );
-                    $("#phone").text(
-                        lenderInfo.lender_mobile || lenderInfo.lender_mobile
-                    );
-                    $("#email").text(
-                        lenderInfo.lender_email || lenderInfo.lender_email
-                    );
+                    // If data is grouped by state (object with keys)
+                    if (
+                        !Array.isArray(data) &&
+                        typeof data === "object" &&
+                        data !== null
+                    ) {
+                        // Extract lender info from first contact of any group (if needed)
+                        let lenderInfo;
+                        const stateKeys = Object.keys(data);
+                        for (const key of stateKeys) {
+                            if (data[key].length > 0) {
+                                lenderInfo = data[key][0];
+                                break;
+                            }
+                        }
 
-                    let rowsHtml = "";
-                    data.forEach((contact) => {
-                        rowsHtml += `<tr>
-                     <td><strong>${contact.name}</strong>, ${contact.title}</td>
-                     <td><i class="fas fa-mobile" style="color:#852aa3;"></i> ${
-                         contact.contact_mobile || "N/A"
-                     }</td>
-                     <td><i class="fas fa-envelope" style="color:#852aa3;"></i> ${
-                         contact.contact_email || "N/A"
-                     }</td>
-                   </tr>`;
-                    });
+                        if (lenderInfo) {
+                            loadLenderLogo2(
+                                baseImageUrl +
+                                    "/" +
+                                    lenderInfo.lender_logo.toLowerCase()
+                            );
+                            $("#LenderLogo").attr(
+                                "src",
+                                `${baseImageUrl}/${lenderInfo.lender_logo.toLowerCase()}`
+                            );
+                            const websiteUrl =
+                                lenderInfo.website_url?.trim() || "";
+                            $("#contactmodalurl").attr(
+                                "href",
+                                websiteUrl.startsWith("http")
+                                    ? websiteUrl
+                                    : `https://${websiteUrl}`
+                            );
+                            $("#contactmodalwebsite").text(
+                                lenderInfo.website_url || "N/A"
+                            );
+                            $("#phone").text(lenderInfo.lender_mobile || "N/A");
+                            $("#search_contact").attr(
+                                "data-lender-id",
+                                lenderInfo.lender_id
+                            );
 
-                    $("#lenderContactTable").html(rowsHtml);
-                    $("#loader").hide();
-                }, 1000);
+                            $("#email").text(lenderInfo.lender_email || "N/A");
+                        }
+
+                        let finalHtml = "";
+
+                        // Contacts with no state are in the "" key
+                        const flatContacts = data[""] || [];
+
+                        // Remove the empty key from state keys to process accordions only for states with names
+                        const stateNames = stateKeys.filter(
+                            (k) => k.trim() !== ""
+                        );
+
+                        stateNames.forEach((stateName) => {
+                            const contacts = data[stateName];
+                            const slug = stateName
+                                .toLowerCase()
+                                .replace(/\s+/g, "-")
+                                .replace(/[^a-z0-9\-]/g, "");
+                            let contactHtml = "";
+
+                            contacts.forEach((contact) => {
+                                contactHtml += `
+                                   <div class="contact-row">
+                                     <div class="contact-name">${
+                                         contact.name
+                                     }</div>
+                                     <div class="contact-role">${
+                                         contact.title
+                                     }</div>
+                                     <div class="contact-phone">
+                                       <i class="fas fa-mobile"></i> ${
+                                           contact.contact_mobile || "N/A"
+                                       }
+                                     </div>
+                                     <div class="contact-email">
+                                       <i class="fas fa-envelope"></i> ${
+                                           contact.contact_email || "N/A"
+                                       }
+                                     </div>
+                                   </div>
+                                 `;
+                            });
+
+                            finalHtml += `
+                                 <div class="accordion-item">
+                                   <h2 class="accordion-header" id="heading-${slug}">
+                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${slug}" aria-expanded="false" aria-controls="collapse-${slug}">
+                                       ${stateName}
+                                     </button>
+                                   </h2>
+                                   <div id="collapse-${slug}" class="accordion-collapse collapse" aria-labelledby="heading-${slug}" data-bs-parent="#contactsAccordion">
+                                     <div class="accordion-body">
+                                       ${contactHtml}
+                                     </div>
+                                   </div>
+                                 </div>
+                               `;
+                        });
+
+                        if (flatContacts.length > 0) {
+                            let flatHtml = `<div class="flat-contact-list mt-4">`;
+
+                            flatContacts.forEach((contact) => {
+                                flatHtml += `
+                                   <div class="contact-row">
+                                     <div class="contact-name">${
+                                         contact.name
+                                     }</div>
+                                     <div class="contact-role">${
+                                         contact.title
+                                     }</div>
+                                     <div class="contact-phone">
+                                       <i class="fas fa-mobile"></i> ${
+                                           contact.contact_mobile || "N/A"
+                                       }
+                                     </div>
+                                     <div class="contact-email">
+                                       <i class="fas fa-envelope"></i> ${
+                                           contact.contact_email || "N/A"
+                                       }
+                                     </div>
+                                   </div>
+                                 `;
+                            });
+
+                            flatHtml += `</div>`;
+                            finalHtml += flatHtml;
+                        }
+
+                        $("#ContactModalloader").hide();
+                        $("#contactsAccordion").html(finalHtml);
+                        $("#loader").hide();
+                        $("#applicable_lenders").val(JSON.stringify(data));
+                        return;
+                    }
+                }, 2500);
             },
             error(err) {
                 console.error("Error fetching contacts:", err);
@@ -492,10 +653,88 @@ $(document).ready(function () {
             },
         });
     }
+
+    $(document).on("input", "#search_contact", function () {
+        var search_value = $(this).val();
+        var lender_id = $(this).attr("data-lender-id");
+
+        if (!search_value) {
+            return getLenderContactsData(lender_id);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/search-contact",
+            data: { search: search_value, lender_id: lender_id },
+            beforeSend: function () {},
+            success: function (response) {
+                var contacts = response; // array of contacts
+                var search_value = $("#search_contact").val().trim();
+
+                var mainAccordion = $("#contactsAccordion");
+                mainAccordion.empty(); // Clear the existing accordion content
+
+                if (search_value !== "") {
+                    // Hide regular state-wise accordions if any were rendered elsewhere
+                    $(".accordion-item").hide();
+
+                    if (contacts.length === 0) {
+                        mainAccordion.append("<p>No contacts found.</p>");
+                    } else {
+                        // Create the Search Results accordion section
+                        let accordionHtml = `
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSearchResults">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearchResults" aria-expanded="true" aria-controls="collapseSearchResults">
+                            Search Results (${contacts.length})
+                        </button>
+                    </h2>
+                    <div id="collapseSearchResults" class="accordion-collapse collapse show" aria-labelledby="headingSearchResults" data-bs-parent="#contactsAccordion">
+                        <div class="accordion-body" id="searchResultsBody">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                        mainAccordion.append(accordionHtml);
+
+                        // Now bind each contact as an inner accordion-like item (or a styled row)
+                        contacts.forEach(function (contact, index) {
+                            var contactHtml = `
+                    <div class="contact-row mb-3 p-2 border rounded">
+                        <div class="contact-name"><strong>${
+                            contact.name
+                        }</strong></div>
+                        <div class="contact-role">${contact.title}</div>
+                        <div class="contact-phone"><i class="fas fa-mobile"></i> ${
+                            contact.contact_mobile || "N/A"
+                        }</div>
+                        <div class="contact-email"><i class="fas fa-envelope"></i> ${
+                            contact.contact_email || "N/A"
+                        }</div>
+                    </div>
+                `;
+                            $("#searchResultsBody").append(contactHtml);
+                        });
+                    }
+                } else {
+                    // If no search value, show original state-wise accordion content (restore logic here)
+                    renderStateWiseAccordion(contacts); // You can implement this function for default view
+                }
+
+                $("#loader").hide();
+            },
+
+            error: function (xhr, status, error) {
+                console.error("Error fetching lender contacts:", error);
+                $("#loader").hide();
+            },
+        });
+    });
 });
 
 function loadLenderLogo(imageUrl) {
-    const $logoImg = $("#modalLenderLogo");
+    const $logoImg = $("#product_modal_lender_logo");
     const $loader = $("#logoLoader");
 
     $logoImg.hide();
@@ -548,6 +787,8 @@ function resetLenderContactInfo2() {
     $("#email").html(
         '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
     );
+    $("#contactsAccordion").empty();
+    $("#search_contact").val("");
 }
 
 function resetLenderContactInfo() {
@@ -568,4 +809,19 @@ function resetLenderContactInfo() {
     $("#modalEmail").html(
         '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>'
     );
+}
+
+function resetMainModalLoader() {
+    $("#applicableLenderCards").empty();
+    $("#MainModalloader").show();
+}
+
+function resetlenderDetailModal() {
+    $("#product_modal_lender_logo_spinner").show();
+    $("#product_modal_lender_logo").attr("src", "");
+    $("#modalurl").val("");
+    $("#modalPhone").val("");
+    $("#modalEmail").val("");
+    $("#ProductModalloader").show();
+    $("#loanProductsContainer").empty();
 }

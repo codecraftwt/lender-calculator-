@@ -182,23 +182,23 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                 // $container.empty();
 
                 if (data.length < 1) {
-                    $("#product_modal_lender_logo_spinner").hide();
+                    $("#product_edit_modal_lender_logo_spinner").hide();
                     final_url =
                         baseImageUrl + "/" + lender.lender_logo.toLowerCase();
                     $("#lender_name").val(lender.lender_name);
                     $("#lender_website").val(lender.website_url);
                     $("#lender_email").val(lender.email);
                     $("#mobile_number").val(lender.mobile_number);
-                    $("#product_modal_lender_logo").attr("src", final_url);
+                    $("#product_edit_modal_lender_logo").attr("src", final_url);
                 } else {
                     const lender = data[0];
-                    $("#product_modal_lender_logo_spinner").hide();
+                    $("#product_edit_modal_lender_logo_spinner").hide();
                     final_url =
                         baseImageUrl + "/" + lender.lender_logo.toLowerCase();
                     $("#product_name").val(lender.product_name);
                     $("#product_id").val(lender.product_id);
 
-                    $("#product_modal_lender_logo").attr("src", final_url);
+                    $("#product_edit_modal_lender_logo").attr("src", final_url);
                 }
                 data.forEach(function (lender) {
                     const cardHtml = `<div class="col-md-4 view-sub-product-edit-modal-btn" data-sub-product-id="${
@@ -258,6 +258,7 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                 });
 
                 $("#ProductModalloader").hide();
+                $("#product_edit_modal_lender_logo_spinner").hide();
                 $(".lender-cards").show();
             }, 2500);
 
@@ -276,8 +277,8 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
 function resetProductEditModalInfo() {
     $("#product_name").val("");
     $("#product_id").val("");
-    $("#product_modal_lender_logo").attr("src", "");
-    $("#product_modal_lender_logo_spinner").show();
+    $("#product_edit_modal_lender_logo").attr("src", "");
+    $("#product_edit_modal_lender_logo_spinner").show();
     $("#lender_logo").val("");
     $("#product_guide_file").val("");
     $("#product_guide_url").val("");
