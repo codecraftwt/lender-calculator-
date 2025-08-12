@@ -9,5 +9,5 @@ class LenderContactsModel extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['lender_id', 'contact_type', 'name', 'email', 'mobile_number', 'title','deleted_flag'];
+    protected $fillable = ['lender_id', 'contact_type', 'name', 'email', 'mobile_number', 'title', 'deleted_flag', 'state'];
 }

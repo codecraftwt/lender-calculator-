@@ -309,6 +309,7 @@ class LenderController extends Controller
                 'lender_contacts_models.email as contact_email',
                 'lender_contacts_models.mobile_number as contact_mobile',
                 'lender_contacts_models.title',
+                'lender_contacts_models.state',
 
                 'main_lender_tables.lender_name',
                 'main_lender_tables.email as lender_email',
@@ -316,7 +317,9 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'main_lender_tables.lender_logo'
             )
-            ->get();
+            ->get()
+            ->groupBy('state');
+
 
 
 
@@ -530,5 +533,41 @@ class LenderController extends Controller
                 'message' => 'Failed to update the data.'
             ]);
         }
+    }
+
+    public function search_contact()
+    {
+        $search = request()->search;
+        $lender_id = request()->lender_id;
+
+        $contactsWithLender = DB::table('lender_contacts_models')
+            ->join('main_lender_tables', 'lender_contacts_models.lender_id', '=', 'main_lender_tables.id')
+            ->where(function ($query) use ($search) {
+                $query->where('lender_contacts_models.name', 'like', '%' . $search . '%')
+                    ->orWhere('lender_contacts_models.state', 'like', '%' . $search . '%')
+                    ->orWhere('lender_contacts_models.title', 'like', '%' . $search . '%')
+                    ->orWhere('lender_contacts_models.mobile_number', 'like', '%' . $search . '%')
+                    ->orWhere('lender_contacts_models.contact_type', 'like', '%' . $search . '%');
+            })
+            ->where('lender_contacts_models.lender_id', $lender_id)
+            ->select(
+                'lender_contacts_models.lender_id',
+                'lender_contacts_models.contact_type',
+                'lender_contacts_models.name',
+                'lender_contacts_models.email as contact_email',
+                'lender_contacts_models.mobile_number as contact_mobile',
+                'lender_contacts_models.title',
+                'lender_contacts_models.state',
+
+                'main_lender_tables.lender_name',
+                'main_lender_tables.email as lender_email',
+                'main_lender_tables.mobile_number as lender_mobile',
+                'main_lender_tables.website_url',
+                'main_lender_tables.lender_logo'
+            )
+            ->get();
+
+
+        return response()->json($contactsWithLender);
     }
 }

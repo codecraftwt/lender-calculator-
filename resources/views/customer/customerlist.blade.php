@@ -40,7 +40,7 @@
                     <tr>
                         <!-- <th>Sr.No</th> -->
                         <th> Date</th>
-                        <th> Clinet Name</th>
+                        <th> Client Name</th>
                         <th>Business Name</th>
                         <th>Loan Amount </th>
                         <th>status</th>
@@ -226,108 +226,42 @@
                 <hr />
 
 
-                <div class="container mt-3" style="max-width: 600px;">
+                <div class="container mt-3" id="contacts_container" style="max-width: 600px;overflow-y:auto">
+
+                    <div id="ContactModalloader" class="text-center my-4" style="display: none;">
+                        <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
+                    </div>
                     <div class="bg-purple p-2 text-white fw-bold d-flex justify-content-between align-items-center" style="background-color:#6a4b8c;">
                         <span>CONTACTS</span>
-                        <input type="search" class="form-control form-control-sm" style="width: 200px;" placeholder="Search">
+                        <input type="search" class="form-control form-control-sm" name="search_contact" id="search_contact" style="width: 200px;" placeholder="Search" data-lender-id="">
+                        <div class="visually-hidden" id="loader" style="display:none;">Loading...</div>
+                        <div class="visually-hidden" id="results"></div>
+
                     </div>
 
                     <div class="accordion mt-2" id="contactsAccordion">
 
                         <!-- New South Wales -->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingNSW">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNSW" aria-expanded="false" aria-controls="collapseNSW">
-                                    New South Wales
-                                </button>
-                            </h2>
-                            <div id="collapseNSW" class="accordion-collapse collapse" aria-labelledby="headingNSW" data-bs-parent="#contactsAccordion">
-                                <div class="contact-row">
-                                    <div class="contact-name">Stewart Hickey</div>
-                                    <div class="contact-role">Head of Commercial (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0432 968 138
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
-                                    </div>
-                                </div>
+                            <h2 class="accordion-header" id="headingNSW" class="headingNSW">
 
-                                <div class="contact-row">
-                                    <div class="contact-name">Caitie McCann</div>
-                                    <div class="contact-role">Business Development Manager (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0412 123 123
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
-                                    </div>
-                                </div>
+                            </h2>
+                            <div id="collapseNSW" class="accordion-collapse collapse collapseNSW" aria-labelledby="headingNSW" data-bs-parent="#contactsAccordion">
+
+
+
                             </div>
                         </div>
 
                         <!-- Queensland -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingQLD">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQLD" aria-expanded="false" aria-controls="collapseQLD">
-                                    Queensland
-                                </button>
-                            </h2>
-                            <div id="collapseQLD" class="accordion-collapse collapse" aria-labelledby="headingQLD" data-bs-parent="#contactsAccordion">
-                                <div class="contact-row">
-                                    <div class="contact-name">Stewart Hickey</div>
-                                    <div class="contact-role">Head of Commercial (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0432 968 138
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
-                                    </div>
-                                </div>
 
-                                <div class="contact-row">
-                                    <div class="contact-name">Caitie McCann</div>
-                                    <div class="contact-role">Business Development Manager (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0412 123 123
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Victoria / Tasmania -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingVIC">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVIC" aria-expanded="false" aria-controls="collapseVIC">
-                                    Victoria / Tasmania
-                                </button>
-                            </h2>
-                            <div id="collapseVIC" class="accordion-collapse collapse" aria-labelledby="headingVIC" data-bs-parent="#contactsAccordion">
-                                <div class="contact-row">
-                                    <div class="contact-name">Stewart Hickey</div>
-                                    <div class="contact-role">Head of Commercial (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0432 968 138
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> stewart.hickey@dynamoney.com
-                                    </div>
-                                </div>
 
-                                <div class="contact-row">
-                                    <div class="contact-name">Caitie McCann</div>
-                                    <div class="contact-role">Business Development Manager (NSW)</div>
-                                    <div class="contact-phone">
-                                        <i class="fas fa-phone"></i> 0412 123 123
-                                    </div>
-                                    <div class="contact-email">
-                                        <i class="fas fa-envelope"></i> name.name@dynamoney.com
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="flat-contact-list mt-4">
+                            <!-- <h5 class="mt-4">Team Contacts</h5> -->
+
                         </div>
 
                         <!-- South Australia / Western Australia -->
