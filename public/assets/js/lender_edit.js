@@ -68,13 +68,17 @@ function getMainModalData(main_lender_id) {
                     $("#lender_id").val(lender.lender_id);
                     $("#mobile_number").val(lender.mobile_number);
                     $("#main_lender_logo").attr("src", final_url);
+                    $(".view-contact-edit-btn").attr(
+                        "data-main-lender-id",
+                        lender.lender_id
+                    );
                 }
                 data.forEach(function (lender) {
                     const productTypeIds = JSON.stringify(
                         lender.subproduct_ids
                     );
 
-                    const cardHtml = `<div class="col-6 col-md-6 mb-4 d-flex justify-content-center view-product-edit-modal-btn" 
+                    const cardHtml = `<div class="col-6 col-md-6 mb-2 d-flex justify-content-center view-product-edit-modal-btn" 
                             data-product-type-id='${productTypeIds}' data-product-id='${
                         lender.product_id
                     }'>
@@ -169,10 +173,10 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
         beforeSend: function () {
             $("#ProductEditModalContainer")
                 .children()
-                .not("#ProductModalloader")
+                .not("#ProductEditModalloader")
                 .remove();
 
-            $("#ProductModalloader").show();
+            $("#ProductEditModalloader").show();
         },
         success: function (data) {
             console.log(data);
@@ -257,7 +261,7 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                         );
                 });
 
-                $("#ProductModalloader").hide();
+                $("#ProductEditModalloader").hide();
                 $("#product_edit_modal_lender_logo_spinner").hide();
                 $(".lender-cards").show();
             }, 2500);
@@ -1047,4 +1051,514 @@ $(document).ready(function () {
             });
         }
     });
+
+    $(document).on("click", ".view-contact-edit-btn", function (e) {
+        e.preventDefault();
+
+        const dataId = $(this).attr("data-main-lender-id");
+        console.log("Product Type IDs:", dataId);
+        const modalElement = document.getElementById(
+            "Lender_Contact_Edit_Modal"
+        );
+
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false,
+            keyboard: true,
+        });
+
+        detailModal.show();
+        resetLenderContactInfo2();
+
+        getLenderContactsData(dataId);
+    });
+
+    function getLenderContactsData(lenderId) {
+        $.ajax({
+            url: "/get-lender-contacts",
+            method: "GET",
+            data: { lenderId },
+            beforeSend() {
+                $("#ContactEditModalloader").show();
+                $("#contactsEditAccordion").hide();
+            },
+            success: function (data) {
+                console.log("Lender detail data:", data);
+
+                setTimeout(function () {
+                    if (
+                        !data ||
+                        (Array.isArray(data) && data.length === 0) ||
+                        (typeof data === "object" &&
+                            Object.keys(data).length === 0)
+                    ) {
+                        $("#contact_edit_logo_loader").hide();
+                        $("#ContactEditModalloader").hide();
+
+                        $("#contactsAccordion").html(`
+                           <div class="text-center text-muted" style="font-style: italic;">
+                               No contacts available.
+                           </div>
+                         `);
+
+                        let lenderInfo;
+                        const stateKeys = Object.keys(data);
+                        for (const key of stateKeys) {
+                            if (data[key].length > 0) {
+                                lenderInfo = data[key][0];
+                                break;
+                            }
+                        }
+                    }
+
+                    // If data is grouped by state (object with keys)
+                    if (
+                        !Array.isArray(data) &&
+                        typeof data === "object" &&
+                        data !== null
+                    ) {
+                        $("#contact_edit_logo_loader").hide();
+
+                        $("#contactsAccordion").html(`
+                           <div class="text-center text-muted" style="font-style: italic;">
+                               No contacts available.
+                           </div>
+                         `);
+
+                        // Extract lender info from first contact of any group (if needed)
+                        let lenderInfo;
+                        const stateKeys = Object.keys(data);
+                        for (const key of stateKeys) {
+                            if (data[key].length > 0) {
+                                lenderInfo = data[key][0];
+                                break;
+                            }
+                        }
+
+                        if (lenderInfo) {
+                            loadLenderLogo2(
+                                baseImageUrl +
+                                    "/" +
+                                    lenderInfo.lender_logo.toLowerCase()
+                            );
+                            $("#contact_edit_logo").attr(
+                                "src",
+                                `${baseImageUrl}/${lenderInfo.lender_logo.toLowerCase()}`
+                            );
+
+                            $("#contact_edit_logo").css("display", "block");
+
+                            $("#edit_lender_contact_search").attr(
+                                "data-lender-id",
+                                lenderInfo.lender_id
+                            );
+                        }
+
+                        let finalHtml = "";
+
+                        // Contacts with no state are in the "" key
+                        const flatContacts = data[""] || [];
+
+                        // Remove the empty key from state keys to process accordions only for states with names
+                        const stateNames = stateKeys.filter(
+                            (k) => k.trim() !== ""
+                        );
+                        $("#contactsEditAccordion").show();
+
+                        stateNames.forEach((stateName) => {
+                            const contacts = data[stateName];
+                            const slug = stateName
+                                .toLowerCase()
+                                .replace(/\s+/g, "-")
+                                .replace(/[^a-z0-9\-]/g, "");
+                            let contactHtml = "";
+
+                            contacts.forEach((contact) => {
+                                contactHtml += `
+                                   <div class="contact-row">
+                                     <div class="contact-name">${
+                                         contact.name
+                                     }</div>
+                                     <div class="contact-role">${
+                                         contact.title
+                                     }</div>
+                                     <div class="contact-phone">
+                                       <i class="fas fa-mobile"></i> ${
+                                           contact.contact_mobile || "N/A"
+                                       }
+                                     </div>
+                                     <div class="contact-email">
+                                       <i class="fas fa-envelope"></i> ${
+                                           contact.contact_email || "N/A"
+                                       }
+                                     </div>
+                                     <div class="edit-contact">
+                                       <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                                           contact.contact_id
+                                       }" ></i> 
+                                     </div>
+                                     
+                                   </div>
+                                 `;
+                            });
+
+                            finalHtml += `
+                                 <div class="accordion-item">
+                                   <h2 class="accordion-header" id="heading-${slug}">
+                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${slug}" aria-expanded="false" aria-controls="collapse-${slug}">
+                                       ${stateName}
+                                     </button>
+                                   </h2>
+                                   <div id="collapse-${slug}" class="accordion-collapse collapse" aria-labelledby="heading-${slug}" data-bs-parent="#contactsAccordion">
+                                     <div class="accordion-body">
+                                       ${contactHtml}
+                                     </div>
+                                   </div>
+                                 </div>
+                               `;
+                        });
+
+                        if (flatContacts.length > 0) {
+                            let flatHtml = `<div class="flat-contact-list mt-4">`;
+
+                            flatContacts.forEach((contact) => {
+                                flatHtml += `
+                                   <div class="contact-row">
+                                     <div class="contact-name">${
+                                         contact.name
+                                     }</div>
+                                     <div class="contact-role">${
+                                         contact.title
+                                     }</div>
+                                     <div class="contact-phone">
+                                       <i class="fas fa-mobile"></i> ${
+                                           contact.contact_mobile || "N/A"
+                                       }
+                                     </div>
+                                     <div class="contact-email">
+                                       <i class="fas fa-envelope"></i> ${
+                                           contact.contact_email || "N/A"
+                                       }
+                                     </div>
+                                      <div class="edit-contact">
+                                       <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                                           contact.contact_id
+                                       }" ></i> 
+                                     </div>
+                                   </div>
+                                 `;
+                            });
+
+                            flatHtml += `</div>`;
+                            finalHtml += flatHtml;
+                        }
+
+                        // $("#ContactModalloader").hide();
+                        $("#contactsEditAccordion").html(finalHtml);
+                        $("#ContactEditModalloader").hide();
+                        $("#applicable_lenders").val(JSON.stringify(data));
+                        return;
+                    }
+                }, 2500);
+            },
+            error(err) {
+                console.error("Error fetching contacts:", err);
+                $("#loader").hide();
+            },
+        });
+    }
+
+    $(document).on("input", "#edit_lender_contact_search", function () {
+        var search_value = $(this).val();
+        var lender_id = $(this).attr("data-lender-id");
+
+        if (!search_value) {
+            return getLenderContactsData(lender_id);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/search-contact",
+            data: { search: search_value, lender_id: lender_id },
+            beforeSend: function () {},
+            success: function (response) {
+                var contacts = response; // array of contacts
+                var search_value = $("#edit_lender_contact_search")
+                    .val()
+                    .trim();
+
+                var mainAccordion = $("#contactsEditAccordion");
+                mainAccordion.empty(); // Clear the existing accordion content
+
+                if (search_value !== "") {
+                    // Hide regular state-wise accordions if any were rendered elsewhere
+                    $(".accordion-item").hide();
+
+                    if (contacts.length === 0) {
+                        mainAccordion.append("<p>No contacts found.</p>");
+                    } else {
+                        // Create the Search Results accordion section
+                        let accordionHtml = `
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSearchResults">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearchResults" aria-expanded="true" aria-controls="collapseSearchResults">
+                            Search Results (${contacts.length})
+                        </button>
+                    </h2>
+                    <div id="collapseSearchResults" class="accordion-collapse collapse show" aria-labelledby="headingSearchResults" data-bs-parent="#contactsAccordion">
+                        <div class="accordion-body" id="searchResultsBody">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                        mainAccordion.append(accordionHtml);
+
+                        // Now bind each contact as an inner accordion-like item (or a styled row)
+                        contacts.forEach(function (contact, index) {
+                            var contactHtml = `
+                    <div class="contact-row mb-3 p-2 border rounded">
+                        <div class="contact-name"><strong>${
+                            contact.name
+                        }</strong></div>
+                        <div class="contact-role">${contact.title}</div>
+                        <div class="contact-phone"><i class="fas fa-mobile"></i> ${
+                            contact.contact_mobile || "N/A"
+                        }</div>
+                        <div class="contact-email"><i class="fas fa-envelope"></i> ${
+                            contact.contact_email || "N/A"
+                        }</div>
+                         <div class="edit-contact">
+                                       <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                                           contact.contact_id
+                                       }" ></i> 
+                                     </div>
+                    </div>
+                `;
+                            $("#searchResultsBody").append(contactHtml);
+                        });
+                    }
+                } else {
+                    // If no search value, show original state-wise accordion content (restore logic here)
+                    renderStateWiseAccordion(contacts); // You can implement this function for default view
+                }
+
+                $("#ContactEditModalloader").hide();
+            },
+
+            error: function (xhr, status, error) {
+                console.error("Error fetching lender contacts:", error);
+                $("#loader").hide();
+            },
+        });
+    });
+
+    $(document).on("click", ".lender-contact-detail-edit-btn", function (e) {
+        e.preventDefault();
+
+        const dataId = $(this).attr("data-main-lender-id");
+        console.log("Product Type IDs:", dataId);
+        const modalElement = document.getElementById(
+            "Lender_Contact_Detail_Edit_Modal"
+        );
+
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false,
+            keyboard: true,
+        });
+
+        detailModal.show();
+        getLenderContactsDetailData(dataId);
+    });
+
+    function getLenderContactsDetailData(dataId) {
+        $.ajax({
+            type: "GET",
+            url: "/search-contact-details",
+            data: { contact_id: dataId },
+            beforeSend: function () {},
+            success: function (response) {
+                console.log(response);
+                const lender = response[0];
+
+                $("#name").val(lender.name);
+                $("#contact_id").val(lender.id);
+                $("#state").val(lender.state);
+                $("#email").val(lender.email);
+                $("#title").val(lender.title);
+                $("#contact_mobile_number").val(lender.mobile_number);
+            },
+
+            error: function (xhr, status, error) {
+                console.error("Error fetching lender contacts:", error);
+            },
+        });
+    }
+
+    $(document).on("click", ".lender-contact-details-submit-btn", function (e) {
+        e.preventDefault();
+
+        let isValid = true;
+
+        // Fields to validate explicitly
+        const fieldsToValidate = [
+            "name",
+            "email",
+            "contact_mobile_number", // this is the mobile number field
+            "title", // Not mandatory but should be validated if it contains any value
+            "state", // Not mandatory but should be validated if it contains any value
+        ];
+
+        // Validate mandatory fields
+        const mandatoryFields = ["name", "email", "contact_mobile_number"];
+        mandatoryFields.forEach((field) => {
+            if (!validateLenderContactField(field)) {
+                isValid = false;
+            }
+        });
+
+        // Validate optional fields (only if they contain any value)
+        fieldsToValidate.forEach((field) => {
+            if (
+                $("#" + field)
+                    .val()
+                    .trim() !== ""
+            ) {
+                if (!validateLenderContactField(field)) {
+                    isValid = false;
+                }
+            }
+        });
+
+        // Proceed if all validations are successful
+        if (isValid) {
+            const form = $("#lender_contact_detail_edit_form")[0];
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: $(form).attr("action"),
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Lender contact details updated successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    $("#Lender_Contact_Edit_Modal").modal("hide");
+                    $("#Lender_Contact_Detail_Edit_Modal").modal("hide");
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: firstError || "Validation failed!",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        });
+
+                        // Show inline errors
+                        $.each(errors, function (key, messages) {
+                            $(`#invalid_${key}`)
+                                .removeClass("d-none")
+                                .text(messages[0]);
+                        });
+
+                        // $("#Lender_Contact_Details_Modal").modal("show");
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    }
+                },
+            });
+        }
+    });
+
+    // Function to validate a field
+    function validateLenderContactField(field) {
+        let isValid = true;
+        const value = $("#" + field)
+            .val()
+            .trim();
+
+        // Check for mandatory fields
+        if (field === "name" && value === "") {
+            $("#invalid_name")
+                .removeClass("d-none")
+                .text("Please enter valid name.");
+            isValid = false;
+        } else if (field === "email" && !validateEmail(value)) {
+            $("#invalid_email")
+                .removeClass("d-none")
+                .text("Please enter valid email.");
+            isValid = false;
+        } else if (
+            field === "contact_mobile_number" &&
+            value !== "" &&
+            !validateMobileNumber(value)
+        ) {
+            // Only validate if the value is not empty
+            $("#invalid_contact_mobile_number")
+                .removeClass("d-none")
+                .text("Please enter valid mobile number.");
+            isValid = false;
+        }
+
+        // Optional validation for other fields
+        if (field === "title" && value !== "" && value.length < 3) {
+            $("#invalid_title")
+                .removeClass("d-none")
+                .text("Title must have at least 3 characters.");
+            isValid = false;
+        } else if (field === "state" && value !== "" && value.length < 3) {
+            $("#invalid_state")
+                .removeClass("d-none")
+                .text("State must have at least 3 characters.");
+            isValid = false;
+        }
+
+        // If no errors found, hide the error message
+        if (isValid) {
+            $("#invalid_" + field).addClass("d-none");
+        }
+
+        return isValid;
+    }
+
+    // Function to validate email format
+    function validateEmail(email) {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    }
+
+    // Function to validate mobile number format
+    function validateMobileNumber(mobileNumber) {
+        const regex = /^\+?[0-9\s\-()]{5,20}$/;
+        return regex.test(mobileNumber);
+    }
 });

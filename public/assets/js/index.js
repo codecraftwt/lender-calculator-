@@ -33,13 +33,19 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
-                // setTimeout(function () {
+
                 const $container = $(".lender-cards");
-                $("#matchedLenders").text(data.length);
+                const lendersArray = Object.values(data); // 👈 Convert object to array
+                $("#matchedLenders").text(lendersArray.length);
                 $container.empty();
 
-                const lenderIds = data.map((item) => item.id);
+                const lenderIds = lendersArray.map((item) => item.id);
                 $("#applicable_lenders").val(JSON.stringify(lenderIds));
+
+                // Optional: If you want to render lender cards, loop through lendersArray
+                // lendersArray.forEach(lender => {
+                //     // build and append HTML to $container
+                // });
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching lenders:", error);

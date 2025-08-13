@@ -130,7 +130,9 @@ $(document).ready(function () {
             document.getElementById("lenderModal")
         );
         modal.show();
+        $("#MainModalloader").show();
 
+        $("#applicableLenderCards").hide();
         triggerAjax(cidArray);
     });
 
@@ -151,9 +153,7 @@ $(document).ready(function () {
             method: "GET",
             data: formData,
             beforeSend: function () {
-                $("#loader").show();
-                const loaderHtml = `<div class="lender-cards-loader text-center w-100 py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><div class="mt-2 small text-white">Finding best lenders for you...</div></div>`;
-                $(".lender-cards").html(loaderHtml);
+                $("#MainModalloader").show();
             },
             success: function (data) {
                 console.log(data);
@@ -230,9 +230,9 @@ $(document).ready(function () {
                         $container.append(cardHtml);
                     });
 
-                    $("#loader").hide();
+                    $("#MainModalloader").hide();
                     $(".lender-cards").show();
-                }, 1500);
+                }, 2500);
 
                 $("#applicable_lenders").val(JSON.stringify(data));
             },
@@ -272,6 +272,10 @@ $(document).ready(function () {
 
         detailModal.show();
 
+        $("#product_modal_lender_logo_spinner").show();
+        $("#ProductModalloader").show();
+        $("#loanProductsContainer").empty();
+
         getSubProductData(productTypeIds, lenderId);
     });
 
@@ -297,16 +301,7 @@ $(document).ready(function () {
             method: "GET",
             data: formData,
             beforeSend: function () {
-                $("#loader").show();
-
-                const loaderHtml = `
-        <div class="lender-cards-loader text-center w-100 py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <div class="mt-2 small text-dark">Finding best lender options...</div>
-        </div>`;
-                $("#loanProductsContainer").html(loaderHtml);
+                $("#ProductModalloader").show();
             },
             success: function (data) {
                 console.log("Lender detail data:", data);
@@ -495,7 +490,8 @@ $(document).ready(function () {
 
                     // Hide loader
                     $("#product_modal_lender_logo_spinner").hide();
-                }, 1000);
+                    $("#ProductModalloader").hide();
+                }, 2500);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching sub-products:", error);
@@ -518,6 +514,9 @@ $(document).ready(function () {
         });
 
         detailModal.show();
+        resetLenderContactInfo2();
+        $("#ContactdetailsModalloader").show();
+        $("#contactsAccordion").empty();
 
         getLenderContactsData(dataId);
     });
@@ -528,14 +527,13 @@ $(document).ready(function () {
         };
 
         console.log(formData);
-        resetLenderContactInfo2();
 
         $.ajax({
             url: "/get-lender-contacts",
             method: "GET",
             data: formData,
             beforeSend: function () {
-                $("#loader").show();
+                $("#ContactdetailsModalloader").show();
             },
             success: function (data) {
                 console.log("Lender detail data:", data);
@@ -679,12 +677,11 @@ $(document).ready(function () {
 
                         $("#contactsAccordion").html(finalHtml);
                         $("#loader").hide();
+                        $("#ContactdetailsModalloader").hide();
                         $("#applicable_lenders").val(JSON.stringify(data));
                         return;
                     }
-
-                    // If your backend returns an array (older behavior), keep your existing code here or adapt as needed.
-                }, 500);
+                }, 2500);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching lender contacts:", error);

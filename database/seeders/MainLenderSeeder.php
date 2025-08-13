@@ -125,7 +125,7 @@ class MainLenderSeeder extends Seeder
         );
         MainLenderTable::create(
             [
-                'lender_name'             => 'Bizcap LOC',
+                'lender_name'             => 'Bizcap',
                 'lender_logo'            => 'bizcap.png',
                 'email'     => 'info@bizcap.com.au',
                 'mobile_number'     => '1300 922 223',

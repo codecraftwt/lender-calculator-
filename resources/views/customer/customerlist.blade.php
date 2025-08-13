@@ -68,10 +68,13 @@
                 <div class="modal-body">
                     <div class="panel ebroker-lender-panel p-4 rounded-3 shadow-sm">
                         <div class="lender-cards row g-3" id="applicableLenderCards">
-                            <div id="loader" class="text-center my-4" style="display: none;">
-                                <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading...">
-                            </div>
+
+
                         </div>
+                        <div id="MainModalloader" class="text-center my-4" style="display: none;">
+                            <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
+                        </div>
+
                     </div>
                 </div>
 
@@ -97,7 +100,7 @@
                                 <div class="d-flex align-items-center position-relative" style="height: 80px; width: 80px;">
                                     <!-- Loader (shown initially) -->
                                     <span id="product_modal_lender_logo_spinner" class="" role="status" style="width: 2rem; height: 2rem;">
-                                        <i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>
+                                        <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 50px;">
                                     </span>
 
                                     <!-- Lender Logo (hidden initially) -->
@@ -153,6 +156,10 @@
                 <!-- Sub-product list will be injected into this container -->
                 <div id="loanProductsContainer" style="overflow-y: auto;padding-left: 15px;padding-right:15px" class="row g-4 mb-3">
 
+                </div>
+
+                <div id="ProductModalloader" class="text-center my-4" style="display: none;">
+                    <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
                 </div>
 
                 <!-- View Contacts Button -->
@@ -257,6 +264,10 @@
 
 
                     </div>
+
+                </div>
+                <div id="ContactdetailsModalloader" class="text-center my-4" style="display: none;">
+                    <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
                 </div>
 
                 <!-- Footer -->
