@@ -15,20 +15,14 @@ $('input[name="product_guide_type"]').on("change", function () {
 $(document).on("click", ".edit-main-lender-info", function () {
     resetMainLenderModalInfo();
     const main_lender_id = $(this).data("main-lender-id");
-
-    console.log(main_lender_id);
-
     const modal = new bootstrap.Modal($("#Main_Lender_Edit_Modal")[0]);
     modal.show();
-
     getMainModalData(main_lender_id);
 });
-
 function getMainModalData(main_lender_id) {
     const formData = {
         pid: main_lender_id,
     };
-
     $.ajax({
         url: "/get-lender-products",
         method: "GET",
@@ -42,12 +36,8 @@ function getMainModalData(main_lender_id) {
             $("#MainLenderModalloader").show();
         },
         success: function (data) {
-            console.log(data);
-
             setTimeout(function () {
                 const $container = $("#MainLenderloanProductsContainer");
-                // $container.empty();
-
                 if (data.length < 1) {
                     $("#main_lender_modal_logo").hide();
                     final_url =
@@ -77,11 +67,10 @@ function getMainModalData(main_lender_id) {
                     const productTypeIds = JSON.stringify(
                         lender.subproduct_ids
                     );
-
                     const cardHtml = `<div class="col-6 col-md-6 mb-2 d-flex justify-content-center view-product-edit-modal-btn" 
                             data-product-type-id='${productTypeIds}' data-product-id='${
-                        lender.product_id
-                    }'>
+                              lender.product_id
+                            }'>
                          <div class="lender-box-container position-relative">
                        
                            <!-- Original Card Content -->
@@ -89,7 +78,7 @@ function getMainModalData(main_lender_id) {
                                 data-lender-sub-product-id="${
                                     lender.product_id
                                 }" id="lenderCard${lender.product_id}" >
-                                                       
+                                  
                              <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" 
                                   alt="${lender.lender_name}" 
                                class="img-fluid mb-3" 
@@ -121,7 +110,6 @@ function getMainModalData(main_lender_id) {
 
                     $container.append(cardHtml);
                 });
-
                 $("#MainLenderModalloader").hide();
                 $(".lender-cards").show();
             }, 2500);
@@ -150,13 +138,10 @@ function resetMainLenderModalInfo() {
 
 $(document).on("click", ".view-product-edit-modal-btn", function () {
     var product_id = $(this).attr("data-product-id");
-    var sub_product_ids = $(this).attr("data-product-type-id");
-    console.log("subproductids:", sub_product_ids);
-    console.log(product_id);
+    var sub_product_ids = $(this).attr("data-product-type-id");    
     const Product_Edit_Modal = new bootstrap.Modal($("#Product_Edit_Modal")[0]);
     Product_Edit_Modal.show();
     resetProductEditModalInfo();
-
     getProductDataWithSubProducts(product_id, sub_product_ids);
 });
 
@@ -175,16 +160,11 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                 .children()
                 .not("#ProductEditModalloader")
                 .remove();
-
             $("#ProductEditModalloader").show();
         },
         success: function (data) {
-            console.log(data);
-
             setTimeout(function () {
                 const $container = $("#ProductEditModalContainer");
-                // $container.empty();
-
                 if (data.length < 1) {
                     $("#product_edit_modal_lender_logo_spinner").hide();
                     final_url =
@@ -243,9 +223,7 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                     </div>
                   </div>
                 </div>`;
-
                     $container.append(cardHtml);
-
                     const $newCard = $container.children().last();
                     $newCard
                         .find(".security_text")
@@ -260,12 +238,10 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                             lender.security_requirement > 0
                         );
                 });
-
                 $("#ProductEditModalloader").hide();
                 $("#product_edit_modal_lender_logo_spinner").hide();
                 $(".lender-cards").show();
             }, 2500);
-
             $("#applicable_lenders").val(JSON.stringify(data));
         },
         error: function (xhr, status, error) {
@@ -277,7 +253,6 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
         },
     });
 }
-
 function resetProductEditModalInfo() {
     $("#product_name").val("");
     $("#product_id").val("");
@@ -303,7 +278,6 @@ function getSubProductData(sub_product_id) {
     const formData = {
         sub_product_id: sub_product_id,
     };
-
     $.ajax({
         url: "/get-sub-product-data",
         method: "GET",
@@ -318,11 +292,8 @@ function getSubProductData(sub_product_id) {
         },
         success: function (data) {
             console.log(data);
-
             setTimeout(function () {
                 const $container = $("#SubProductEditModalContainer");
-                // $container.empty();
-
                 if (!data.rawresult || data.rawresult.length < 1) {
                     $("#sub_product_modal_lender_logo_spinner").hide();
                     final_url =
@@ -331,7 +302,6 @@ function getSubProductData(sub_product_id) {
                 } else {
                     const lender = data.rawresult[0];
                     $("#sub_product_modal_lender_logo_spinner").hide();
-
                     final_url =
                         baseImageUrl + "/" + lender.lender_logo.toLowerCase();
                     $("#sub_product_name").val(lender.sub_product_name);
@@ -346,9 +316,7 @@ function getSubProductData(sub_product_id) {
                     $("#negative_days").val(lender.negative_days);
                     $("#interest_rate").val(lender.interest_rate);
                     $("#security_requirement").val(lender.security_requirement);
-
                     $("#sub_product_modal_lender_logo").attr("src", final_url);
-
                     if (
                         lender.property_owner === "Yes" ||
                         lender.property_owner === "No"
@@ -384,15 +352,9 @@ function getSubProductData(sub_product_id) {
                     } catch (e) {
                         console.error("Invalid restricted_industry JSON:", e);
                     }
-
-                    // Add all industries as options
                     const $select = $("#restricted_industry");
-
-                    // Remove old options except 'null'
                     $select.find('option:not([value="null"])').remove();
-
                     const addedValues = new Set();
-
                     data.restricted_industries.forEach((industry) => {
                         const trimmed = industry?.trim();
                         if (trimmed && !addedValues.has(trimmed)) {
@@ -400,15 +362,8 @@ function getSubProductData(sub_product_id) {
                             addedValues.add(trimmed);
                         }
                     });
-
-                    // Re-initialize Select2 (force destroy + reinit to fix bugs)
-
                     console.log("**All options**", data.restricted_industries);
                     console.log("**Selected options**", selectedIndustries);
-
-                    // const $select = $("#restricted_industry");
-
-                    // 1. Clear the select
                     $select.empty();
 
                     // 2. Add all options from `data.restricted_industries`
@@ -1460,7 +1415,6 @@ $(document).ready(function () {
                             );
                         },
                     });
-
                     $("#Main_Lender_Edit_Modal").modal("hide");
                     $("#Lender_Contact_Edit_Modal").modal("hide");
                     $("#Lender_Contact_Detail_Edit_Modal").modal("hide");
