@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LenderContactsModel;
 use App\Models\LenderTypeModel;
 use Illuminate\Support\Facades\DB;
 
@@ -304,6 +305,7 @@ class LenderController extends Controller
             ->where('lender_contacts_models.lender_id', $lender_id)
             ->select(
                 'lender_contacts_models.lender_id',
+                'lender_contacts_models.id as contact_id',
                 'lender_contacts_models.contact_type',
                 'lender_contacts_models.name',
                 'lender_contacts_models.email as contact_email',
@@ -552,6 +554,7 @@ class LenderController extends Controller
             ->where('lender_contacts_models.lender_id', $lender_id)
             ->select(
                 'lender_contacts_models.lender_id',
+                'lender_contacts_models.id as contact_id',
                 'lender_contacts_models.contact_type',
                 'lender_contacts_models.name',
                 'lender_contacts_models.email as contact_email',
@@ -569,5 +572,59 @@ class LenderController extends Controller
 
 
         return response()->json($contactsWithLender);
+    }
+
+    public function search_contact_details()
+    {
+        $contact_id = request()->contact_id;
+        $contactDetails =  LenderContactsModel::where('id', $contact_id)->get();
+        return response()->json($contactDetails);
+    }
+
+    public function update_lender_contact_data(Request $request)
+    {
+
+        $rules = [
+
+
+            'name' => ['required', 'string', 'min:2', 'max:255'],
+            'contact_id' => ['required', 'integer'],
+            'email' => ['required', 'email', 'max:255'],
+            'contact_mobile_number' => ['nullable', 'regex:/^[\d\s\+\-]{5,20}$/'], // allowing digits, spaces, plus, hyphen
+            'state' => ['nullable', 'string', 'min:2', 'max:255'],
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile_number' => $request->contact_mobile_number,
+            'state' => $request->state,
+            'title' => $request->title,
+        ];
+
+        $result = LenderContactsModel::where('id', $request->contact_id)->update($data);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Contact data updated successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update the data.'
+            ]);
+        }
     }
 }

@@ -62,7 +62,13 @@ $(document).ready(function () {
                         /'/g,
                         "&#39;"
                     );
-                    return `<button type="button" data-main-lender-id='${product_id_arr}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;"><i class="fas fa-pencil"></i></button>`;
+
+                    // Only show the "Edit" button if the user role is "Admin"
+                    if (userRole === "Admin") {
+                        return `<button type="button" data-main-lender-id='${product_id_arr}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;"><i class="fas fa-pencil"></i></button>`;
+                    } else {
+                        return ""; // Don't show button for non-admin users
+                    }
                 },
             },
         ],
@@ -463,11 +469,11 @@ $(document).ready(function () {
         });
 
         detailModal.show();
+        resetLenderContactInfo2();
 
         getLenderContactsData(dataId);
     });
     function getLenderContactsData(lenderId) {
-        resetLenderContactInfo2();
         $.ajax({
             url: "/get-lender-contacts",
             method: "GET",
@@ -589,6 +595,7 @@ $(document).ready(function () {
                                            contact.contact_email || "N/A"
                                        }
                                      </div>
+                                     
                                    </div>
                                  `;
                             });
@@ -731,6 +738,8 @@ $(document).ready(function () {
             },
         });
     });
+
+   
 });
 
 function loadLenderLogo(imageUrl) {

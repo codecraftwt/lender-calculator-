@@ -34,7 +34,12 @@
                         <th>Mobile Number</th>
                         <th>Website</th>
                         <th>Products</th>
+
+                        @if(auth()->user()->role === 'Admin')
                         <th>Actions</th>
+                        @endif
+
+
                     </tr>
                 </thead>
                 <tbody>
@@ -144,7 +149,7 @@
                 <hr>
 
                 <!-- Sub-product list will be injected into this container -->
-                <div id="loanProductsContainer" class="row g-4 mb-3" style="padding-left: 15px;padding-right:15px" class="row g-4 mb-3">
+                <div id="loanProductsContainer" class="row g-4 mb-2" style="padding-left: 15px;padding-right:15px;overflow:auto" class="row g-4 mb-3">
 
 
                 </div>
@@ -271,7 +276,7 @@
 
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 1060;">
 
-            <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 <!-- 📝 Form Start -->
@@ -280,7 +285,7 @@
                     @csrf
 
                     <!-- Header -->
-                    <div class="row mb-3">
+                    <div class="row mb-1">
                         <div class="col-md-4 mb-3">
                             <span id="main_lender_modal_logo" class="" role="status" style="width: 2rem; height: 2rem;">
                                 <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 94px;">
@@ -360,18 +365,31 @@
 
                             <p class="text-danger d-none" id="invalid_product_guide_url">Please upload a valid file or enter a valid URL.</p>
                         </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="lender_mobile_number" class="form-label"> </label>
+                            <button type="submit" class="btn btn-success m-5 main_lender_edit_submit_btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                                Save Changes
+                            </button>
+
+
+                        </div>
+                        <div class="col-md-4 mb-3">
+
+                            <button type="button" class="btn btn-outline-secondary text-white m-5 view-contact-edit-btn" data-main-lender-id=""
+                                style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                                Edit Lender Contacts
+                            </button>
+                        </div>
                         <!-- <div class="col-md-4 mb-3">
                             <label for="lender_mobile_number" class="form-label"> </label>
                             <button type="submit" class="btn btn-success m-5">
                                 Save Changes
                             </button>
                         </div> -->
-                        <div class="col-md-4 mb-3">
-                            <label for="lender_mobile_number" class="form-label"> </label>
-                            <button type="submit" class="btn btn-success m-5 main_lender_edit_submit_btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
-                                Save Changes
-                            </button>
-                        </div>
+                        <!-- <div class="col-md-4 d-flex justify-content-between w-100">
+                           
+                        </div> -->
                 </form>
 
             </div>
@@ -381,7 +399,7 @@
             <hr>
 
             <!-- Loan Products Container -->
-            <div id="MainLenderloanProductsContainer" class="row g-4 mb-3" style="padding-left: 15px; padding-right:15px">
+            <div id="MainLenderloanProductsContainer" class="row g-4 mb-3" style="padding-left: 15px; padding-right:15px;overflow:auto  ">
                 <!-- Loader -->
                 <div id="MainLenderModalloader" class="text-center my-4" style="display: none;">
                     <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
@@ -390,13 +408,13 @@
             </div>
 
             <!-- Footer -->
-            <div class="modal-footer mt-4">
+            <!-- <div class="modal-footer mt-1">
                 <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
                     style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
                     ← Back to Lenders
                 </button>
 
-            </div>
+            </div> -->
 
             <!-- 📝 Form End -->
 
@@ -454,22 +472,13 @@
             <!-- Loan Products Container -->
             <div id="ProductEditModalContainer" class="row g-4 mb-3 justify-content-center " style="padding-left: 15px; padding-right:15px;overflow-y:auto;padding-bottom: 30px;">
                 <!-- Loader -->
-                <div id="ProductModalloader" class="text-center my-4" style="display: none;">
+                <div id="ProductEditModalloader" class="text-center my-4" style="display: none;">
                     <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
                 </div>
                 <!-- Product cards will be appended here dynamically -->
             </div>
 
-            <!-- Footer -->
-            <div class="modal-footer mt-4">
-                <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
-                    ← Back
-                </button>
 
-            </div>
-
-            <!-- 📝 Form End -->
 
         </div>
     </div>
@@ -637,16 +646,172 @@
                 </div>
             </form>
 
+            <div class="modal-footer mt-1">
 
-            <!-- Loan Products Container -->
-            <!-- <div id="SubProductEditModalContainer" class="row g-4 mb-3 justify-content-center " style="padding-left: 15px; padding-right:15px;overflow-y:auto;padding-bottom: 30px;">
-                <div id="SubProductModalloader" class="text-center my-4" style="display: none;">
+                <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                    ← Back
+                </button>
+
+            </div>
+
+            <!-- 📝 Form End -->
+
+        </div>
+    </div>
+</div>
+
+<div id="Lender_Contact_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+        style="width: 100%; max-width: 1660px;; z-index: 1070;">
+        <div class="modal-content" style="min-height: 96vh !important; margin-top: 1vh !important;padding:25px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <!-- Header -->
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                        <div class="d-flex align-items-center position-relative" style="height: 80px; width: 94px;">
+                            <!-- Loader (shown initially) -->
+                            <span id="contact_edit_logo_loader" class="" role="status" style="width: 2rem; height: 2rem;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
+                            </span>
+
+                            <!-- Lender Logo (hidden initially) -->
+                            <img id="contact_edit_logo" src="" alt="Lender Logo"
+                                style="height: 95px; width: auto; display: none;" class="me-3" />
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="container mt-3" id="contacts_edit_container" style="max-width: 600px;overflow-y:auto">
+
+
+                <div class="bg-purple p-2 text-white fw-bold d-flex justify-content-between align-items-center" style="background-color:#6a4b8c;">
+                    <span>CONTACTS</span>
+                    <input type="search" class="form-control form-control-sm search_contact" name="edit_lender_contact_search" id="edit_lender_contact_search" style="width: 200px;" placeholder="Search" data-lender-id="">
+                    <div class="visually-hidden" id="loader" style="display:none;">Loading...</div>
+                    <div class="visually-hidden" id="results"></div>
+
+                </div>
+
+                <div class="accordion mt-2" id="contactsEditAccordion">
+
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="contactEditheadingNSW" class="headingNSW">
+
+                        </h2>
+                        <div id="collapseNSW" class="accordion-collapse collapse collapseNSW" aria-labelledby="headingNSW" data-bs-parent="#contactsAccordion">
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="accordion mt-2" id="contactsEditAccordion"></div>
+
+
+                    <!-- South Australia / Western Australia -->
+
+
+                </div>
+                <div id="ContactEditModalloader" class="text-center my-4" style="display: none;">
                     <img src="{{ asset('assets/images/obi-loader.gif') }}" alt="Loading..." style="height: 200px;">
                 </div>
-            </div> -->
+            </div>
+
+            <!-- Footer -->
+
+        </div>
+    </div>
+</div>
+<div id="Lender_Contact_Detail_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2050;">
+        <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <!-- 📝 Form Start -->
+            <form id="lender_contact_detail_edit_form" method="POST" action="{{ url('/update-lender-contact-data') }}" enctype="multipart/form-data">
+                <!-- CSRF Token (if using Laravel Blade) -->
+                @csrf
+
+                <!-- Header -->
+                <div class="row mb-3">
+
+
+                    <div class="col-md-4 mb-3 visually-hidden">
+
+
+                        <input type="text" id="contact_id" name="contact_id" readonly class="form-control" autocomplete="off" />
+
+                    </div>
+
+                    <div class="col-md-4 mb-3  ">
+                        <label for="name" class="form-label">Name</label>
+                        <div class="input-group">
+                            <input type="text" id="name" name="name" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_name">Please enter valid name.</p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <input type="text" id="email" name="email" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_email">Please enter valid email.</p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="mobile_number" class="form-label"> Mobile Number</label>
+                        <div class="input-group">
+                            <input type="text" id="contact_mobile_number" name="contact_mobile_number" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_contact_mobile_number">Please enter valid mobile number</p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <div class="input-group">
+                            <input type="text" id="title" name="title" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_title">Please enter valid title.</p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="state" class="form-label">State</label>
+                        <div class="input-group">
+                            <input type="text" id="state" name="state" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_state">Please enter valid state.</p>
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <button type="submit" class="btn btn-success m-5 lender-contact-details-submit-btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                            Save Changes
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
 
 
             <div class="modal-footer mt-1">
+
                 <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
                     style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
                     ← Back
@@ -713,6 +878,8 @@ $base_product_guide_url = "{{ url('assets/product-guides') }}";
             });
         });
     });
+
+    var userRole = '{{ auth()->user()->role }}'; // Pass the role from server to JavaScript
 </script>
 
 
