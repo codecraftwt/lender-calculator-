@@ -23,14 +23,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.4/dist/select2-bootstrap4.min.css" rel="stylesheet" />
-
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
-
     <link rel="icon" href="{{ url('assets/images/favicon.jpg') }}" type="image/jpeg">
-
     @yield('styles')
 </head>
 
@@ -46,29 +42,22 @@
                     <li><a href="{{ url('/lender-list') }}" class="nav-link px-2">Lenders</a></li>
                     <li class=""><a href="{{ url('/customer-list') }}" class="nav-link px-2">Customers</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Contact us</a></li>
-
-
                     @auth
-
                     @if(auth()->user()->role === 'Admin')
                     <li>
                         <a href="{{ url('/add-user') }}" class="nav-link px-2">Add Broker/Admin</a>
                     </li>
                     @endif
-
-
                     <li>
                         <a href="#" class="nav-link px-2 btn btn-login px-3 py-1 rounded-pill"
                             onclick="confirmLogout(event)">
                             Logout
                         </a>
-
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     </li>
                     @endauth
-
                     @guest
                     <li>
                         <a href="{{ route('login') }}" class="btn btn-login px-3 py-1 rounded-pill">Login</a>
@@ -88,7 +77,6 @@
                 </div>
             </div>
             @endif
-
             @if(session('error'))
             <div id="sessionToast_error" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
                 <div class="d-flex">
@@ -100,9 +88,6 @@
             </div>
             @endif
         </div>
-
-
-
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.toast').forEach(function(toastEl) {
@@ -137,16 +122,8 @@
     @yield('scripts')
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
     <!-- Slick JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-     
-
-
-
-
 </body>
 
 </html>
