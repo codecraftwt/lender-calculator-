@@ -228,14 +228,34 @@ class LenderController extends Controller
                 'product_type_models.sub_product_name',
                 'product_type_models.credit_score',
                 'product_type_models.interest_rate',
-                'product_type_models.security_requirement',
-
-
+                'product_type_models.security_requirement'
             )
             ->whereIn('product_type_models.id', $ids)
             ->get();
 
-        return response()->json($rawResults);
+        if ($rawResults->isNotEmpty()) {
+            // If there are subproducts, return the results
+            return response()->json($rawResults);
+        } else {
+            // If no subproducts are found, fetch the product details
+            $productDetails = DB::table('product_models')
+                ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
+                ->select(
+                    'main_lender_tables.id as lender_id',
+                    'main_lender_tables.lender_name',
+                    'main_lender_tables.email',
+                    'main_lender_tables.mobile_number',
+                    'main_lender_tables.website_url',
+                    'main_lender_tables.product_guide',
+                    'main_lender_tables.lender_logo',
+                    'product_models.id as product_id'
+                )
+                ->where('product_models.id', $product_id)
+                ->get();
+
+            // Return the product details
+            return response()->json($productDetails);
+        }
     }
 
 

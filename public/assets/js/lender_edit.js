@@ -191,6 +191,14 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                         "data-main-lender-id",
                         lender.product_id
                     );
+
+                    if (!lender.sub_product_name) {
+                        $(".lender-cards").html(
+                            `<div class="text-danger text-center py-4">No subproduct found</div>`
+                        );
+                        $("#ProductEditModalloader").hide();
+                        return;
+                    }
                 }
                 data.forEach(function (lender) {
                     const cardHtml = `<div class="col-md-4 view-sub-product-edit-modal-btn" data-sub-product-id="${
