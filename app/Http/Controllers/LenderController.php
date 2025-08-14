@@ -18,8 +18,16 @@ class LenderController extends Controller
 {
     public function lender_list()
     {
-        // $lenders = MainLenderTable::all();
-        return view('lender.lender_list');
+        $restricted_industries = ProductTypeModel::whereNotNull('restricted_industry')
+            ->pluck('restricted_industry')
+            ->map(function ($item) {
+                return json_decode($item, true);
+            })
+            ->flatten()
+            ->unique()
+            ->values();
+
+        return view('lender.lender_list', compact('restricted_industries'));
     }
 
     public function get_lenders()
@@ -37,6 +45,7 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'product_models.id as product_id'
             )
+            ->orderBy('main_lender_tables.id', 'desc') // ✅ ordering by lender id DESC
             ->get();
 
         // Group subproduct IDs by lender
@@ -48,9 +57,10 @@ class LenderController extends Controller
                 'email' => $group[0]->email,
                 'mobile_number' => $group[0]->mobile_number,
                 'website_url' => $group[0]->website_url,
-                'product_ids' => $group->pluck('product_id')->filter()->unique()->values() // avoid nulls
+                'product_ids' => $group->pluck('product_id')->filter()->unique()->values()
             ];
         })->values();
+
 
         return response()->json($lenders);
     }
@@ -319,6 +329,7 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'main_lender_tables.lender_logo'
             )
+            ->where('lender_contacts_models.deleted_flag', 0)
             ->get()
             ->groupBy('state');
 
@@ -568,6 +579,7 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'main_lender_tables.lender_logo'
             )
+            ->where('lender_contacts_models.deleted_flag', 0)
             ->get();
 
 
@@ -577,7 +589,7 @@ class LenderController extends Controller
     public function search_contact_details()
     {
         $contact_id = request()->contact_id;
-        $contactDetails =  LenderContactsModel::where('id', $contact_id)->get();
+        $contactDetails =  LenderContactsModel::where('id', $contact_id)->where('deleted_flag', 0)->get();
         return response()->json($contactDetails);
     }
 
@@ -624,6 +636,192 @@ class LenderController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to update the data.'
+            ]);
+        }
+    }
+
+    public function add_new_product(Request $request)
+    {
+        $rules = [
+            'new_product_name' => ['required', 'min:2', 'max:255'],
+            'existing_lender_id' => ['required', 'integer'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data = [
+            'product_name' => $request->new_product_name,
+            'lender_id' => $request->existing_lender_id,
+        ];
+
+        $result  = ProductModel::create($data);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product Added  Successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to Add Product.'
+            ]);
+        }
+    }
+
+    public function add_new_sub_product(Request $request)
+    {
+        $rules = [
+            'new_sub_product_name' => ['required', 'string', 'min:2', 'max:255'],
+            'new_trading_time' => ['required', 'integer'],
+            'new_gst_registration' => ['required', 'in:Yes,No'],
+            'new_gst_time' => ['nullable', 'numeric'],
+            'new_min_loan_amount' => ['nullable', 'numeric'],
+            'new_max_loan_amount' => ['nullable', 'numeric'],
+            'new_annual_income' => ['nullable', 'numeric'],  // Corrected typo
+            'new_credit_score' => ['nullable', 'integer', 'min:0', 'max:1200'],
+            'new_property_owner' => ['required', 'in:Yes,No'],
+            'new_number_of_dishonours' => ['nullable', 'integer'],
+            'new_negative_days' => ['nullable', 'integer'],
+            'new_interest_rate' => ['nullable', 'numeric'],
+            'new_security_requirement' => ['nullable', 'integer'],
+            'existing_product_id' => ['required', 'integer'],
+            'new_restricted_industry' => ['nullable', 'array'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data = [
+            'product_id' => $request->existing_product_id,
+            'sub_product_name' => $request->new_sub_product_name,
+            'trading_time' => $request->new_trading_time,
+            'GST_registration' => $request->new_gst_registration,
+            'gst_time' => $request->new_gst_time,
+            'min_loan_amount' => $request->new_min_loan_amount,
+            'max_loan_amount' => $request->new_max_loan_amount,
+            'annual_income' => $request->new_annual_income,
+            'credit_score' => $request->new_credit_score,
+            'property_owner' => $request->new_property_owner,
+            'number_of_dishonours' => $request->new_number_of_dishonours,
+            'negative_days' => $request->new_negative_days,
+            'interest_rate' => $request->new_interest_rate,
+            'security_requirement' => $request->new_security_requirement,
+            'restricted_industry' => $request->has('new_restricted_industry') ? json_encode($request->new_restricted_industry) : null, // Convert to JSON if exists
+        ];
+
+        try {
+            $result = ProductTypeModel::create($data);
+
+            if ($result) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Product Added Successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to Add Product.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Catch any exception that may occur
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function add_new_contact(Request $request)
+    {
+
+
+        $rules = [
+
+
+            'contact_name' => ['required', 'string', 'min:2', 'max:255'],
+            'contact_lender_id' => ['required', 'integer'],
+            'contact_email' => ['required', 'email', 'max:255'],
+            'add_contact_mobile_number' => ['nullable', 'regex:/^[\d\s\+\-]{5,20}$/'], // allowing digits, spaces, plus, hyphen
+            'contact_state' => ['nullable', 'string', 'min:2', 'max:255'],
+            'contact_title' => ['required', 'string', 'min:2', 'max:255'],
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data = [
+            'name' => $request->contact_name,
+            'email' => $request->contact_email,
+            'mobile_number' => $request->add_contact_mobile_number,
+            'state' => $request->contact_state,
+            'title' => $request->contact_title,
+            'lender_id' => $request->contact_lender_id,
+        ];
+
+        $result = LenderContactsModel::create($data);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Contact   Added successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to Add Contact  .'
+            ]);
+        }
+    }
+
+    public function delete_lender_contact(Request $request)
+    {
+        $rules = [
+            'dataId' => ['required', 'integer'],
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $result = LenderContactsModel::where('id', $request->dataId)->update(['deleted_flag' => 1]);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Contact   deleted successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete Contact  .'
             ]);
         }
     }

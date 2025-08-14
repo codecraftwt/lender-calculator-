@@ -22,14 +22,14 @@
 
             <div style="height:76px;" class="header d-flex align-items-center ml-4">
                 <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Clients</h3>
-                <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px;" class="m-5 rounded border-none text-white p-1">
-                        <small>Add new</small>
+                <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1">
+                        <small><i class="fas fa-plus"></i> Add New</small>
                     </button></a>
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
 
                 <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">
-                        < &nbsp;Filter</small>
+                        <i class="fas fa-filter"></i> Filter</small>
                 </button>
             </div>
 

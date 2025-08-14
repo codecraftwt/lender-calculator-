@@ -10,21 +10,8 @@ $(document).ready(function () {
         responsive: true,
         lengthMenu: [100, 120, 140, 160],
         pageLength: 80,
-        dom: "Blfrtip",
-        buttons: [
-            {
-                extend: "excelHtml5",
-                text: "Export to Excel",
-                exportOptions: { columns: [0, 1, 3, 4, 5] },
-                title: "Lender List",
-            },
-            {
-                extend: "print",
-                text: "Print Table",
-                exportOptions: { columns: [0, 1, 3, 4, 5] },
-                title: "Lender List",
-            },
-        ],
+        dom: "rtip",
+       
 
         ajax: {
             url: "/get-lenders",
@@ -71,6 +58,21 @@ $(document).ready(function () {
                 },
             },
         ],
+    });
+
+    const $customSearch = $(`
+            <div class="search-input-wrapper position-relative d-inline-block">
+                <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
+                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+            </div>
+        `);
+
+    // ✅ Insert it into placeholder
+    $("#customSearchWrapper").html($customSearch);
+
+    // ✅ Wire search input to DataTable instance
+    $("#customSearchInput").on("keyup", function () {
+        mainLenderTable.search(this.value).draw();
     });
 
     $(document).on("click", ".view-btn", function () {
@@ -167,8 +169,8 @@ $(document).ready(function () {
 
                                 
                                        <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="${
-                                    lender.lender_name
-                                }" 
+                            lender.lender_name
+                        }" 
                                      class="img-fluid mb-2" style="max-height: 60px; max-width: 130px;">
         
                                <h4 style="text-align: center;">${
@@ -329,24 +331,30 @@ $(document).ready(function () {
                                             <div class="col-md-12 m-3 ps-0 justify-content-center text-center">
                                                 <img src="${baseImageUrl}/${data[0].lender_logo.toLowerCase()}" class="img-fluid mb-3" alt="Lender Logo" style="width: 73px; height: 35px;">
                                                 <h5 class="fw-bold" style="color: #852aa3;">${
-                                                    product.product_name || "Product"
+                                                    product.product_name ||
+                                                    "Product"
                                                 }</h5>
                                                 <h6 class="fw-bold" style="color: #852aa3;">${
-                                                    product.sub_product_name || ""
+                                                    product.sub_product_name ||
+                                                    ""
                                                 }</h6>
                                                 <p class="m-0" style="font-weight:500">$$${
                                                     product.min_amount || 0
-                                                } - $$${product.max_amount || 0}</p>
+                                                } - $$${
+                                    product.max_amount || 0
+                                }</p>
                                                 <p class="m-0" style="font-weight:500">Minimum Score Required: ${
-                                                    product.credit_score || "500+"
+                                                    product.credit_score ||
+                                                    "500+"
                                                 }</p>
                                                 <p class="m-0" style="font-weight:600">APR: ${
-                                                    parseFloat(product.interest_rate).toFixed(
-                                                        2
-                                                    ) || ""
+                                                    parseFloat(
+                                                        product.interest_rate
+                                                    ).toFixed(2) || ""
                                                 }</p>
                                                 <small class="security_text text-warning ${
-                                                    product.security_requirement > 0
+                                                    product.security_requirement >
+                                                    0
                                                         ? "d-block"
                                                         : "d-none"
                                                 }" style="font-weight:600">
@@ -414,8 +422,9 @@ $(document).ready(function () {
                                             product.credit_score || "500+"
                                         }</p>
                                         <p class="m-0" style="font-weight:600">APR: ${
-                                            parseFloat(product.interest_rate).toFixed(2) ||
-                                            ""
+                                            parseFloat(
+                                                product.interest_rate
+                                            ).toFixed(2) || ""
                                         }</p>
                                         <small class="security_text text-warning ${
                                             product.security_requirement > 0
