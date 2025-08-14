@@ -132,7 +132,6 @@
         </div>
         @endif
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.toast').forEach(function(toastEl) {
@@ -148,7 +147,7 @@
         //     passwordInput.setAttribute("type", type);
         // }
     </script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         function togglePassword() {

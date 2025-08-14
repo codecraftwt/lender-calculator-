@@ -948,6 +948,13 @@ span.hover-white:hover {
     margin-top: 2vh !important;
 }
 
+#Product_Add_Modal .modal-content {
+    z-index: 3000 !important;
+    min-height: 94vh !important;
+    width: 95% !important;
+    margin-top: 2vh !important;
+}
+
 #lenderTable {
     border-collapse: collapse;
     width: 100%;
@@ -1197,6 +1204,7 @@ span.hover-white:hover {
     font-weight: 500;
 }
 .edit-contact,
+.delete-contact,
 .contact-phone,
 .contact-email {
     display: flex;
@@ -1206,6 +1214,7 @@ span.hover-white:hover {
     margin-left: 20px;
     white-space: nowrap;
 }
+.delete-contact i,
 .edit-contact i,
 .contact-phone i,
 .contact-email i {

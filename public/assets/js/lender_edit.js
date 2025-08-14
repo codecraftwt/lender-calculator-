@@ -62,6 +62,10 @@ function getMainModalData(main_lender_id) {
                         "data-main-lender-id",
                         lender.lender_id
                     );
+                    $(".product-add-btn").attr(
+                        "data-main-lender-id",
+                        lender.lender_id
+                    );
                 }
                 data.forEach(function (lender) {
                     const productTypeIds = JSON.stringify(
@@ -69,8 +73,8 @@ function getMainModalData(main_lender_id) {
                     );
                     const cardHtml = `<div class="col-6 col-md-6 mb-2 d-flex justify-content-center view-product-edit-modal-btn" 
                             data-product-type-id='${productTypeIds}' data-product-id='${
-                              lender.product_id
-                            }'>
+                        lender.product_id
+                    }'>
                          <div class="lender-box-container position-relative">
                        
                            <!-- Original Card Content -->
@@ -138,7 +142,7 @@ function resetMainLenderModalInfo() {
 
 $(document).on("click", ".view-product-edit-modal-btn", function () {
     var product_id = $(this).attr("data-product-id");
-    var sub_product_ids = $(this).attr("data-product-type-id");    
+    var sub_product_ids = $(this).attr("data-product-type-id");
     const Product_Edit_Modal = new bootstrap.Modal($("#Product_Edit_Modal")[0]);
     Product_Edit_Modal.show();
     resetProductEditModalInfo();
@@ -183,6 +187,10 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                     $("#product_id").val(lender.product_id);
 
                     $("#product_edit_modal_lender_logo").attr("src", final_url);
+                    $(".sub-product-add-btn").attr(
+                        "data-main-lender-id",
+                        lender.product_id
+                    );
                 }
                 data.forEach(function (lender) {
                     const cardHtml = `<div class="col-md-4 view-sub-product-edit-modal-btn" data-sub-product-id="${
@@ -317,6 +325,7 @@ function getSubProductData(sub_product_id) {
                     $("#interest_rate").val(lender.interest_rate);
                     $("#security_requirement").val(lender.security_requirement);
                     $("#sub_product_modal_lender_logo").attr("src", final_url);
+
                     if (
                         lender.property_owner === "Yes" ||
                         lender.property_owner === "No"
@@ -1106,6 +1115,10 @@ $(document).ready(function () {
                                 "data-lender-id",
                                 lenderInfo.lender_id
                             );
+                            $(".add_new_contact_btn").attr(
+                                "data-main-lender-id",
+                                lenderInfo.lender_id
+                            );
                         }
 
                         let finalHtml = "";
@@ -1148,6 +1161,11 @@ $(document).ready(function () {
                                      </div>
                                      <div class="edit-contact">
                                        <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                                           contact.contact_id
+                                       }" ></i> 
+                                     </div>
+                                     <div class="delete-contact">
+                                       <i class="fas fa-trash lender-contact-detail-delete-btn" style="cursor: pointer;" data-main-lender-id="${
                                            contact.contact_id
                                        }" ></i> 
                                      </div>
@@ -1196,6 +1214,11 @@ $(document).ready(function () {
                                      </div>
                                       <div class="edit-contact">
                                        <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                                           contact.contact_id
+                                       }" ></i> 
+                                     </div>
+                                     <div class="delete-contact">
+                                       <i class="fas fa-trash lender-contact-detail-delete-btn" style="cursor: pointer;" data-main-lender-id="${
                                            contact.contact_id
                                        }" ></i> 
                                      </div>
@@ -1283,10 +1306,15 @@ $(document).ready(function () {
                             contact.contact_email || "N/A"
                         }</div>
                          <div class="edit-contact">
-                                       <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
-                                           contact.contact_id
-                                       }" ></i> 
-                                     </div>
+                          <i class="fas fa-pencil lender-contact-detail-edit-btn" style="cursor: pointer;" data-main-lender-id="${
+                              contact.contact_id
+                          }" ></i> 
+                        </div>
+                        <div class="delete-contact">
+                          <i class="fas fa-trash lender-contact-detail-delete-btn" style="cursor: pointer;" data-main-lender-id="${
+                              contact.contact_id
+                          }" ></i> 
+                        </div>
                     </div>
                 `;
                             $("#searchResultsBody").append(contactHtml);
@@ -1323,6 +1351,73 @@ $(document).ready(function () {
 
         detailModal.show();
         getLenderContactsDetailData(dataId);
+    });
+
+    $(document).on("click", ".lender-contact-detail-delete-btn", function (e) {
+        e.preventDefault();
+
+        const dataId = $(this).attr("data-main-lender-id");
+
+        const lender_id = $("#edit_lender_contact_search").attr(
+            "data-lender-id"
+        );
+
+        // Show SweetAlert confirmation
+        Swal.fire({
+            title: "Are you sure to delete this contact?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d15de8", // Button color for "Yes"
+            cancelButtonColor: "#d33", // Button color for "No"
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If "Yes" is clicked, proceed with AJAX call
+                $.ajax({
+                    url: "/delete-lender-contact",
+                    method: "POST",
+                    data: {
+                        _token: $("meta[name='csrf-token']").attr("content"), // CSRF token for security
+                        dataId: dataId,
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "success",
+                            title: "Contact deleted successfully!",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                        // Optionally reload or remove the contact row from the UI
+                        $(`[data-main-lender-id="${dataId}"]`)
+                            .closest("tr")
+                            .remove(); // Example: remove contact row
+                        getLenderContactsData(lender_id);
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong, please try again.",
+                        });
+                    },
+                });
+            } else if (result.isDismissed) {
+                // If "No" is clicked, just close the SweetAlert
+                Swal.fire({
+                    icon: "info",
+                    title: "Cancelled",
+                    text: "The contact was not deleted.",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            }
+        });
     });
 
     function getLenderContactsDetailData(dataId) {
@@ -1515,4 +1610,609 @@ $(document).ready(function () {
         const regex = /^\+?[0-9\s\-()]{5,20}$/;
         return regex.test(mobileNumber);
     }
+
+    $(document).on("click", ".product-add-btn", function (e) {
+        e.preventDefault();
+
+        const lender_id = $(this).attr("data-main-lender-id");
+        console.log("Product ID:", lender_id);
+        const modalElement = document.getElementById("Product_Add_Modal");
+
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false,
+            keyboard: true,
+        });
+
+        detailModal.show();
+        // $("#existing_lender_id").val(lender_id);
+
+        $("#existing_lender_id").val(lender_id);
+        $("#new_product_name").val("");
+    });
+
+    $(document).on("click", ".product-add-submit-btn", function (e) {
+        e.preventDefault();
+
+        const product_name = $("#new_product_name").val().trim();
+        const lender_id = $("#existing_lender_id").val().trim();
+
+        let isValid = true;
+
+        $("#invalid_product_name").addClass("d-none");
+        $("#invalid_lender_id").addClass("d-none");
+
+        if (product_name === "") {
+            $("#invalid_new_product_name")
+                .removeClass("d-none")
+                .text("Product name is required.");
+            isValid = false;
+        }
+
+        if (lender_id === "") {
+            $("#invalid_existing_lender_id")
+                .removeClass("d-none")
+                .text("Lender ID is required.");
+            isValid = false;
+        } else if (!Number.isInteger(parseInt(lender_id))) {
+            $("#invalid_existing_lender_id")
+                .removeClass("d-none")
+                .text("Lender ID must be a valid integer.");
+            isValid = false;
+        }
+
+        if (isValid) {
+            const form = $("#product_add_form")[0];
+            const formData = new FormData(form);
+            $.ajax({
+                url: $(form).attr("action"),
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Product Added  successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+                    $("#Product_Add_Modal").modal("hide");
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    refreshLenderTable();
+                },
+                error: function (error) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: firstError || "Validation failed!",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        });
+
+                        // Show inline errors
+                        $.each(errors, function (key, messages) {
+                            $(`#invalid_${key}`)
+                                .removeClass("d-none")
+                                .text(messages[0]);
+                        });
+
+                        // $("#Lender_Contact_Details_Modal").modal("show");
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    }
+                },
+            });
+        }
+    });
+
+    $(document).on("click", ".sub-product-add-btn", function (e) {
+        e.preventDefault();
+
+        const product_id = $(this).attr("data-main-lender-id");
+        console.log("Product ID:", product_id);
+        const modalElement = document.getElementById("Sub_Product_Add_Modal");
+
+        const detailModal = new bootstrap.Modal(modalElement, {
+            backdrop: false,
+            keyboard: true,
+        });
+
+        detailModal.show();
+
+        $("#existing_product_id").val(product_id);
+        $("#new_sub_product_name").val("");
+        $("#new_trading_time").val("");
+        $("#new_gst_registration").val("");
+        $("#new_gst_time").val("");
+        $("#new_min_loan_amount").val("");
+        $("#new_max_loan_amount").val("");
+        $("#new_annual_income").val("");
+        $("#new_credit_score").val("");
+        $("#new_property_owner").val("");
+        $("#new_number_of_dishonours").val("");
+        $("#new_negative_days").val("");
+        $("#new_interest_rate").val("");
+        $("#new_security_requirement").val("");
+        $("#new_restricted_industry").val("");
+    });
+
+    // subproduct add js
+
+    $(document).on("click", ".sub_product_add_submit_btn", function (e) {
+        e.preventDefault();
+
+        const existing_product_id = $("#existing_product_id").val().trim();
+        const new_sub_product_name = $("#new_sub_product_name").val().trim();
+        const new_trading_time = $("#new_trading_time").val().trim();
+        const new_gst_registration = $("#new_gst_registration").val();
+        const new_gst_time = $("#new_gst_time").val().trim();
+        const new_min_loan_amount = $("#new_min_loan_amount").val().trim();
+        const new_max_loan_amount = $("#new_max_loan_amount").val().trim();
+        const new_annual_income = $("#new_annual_income").val().trim();
+        const new_credit_score = $("#new_credit_score").val().trim();
+        const new_property_owner = $("#new_property_owner").val();
+        const new_number_of_dishonours = $("#new_number_of_dishonours")
+            .val()
+            .trim();
+        const new_negative_days = $("#new_negative_days").val().trim();
+        const new_interest_rate = $("#new_interest_rate").val().trim();
+        const new_security_requirement = $("#new_security_requirement")
+            .val()
+            .trim();
+        const new_restricted_industry = $("#new_restricted_industry").val();
+
+        let isValid = true;
+
+        // Clear previous error messages
+        $(".text-danger").addClass("d-none");
+
+        // Validate each field
+        if (existing_product_id === "") {
+            $("#invalid_existing_sub_product_id")
+                .removeClass("d-none")
+                .text("Product ID is required.");
+            isValid = false;
+        }
+
+        if (new_sub_product_name === "") {
+            $("#invalid_new_sub_product_name")
+                .removeClass("d-none")
+                .text("Sub Product Name is required.");
+            isValid = false;
+        }
+
+        if (
+            new_trading_time === "" ||
+            isNaN(new_trading_time) ||
+            new_trading_time < 1
+        ) {
+            $("#invalid_new_trading_time")
+                .removeClass("d-none")
+                .text("Please enter a valid trading time.");
+            isValid = false;
+        }
+
+        if (new_gst_registration === "") {
+            $("#invalid_new_gst_registration")
+                .removeClass("d-none")
+                .text("GST Registration is required.");
+            isValid = false;
+        }
+
+        if (new_gst_time !== "" && (isNaN(new_gst_time) || new_gst_time < 0)) {
+            $("#invalid_new_gst_time")
+                .removeClass("d-none")
+                .text("Please enter valid GST time.");
+            isValid = false;
+        }
+
+        if (
+            new_min_loan_amount === "" ||
+            isNaN(new_min_loan_amount) ||
+            new_min_loan_amount < 1
+        ) {
+            $("#invalid_new_min_loan_amount")
+                .removeClass("d-none")
+                .text("Please enter a valid minimum loan amount.");
+            isValid = false;
+        }
+
+        if (
+            new_max_loan_amount === "" ||
+            isNaN(new_max_loan_amount) ||
+            new_max_loan_amount < 1
+        ) {
+            $("#invalid_new_max_loan_amount")
+                .removeClass("d-none")
+                .text("Please enter a valid maximum loan amount.");
+            isValid = false;
+        }
+
+        if (
+            new_annual_income === "" ||
+            isNaN(new_annual_income) ||
+            new_annual_income < 1
+        ) {
+            $("#invalid_new_annual_income")
+                .removeClass("d-none")
+                .text("Please enter a valid annual income.");
+            isValid = false;
+        }
+
+        if (
+            new_credit_score === "" ||
+            isNaN(new_credit_score) ||
+            new_credit_score < 1
+        ) {
+            $("#invalid_new_credit_score")
+                .removeClass("d-none")
+                .text("Please enter a valid credit score.");
+            isValid = false;
+        }
+
+        if (new_property_owner === "") {
+            $("#invalid_new_property_owner")
+                .removeClass("d-none")
+                .text("Please select a property owner option.");
+            isValid = false;
+        }
+
+        // For new_number_of_dishonours
+        if (
+            new_number_of_dishonours !== "" && // Allow empty or null
+            new_number_of_dishonours !== null && // Allow null
+            (isNaN(new_number_of_dishonours) || new_number_of_dishonours < 0)
+        ) {
+            $("#invalid_new_number_of_dishonours")
+                .removeClass("d-none")
+                .text("Please enter a valid number of dishonours.");
+            isValid = false;
+        }
+
+        // For new_negative_days
+        if (
+            new_negative_days !== "" && // Allow empty or null
+            new_negative_days !== null && // Allow null
+            (isNaN(new_negative_days) || new_negative_days < 0)
+        ) {
+            $("#invalid_new_negative_days")
+                .removeClass("d-none")
+                .text("Please enter valid negative days.");
+            isValid = false;
+        }
+
+        // For new_interest_rate
+        if (
+            new_interest_rate !== "" && // Allow empty or null
+            new_interest_rate !== null && // Allow null
+            (isNaN(new_interest_rate) || new_interest_rate < 0)
+        ) {
+            $("#invalid_new_interest_rate")
+                .removeClass("d-none")
+                .text("Please enter a valid interest rate.");
+            isValid = false;
+        }
+
+        // For new_security_requirement
+        if (
+            new_security_requirement !== "" && // Allow empty or null
+            new_security_requirement !== null && // Allow null
+            (isNaN(new_security_requirement) || new_security_requirement < 0)
+        ) {
+            $("#invalid_new_security_requirement")
+                .removeClass("d-none")
+                .text("Please enter a valid security requirement.");
+            isValid = false;
+        }
+
+        if (new_restricted_industry.length === 0) {
+            // Allow empty
+            $("#invalid_new_restricted_industry")
+                .removeClass("d-none")
+                .text("Please select at least one restricted industry.");
+            isValid = false;
+        }
+
+        // If validation passed, submit form using AJAX
+        if (isValid) {
+            const form = $("#SubProductAddForm")[0];
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: $(form).attr("action"),
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Sub Product added successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    $("#Product_Edit_Modal").modal("hide");
+                    $("#Sub_Product_Add_Modal").modal("hide");
+                    refreshLenderTable();
+                },
+                error: function (error) {
+                    if (error.status === 422) {
+                        const errors = error.responseJSON.errors;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: firstError || "Validation failed!",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        });
+
+                        // Show inline errors
+                        $.each(errors, function (key, messages) {
+                            $(`#invalid_${key}`)
+                                .removeClass("d-none")
+                                .text(messages[0]);
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    }
+                },
+            });
+        }
+    });
+
+    $(document).on("click", ".add_new_contact_btn", function (e) {
+        e.preventDefault();
+        const lender_id = $(this).attr("data-main-lender-id");
+        console.log("Product ID:", lender_id);
+
+        const newmodalElement = document.getElementById(
+            "Lender_Contact_Add_Modal"
+        );
+        const add_contact_modal = new bootstrap.Modal(newmodalElement, {
+            backdrop: false,
+            keyboard: true,
+        });
+
+        add_contact_modal.show();
+        $("#contact_lender_id").val(lender_id);
+    });
+
+    $(document).on("click", ".contact-add-submit-btn", function (e) {
+        e.preventDefault();
+
+        const contact_lender_id = $("#contact_lender_id").val().trim();
+        const name = $("#contact_name").val().trim();
+        const email = $("#contact_email").val().trim();
+        const contact_mobile_number = $("#add_contact_mobile_number")
+            .val()
+            .trim();
+        const title = $("#contact_title").val().trim();
+        const state = $("#contact_state").val().trim();
+
+        let isValid = true;
+
+        // Clear previous error messages
+        $(".text-danger").addClass("d-none");
+
+        // Validate each field
+        if (contact_lender_id === "") {
+            $("#invalid_contact_lender_id")
+                .removeClass("d-none")
+                .text("Lender ID is required.");
+            isValid = false;
+        }
+
+        if (name === "") {
+            $("#invalid_contact_name")
+                .removeClass("d-none")
+                .text("Name is required.");
+            isValid = false;
+        }
+
+        if (email === "") {
+            $("#invalid_contact_email")
+                .removeClass("d-none")
+                .text("Email is required.");
+            isValid = false;
+        }
+
+        // Mobile Number validation with regex
+        const mobileRegex = /^\+?[0-9\s\-()]{5,20}$/;
+        if (
+            contact_mobile_number !== "" &&
+            !mobileRegex.test(contact_mobile_number)
+        ) {
+            $("#invalid_add_contact_mobile_number")
+                .removeClass("d-none")
+                .text("Please enter a valid mobile number.");
+            isValid = false;
+        }
+
+        if (title === "") {
+            $("#invalid_contact_title")
+                .removeClass("d-none")
+                .text("Title is required.");
+            isValid = false;
+        }
+
+        // State is not required, but if provided, it should not be empty
+        if (state !== "" && state.length < 1) {
+            $("#invalid_contact_state")
+                .removeClass("d-none")
+                .text("State must be valid if provided.");
+            isValid = false;
+        }
+
+        // If validation passed, submit form using AJAX
+        if (isValid) {
+            const form = $("#lender_contact_add_form")[0];
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: $(form).attr("action"),
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Contact added successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+
+                    $("#Lender_Contact_Add_Modal").modal("hide");
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    $("#Lender_Contact_Edit_Modal").modal("hide");
+                    refreshLenderTable();
+                },
+                error: function (error) {
+                    if (error.status === 422) {
+                        const errors = error.responseJSON.errors;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: firstError || "Validation failed!",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        });
+
+                        // Show inline errors
+                        $.each(errors, function (key, messages) {
+                            $(`#invalid_${key}`)
+                                .removeClass("d-none")
+                                .text(messages[0]);
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    }
+                },
+            });
+        }
+    });
+});
+
+$(document).ready(function () {
+    $("#industry_type").select2({
+        placeholder: "Select or enter your industry",
+        tags: true,
+        allowClear: true,
+        language: {
+            noResults: function () {
+                return "Can't find your industry? Start typing to add it manually.";
+            },
+        },
+    });
+
+    $(document).ready(function () {
+        $("#new_restricted_industry").select2({
+            placeholder: "Select industries",
+            allowClear: true,
+        });
+    });
+
+    // Apply CSS dynamically via JS to the Select2 container and elements
+    const $container = $("#industry_type").next(".select2-container");
+
+    // Style the main selection box
+    $container.find(".select2-selection--single").css({
+        height: "38px",
+        padding: "6px 12px",
+        border: "1px solid #ced4da",
+        "border-radius": "0.375rem",
+        "background-color": "#fff",
+        "box-sizing": "border-box",
+        cursor: "pointer",
+        display: "flex",
+        "align-items": "center",
+    });
+
+    // Style the displayed text inside selection box
+    $container.find(".select2-selection__rendered").css({
+        "line-height": "1.5",
+        "padding-left": "0",
+        "padding-right": "0",
+        color: "#495057",
+        width: "100%",
+        "white-space": "nowrap",
+        overflow: "hidden",
+        "text-overflow": "ellipsis",
+    });
+
+    // Style the dropdown arrow container
+    $container.find(".select2-selection__arrow").css({
+        height: "100%",
+        right: "10px",
+        width: "100px",
+    });
+
+    // Make sure Select2 container fills parent width
+    $container.css({
+        width: "100%",
+    });
 });

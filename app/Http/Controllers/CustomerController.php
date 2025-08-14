@@ -103,15 +103,16 @@ class CustomerController extends Controller
             // Broker: get only customers added by this user
             $customers = CustomerModel::where('deleted_flag', 0)
                 ->where('added_by', $user->id)
+                ->orderBy('id',"DESC")
                 ->get();
         } elseif ($user->role === 'Admin') {
             // Admin: get all customers not deleted
-            $customers = CustomerModel::where('deleted_flag', 0)->get();
+            $customers = CustomerModel::where('deleted_flag', 0)->orderBy('id', "DESC")->get();
         } else {
             // Optionally, handle other roles or deny access
             $customers = collect(); // empty collection or handle as needed
         }
-
+        
         return response()->json($customers);
     }
 

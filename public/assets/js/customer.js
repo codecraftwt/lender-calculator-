@@ -87,13 +87,14 @@ $(document).ready(function () {
                     dom: "rtip", // 'f' removed to hide default search
 
                     autoWidth: false,
+                    order: [[0, "desc"]],
                 });
 
                 // ✅ Create custom search box
                 const $customSearch = $(`
             <div class="search-input-wrapper position-relative d-inline-block">
                 <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
-                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 30px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
             </div>
         `);
 

@@ -83,12 +83,7 @@ Route::get('/search-contact-details', [LenderController::class, 'search_contact_
 Route::post('/update-lender-contact-data', [LenderController::class, 'update_lender_contact_data']);
 
 
-
-
-
-
 Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
-
 Route::post('/update-main-lender-data', [LenderController::class, 'update_main_lender_data']);
 Route::post('/update-product-data', [LenderController::class, 'update_product_data']);
 Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data']);
@@ -96,6 +91,17 @@ Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_pr
 // add user
 Route::get('/add-user', [UserController::class, 'add_user'])->middleware(['auth', 'admin']);
 Route::post('/store-user', [UserController::class, 'store_user'])->middleware(['auth', 'admin']);
+
+// Add Lender Product
+Route::post('/add-new-product', [LenderController::class, 'add_new_product'])->middleware(['auth', 'admin']);
+Route::post('/add-new-sub-product', [LenderController::class, 'add_new_sub_product'])->middleware(['auth', 'admin']);
+Route::post('/add-new-contact', [LenderController::class, 'add_new_contact'])->middleware(['auth', 'admin']);
+Route::post('/delete-lender-contact', [LenderController::class, 'delete_lender_contact'])->middleware(['auth', 'admin']);
+
+
+
+
+
 
 
 

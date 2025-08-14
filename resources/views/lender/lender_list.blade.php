@@ -18,14 +18,26 @@
         <h5 style="color: white; margin: 0; padding: 1rem;font-size:25px;font-weight:600;">Lender List</h5>
     </div>
     <div class="panel ai-loan-matching  shadow-sm" style="padding: 0; margin: 0;overflow-x: auto; width: 100%;">
-
-        <div class="col-lg-12 mb-4 ">
-            <table id="lenderTable" class="table table-striped p-1">
+        <div class="col-lg-12 mb-4 p-4 " style="background-color: #dedede;min-width:1500px;margin-left:auto;margin-right:auto">
+            <div style="height:76px;" class="header d-flex align-items-center ml-4">
+                <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Lenders</h3>
+                @if(auth()->check() && auth()->user()->role === 'Admin')
+                <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1">
+                        <small><i class="fas fa-plus"></i> Add New</small>
+                    </button></a>
+                @endif
+                <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
+                <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                    <small style="color: white;">
+                        <i class="fas fa-filter"></i> Filter</small>
+                </button>
+            </div>
+            <table id="lenderTable" class="table  p-1">
                 <thead>
                     <tr>
                         <th>Sr.No</th>
                         <th>Lender Name</th>
-                        <th>Lender Logo</th>
+                        <th> Logo</th>
                         <th>Email</th>
                         <th>Mobile Number</th>
                         <th>Website</th>
@@ -36,11 +48,12 @@
                     </tr>
                 </thead>
                 <tbody>
-
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Lender Products Modal  -->
     <div class="modal fade" id="lenderModal" tabindex="-1" aria-labelledby="lenderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
             style="width: 97%; max-width: 1600px; z-index: 1050;">
@@ -67,7 +80,10 @@
         </div>
     </div>
 
-    <!-- Lender Detail Modal (Overlay) -->
+
+
+
+    <!-- Lender Sub Products Modal -->
     <div id="lenderDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
             style="width: 97%; max-width: 1600px; z-index: 1060;">
@@ -134,6 +150,9 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Lender Contacts Modal  -->
     <div id="lenderContactModal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
             style="width: 97%; max-width: 1600px;; z-index: 1070;">
@@ -196,6 +215,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Main Lender Edit Modal  -->
     <div id="Main_Lender_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 1060;">
             <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
@@ -285,14 +306,27 @@
                         <div class="col-md-4 mb-3">
 
                             <button type="button" class="btn btn-outline-secondary text-white m-5 view-contact-edit-btn" data-main-lender-id=""
-                                style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                                style="background-color:rgb(86 66 161)">
                                 Edit Lender Contacts
                             </button>
                         </div>
                 </form>
             </div>
             <hr>
-            <h5 class="text-center">Products</h5>
+            <div class="d-flex">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h5 class="text-center">Products</h5>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1 product-add-btn" data-main-lender-id=""
+                        style="background-color: rgb(86 66 161); width:180px !important">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+
+
+            </div>
             <hr>
             <div id="MainLenderloanProductsContainer" class="row g-4 mb-3" style="padding-left: 15px; padding-right:15px;overflow:auto  ">
                 <div id="MainLenderModalloader" class="text-center my-4" style="display: none;">
@@ -302,6 +336,8 @@
         </div>
     </div>
 </div>
+
+<!-- Product Edit Modal  -->
 <div id="Product_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2000;">
         <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
@@ -338,7 +374,20 @@
                 </div>
             </form>
             <hr>
-            <h5 class="text-center">Sub Products</h5>
+            <div class="d-flex">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h5 class="text-center">Sub Products</h5>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1 sub-product-add-btn" data-main-lender-id=""
+                        style="background-color: rgb(86 66 161); width:180px !important">
+                        <i class="fas fa-plus"></i> Add Sub Product
+                    </button>
+                </div>
+
+
+            </div>
             <hr>
             <div id="ProductEditModalContainer" class="row g-4 mb-3 justify-content-center " style="padding-left: 15px; padding-right:15px;overflow-y:auto;padding-bottom: 30px;">
                 <div id="ProductEditModalloader" class="text-center my-4" style="display: none;">
@@ -348,6 +397,8 @@
         </div>
     </div>
 </div>
+
+<!-- Sub Product Edit Modal -->
 <div id="Sub_Product_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2050;">
         <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
@@ -488,14 +539,17 @@
         </div>
     </div>
 </div>
+
+<!-- Lender Contact Edit Modal  -->
 <div id="Lender_Contact_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
         style="width: 100%; max-width: 1660px;; z-index: 1070;">
         <div class="modal-content" style="min-height: 96vh !important; margin-top: 1vh !important;padding:25px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-            <div class="col-md-12">
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-4 d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center h-100">
+                        <!-- Image Div (left side) -->
                         <div class="d-flex align-items-center position-relative" style="height: 80px; width: 94px;">
                             <span id="contact_edit_logo_loader" class="" role="status" style="width: 2rem; height: 2rem;">
                                 <i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i>
@@ -503,7 +557,15 @@
                             <img id="contact_edit_logo" src="" alt="Lender Logo"
                                 style="height: 95px; width: auto; display: none;" class="me-3" />
                         </div>
+
+                        <!-- Button Div (right side) -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success m-5  add_new_contact_btn" data-main-lender-id="" style="background-color:rgb(86 66 161);border:none">
+                                <i class="fas fa-plus"></i> Add New Contact
+                            </button>
+                        </div>
                     </div>
+
                 </div>
             </div>
             <hr />
@@ -530,6 +592,8 @@
         </div>
     </div>
 </div>
+
+<!-- Lender Contact Detail Edit Madal  -->
 <div id="Lender_Contact_Detail_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2050;">
         <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
@@ -591,74 +655,361 @@
         </div>
     </div>
 </div>
-@php
-$baseImageUrl = "{{ url('assets/images') }}";
-$base_product_guide_url = "{{ url('assets/product-guides') }}";
-@endphp
 
-<script>
-    const baseImageUrl = "{{ url('assets/images') }}";
-    const base_product_guide_url = "{{ url('assets/product_guide') }}";
-</script>
-<div class="position-fixed  p-3" style="z-index: 2000;top:0px;right:0px">
-    @if(session('success'))
-    <div id="sessionToast_success" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
-        <div class="d-flex">
-            <div class="toast-body">
-                {{ session('success') }}
+<!-- Product Add Modal  -->
+<div id="Product_Add_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="  max-width: 1750px; z-index: 2000;margin-left:118px">
+        <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="container">
+                <h4 class="text-center">Add New Product</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <form id="product_add_form" method="POST" action="{{ url('/add-new-product') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 visually-hidden">
+                                    <input type="text" id="existing_lender_id" name="existing_lender_id" readonly class="form-control" autocomplete="off" />
+                                    <p class="text-danger d-none" id="invalid_existing_lender_id">Id is not valid.</p>
+                                </div>
+                                <div class="col-md-6 mb-3  ">
+                                    <label for="new_product_name" class="form-label">Product Name</label>
+                                    <div class="">
+                                        <input type="text" id="new_product_name" name="new_product_name" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_product_name">Please enter valid name.</p>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <!-- <br>/ -->
+                                    <button type="submit" class="btn btn-success product-add-submit-btn" style="background-color:rgb(86 66 161);border:none;margin-top: 2rem;margin-left: 4rem;">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="modal-footer mt-1">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        ← Back
+                    </button>
+                </div>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+
+
         </div>
     </div>
-    @endif
-
-    @if(session('error'))
-    <div id="sessionToast_error" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
-        <div class="d-flex">
-            <div class="toast-body">
-                {{ session('error') }}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-    @endif
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.toast').forEach(function(toastEl) {
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modals = ['#lenderModal', '#lenderDetailModal', '#lenderContactModal'];
 
-        modals.forEach((modalId) => {
-            const modalEl = document.querySelector(modalId);
-            modalEl.addEventListener('show.bs.modal', function() {
-                document.body.classList.add('modal-open');
+
+
+<div id="Sub_Product_Add_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2090;">
+        <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="container">
+                <h4 class="text-center">Add New Sub Product</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+
+                        <form id="SubProductAddForm" method="POST" action="{{ url('/add-new-sub-product') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-3">
+
+                                <div class="col-md-4 mb-3 visually- ">
+                                    <label for="existing_product_id" class="form-label"> Product id</label>
+                                    <div class="input-group">
+                                        <input type="text" id="existing_product_id" name="existing_product_id" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_existing_sub_product_id">Please enter valid id.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_sub_product_name" class="form-label">Sub Product Name</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_sub_product_name" name="new_sub_product_name" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_sub_product_name">Please enter valid name.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_trading_time" class="form-label"> Min Trading Time (months)</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_trading_time" name="new_trading_time" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_trading_time">Please enter valid trading time</p>
+                                </div>
+                                <div class="col-md-4 mb-3 loan-details">
+                                    <label for="new_gst_registration" class="form-label">GST registration required ? </label>
+                                    <select id="new_gst_registration" name="new_gst_registration" class="form-control" required>
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <p class="text-danger d-none" id="invalid_new_gst_registration">Please select valid option.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_gst_time" class="form-label">Time from GST registration (Months)</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_gst_time" name="new_gst_time" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_gst_time">Please enter valid gst time.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_min_loan_amount" class="form-label">Min Loan Amount</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_min_loan_amount" name="new_min_loan_amount" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_min_loan_amount">Please enter valid amount.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_max_loan_amount" class="form-label">Max Loan Amount</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_max_loan_amount" name="new_max_loan_amount" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_max_loan_amount">Please enter valid amount.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_annual_income" class="form-label">Annual Income</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_annual_income" name="new_annual_income" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_annual_income">Please enter valid annual income</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_credit_score" class="form-label">Credit Score</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_credit_score" name="new_credit_score" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_credit_score">Please enter valid credit score.</p>
+                                </div>
+                                <div class="col-md-4 mb-3 loan-details">
+                                    <label for="new_property_owner" class="form-label">Property Owner Required?</label>
+                                    <select id="new_property_owner" name="new_property_owner" class="form-control" required>
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <p class="text-danger d-none" id="invalid_new_property_owner">Please select a valid option.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_number_of_dishonours" class="form-label">Max No. of dishonours allowed</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_number_of_dishonours" name="new_number_of_dishonours" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_number_of_dishonours">Please enter valid number of dishonours.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_negative_days" class="form-label">Max No. of negative days allowed</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_negative_days" name="new_negative_days" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_negative_days">Please enter valid negative days</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_interest_rate" class="form-label">Interest Rate</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_interest_rate" name="new_interest_rate" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_interest_rate">Please enter valid interest rate.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_security_requirement" class="form-label">Security Threshold Amount <small> </small> </label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_security_requirement" name="new_security_requirement" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_security_requirement">Please enter valid security amount.</p>
+                                </div>
+                                <div class="col-md-4 mb-3 loan-details">
+                                    <label for="new_restricted_industry" class="form-label">
+                                        Restricted or excluded industries:
+                                    </label>
+                                    <select id="new_restricted_industry" name="new_restricted_industry[]" class="form-control select2" multiple required>
+
+                                        @foreach ($restricted_industries as $industry)
+                                        <option value="{{ $industry }}">{{ $industry }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-danger d-none" id="invalid_new_restricted_industry">Please select at least one option.</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <button type="submit" class="btn btn-success m-5 sub_product_add_submit_btn" style="background-color:rgb(86 66 161);border:none">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="modal-footer mt-1">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        ← Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="Lender_Contact_Add_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2200;">
+        <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="container">
+                <h4 class="text-center">Add New Contact</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <form id="lender_contact_add_form" method="POST" action="{{ url('/add-new-contact') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 visually-hidden">
+                                    <input type="text" id="contact_lender_id" name="contact_lender_id" readonly class="form-control" autocomplete="off" />
+                                </div>
+                                <div class="col-md-6 mb-3  ">
+                                    <label for="contact_name" class="form-label">Name</label>
+                                    <div class="input-group">
+                                        <input type="text" id="contact_name" name="contact_name" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_contact_name">Please enter valid name.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="contact_email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <input type="text" id="contact_email" name="contact_email" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_contact_email">Please enter valid email.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="add_contact_mobile_number" class="form-label"> Mobile Number</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_contact_mobile_number" name="add_contact_mobile_number" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_contact_mobile_number">Please enter valid mobile number</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="contact_title" class="form-label">Title</label>
+                                    <div class="input-group">
+                                        <input type="text" id="contact_title" name="contact_title" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_contact_title">Please enter valid title.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="contact_state" class="form-label">State</label>
+                                    <div class="input-group">
+                                        <input type="text" id="contact_state" name="contact_state" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_contact_state">Please enter valid state.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <button type="submit" class="btn btn-success m-5 contact-add-submit-btn" style="background-color:rgb(86 66 161);border:none">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="modal-footer mt-1">
+                    <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
+                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        ← Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @php
+    $baseImageUrl = "{{ url('assets/images') }}";
+    $base_product_guide_url = "{{ url('assets/product-guides') }}";
+    @endphp
+
+    <script>
+        const baseImageUrl = "{{ url('assets/images') }}";
+        const base_product_guide_url = "{{ url('assets/product_guide') }}";
+    </script>
+    <div class="position-fixed  p-3" style="z-index: 2000;top:0px;right:0px">
+        @if(session('success'))
+        <div id="sessionToast_success" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('success') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div id="sessionToast_error" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('error') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toast').forEach(function(toastEl) {
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
             });
         });
-    });
-    var userRole = '{{ auth()->check() ? auth()->user()->role : "" }}';
-</script>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- Include jQuery (required for DataTables) and DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ url('assets/js/lender.js') }}"></script>
-<script src="{{ url('assets/js/lender_edit.js') }}"></script>
-<!-- JSZip for Excel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<!-- Main content ends here -->
-@endsection
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modals = ['#lenderModal', '#lenderDetailModal', '#lenderContactModal'];
+
+            modals.forEach((modalId) => {
+                const modalEl = document.querySelector(modalId);
+                modalEl.addEventListener('show.bs.modal', function() {
+                    document.body.classList.add('modal-open');
+                });
+            });
+        });
+        var userRole = '{{ auth()->check() ? auth()->user()->role : "" }}';
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Include jQuery (required for DataTables) and DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="{{ url('assets/js/lender.js') }}"></script>
+    <script src="{{ url('assets/js/lender_edit.js') }}"></script>
+    <!-- JSZip for Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Main content ends here -->
+    @endsection
