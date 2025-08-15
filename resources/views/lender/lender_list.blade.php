@@ -21,11 +21,11 @@
         <div class="col-lg-12 mb-4 p-4 " style="background-color: #dedede;min-width:1500px;margin-left:auto;margin-right:auto">
             <div style="height:76px;" class="header d-flex align-items-center ml-4">
                 <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Lenders</h3>
-                <!-- @if(auth()->check() && auth()->user()->role === 'Admin')
-                <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1">
-                        <small><i class="fas fa-plus"></i> Add New</small>
-                    </button></a>
-                @endif -->
+                @if(auth()->check() && auth()->user()->role === 'Admin')
+                <button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1 add-new-lender-btn">
+                    <small><i class="fas fa-plus"></i> Add New</small>
+                </button>
+                @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
                 <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">Close</button>
+                    <button type="button" class="btn text-white" data-bs-dismiss="modal" style="background-color:rgb(86 66 161);">Close</button>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@
                                 </p>
 
                                 <button type="button" id="lendercontactbuton" class="text-white m-3 view-lender-contacts-btn"
-                                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); border-radius: 20px; border: none; width: 185px; height: 28px; font-weight: 600;" data-lender-id="">
+                                    style="background-color:rgb(86 66 161); border-radius: 20px; border: none; width: 185px; height: 28px; font-weight: 600;" data-lender-id="">
                                     View Lender Contacts
                                 </button>
                             </div>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="modal-footer mt-4">
                     <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        style="background-color:rgb(86 66 161);">
                         ← Back to Lenders
                     </button>
                 </div>
@@ -299,7 +299,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="lender_mobile_number" class="form-label"> </label>
-                            <button type="submit" class="btn btn-success m-5 main_lender_edit_submit_btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                            <button type="submit" class="btn btn-success m-5 main_lender_edit_submit_btn" style="background-color:rgb(86 66 161);border:none">
                                 Save Changes
                             </button>
                         </div>
@@ -367,7 +367,7 @@
                     </div>
                     <div class="col-md-4 mb-3">
 
-                        <button type="submit" class="btn btn-success m-5 product_edit_submit_btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                        <button type="submit" class="btn btn-success m-5 product_edit_submit_btn" style="background-color:rgb(86 66 161);border:none">
                             Save Changes
                         </button>
                     </div>
@@ -524,7 +524,7 @@
                         <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <button type="submit" class="btn btn-success m-5 sub_product_edit_submit_btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                        <button type="submit" class="btn btn-success m-5 sub_product_edit_submit_btn" style="background-color:rgb(86 66 161);border:none">
                             Save Changes
                         </button>
                     </div>
@@ -532,7 +532,7 @@
             </form>
             <div class="modal-footer mt-1">
                 <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                    style="background-color:rgb(86 66 161);">
                     ← Back
                 </button>
             </div>
@@ -640,7 +640,7 @@
                         <p class="text-danger d-none" id="invalid_state">Please enter valid state.</p>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <button type="submit" class="btn btn-success m-5 lender-contact-details-submit-btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);border:none">
+                        <button type="submit" class="btn btn-success m-5 lender-contact-details-submit-btn" style="background-color:rgb(86 66 161);;border:none">
                             Save Changes
                         </button>
                     </div>
@@ -648,7 +648,7 @@
             </form>
             <div class="modal-footer mt-1">
                 <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                    style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                    style="background-color:rgb(86 66 161);">
                     ← Back
                 </button>
             </div>
@@ -697,7 +697,7 @@
                 </div>
                 <div class="modal-footer mt-1">
                     <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        style="background-color:rgb(86 66 161);">
                         ← Back
                     </button>
                 </div>
@@ -854,7 +854,7 @@
                 </div>
                 <div class="modal-footer mt-1">
                     <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        style="background-color:rgb(86 66 161);">
                         ← Back
                     </button>
                 </div>
@@ -930,11 +930,108 @@
                 </div>
                 <div class="modal-footer mt-1">
                     <button type="button" class="btn btn-outline-secondary text-white m-1" data-bs-dismiss="modal"
-                        style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);">
+                        style="background-color:rgb(86 66 161);">
                         ← Back
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Lender  -->
+
+<div id="Add_New_Lender_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 1060;">
+        <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="container">
+                <h4 class="text-center">Add New Lender</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+
+                        <form id="MainLenderAddForm" action="{{ url('/add-new-lender') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-1">
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="new_lender_logo" class="form-label">Lender Logo</label>
+                                    <div class="input-group">
+                                        <input type="file" id="new_lender_logo" name="new_lender_logo" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_lender_logo">Please upload valid logo.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="new_lender_name" class="form-label">Lender Name</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_lender_name" name="new_lender_name" class="form-control" required autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_lender_name">Please enter valid name.</p>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="new_lender_website" class="form-label"> Website</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                                        <input type="text" id="new_lender_website" name="new_lender_website" required class="form-control" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_lender_website">Please enter valid URL.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="new_lender_email" class="form-label"> Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" id="new_lender_email" name="new_lender_email" required class="form-control" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_lender_email">Please enter valid email.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="new_mobile_number" class="form-label">Mobile Number</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_mobile_number" name="new_mobile_number" required class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_mobile_number">Please enter valid mobile number.</p>
+                                </div>
+                                <div class=" col-md-6 mb-3">
+                                    <label class="form-label">Lender Product Guide</label>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="new_product_guide_type" id="newguideFile" value="file" checked>
+                                        <label class="form-check-label" for="newguideFile">Upload File</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="new_product_guide_type" id="newguideUrl" value="url">
+                                        <label class="form-check-label" for="newguideUrl">Enter URL</label>
+                                    </div>
+                                    <div id="newfileInputGroup" class="input-group mt-2">
+                                        <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                        <input type="file" id="new_product_guide_file" name="new_product_guide_file" class="form-control">
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_product_guide_file">Please upload a valid file or enter a valid URL.</p>
+
+                                    <div id="newurlInputGroup" class="input-group mt-2" style="display:none;">
+                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                        <input type="url" id="new_product_guide_url" name="new_product_guide_url" class="form-control" placeholder="Enter URL">
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_product_guide_url">Please upload a valid file or enter a valid URL.</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lender_mobile_number" class="form-label"> </label>
+                                    <button type="submit" class="btn btn-success m-5 add-lender-submit-btn" style="background-color:rgb(86 66 161);border:none">
+                                        Save Changes
+                                    </button>
+                                </div>
+
+                        </form>
+                    </div>
+
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 

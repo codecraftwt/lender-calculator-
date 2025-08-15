@@ -11,7 +11,6 @@ $(document).ready(function () {
         lengthMenu: [100, 120, 140, 160],
         pageLength: 80,
         dom: "rtip",
-       
 
         ajax: {
             url: "/get-lenders",
@@ -39,19 +38,22 @@ $(document).ready(function () {
                         /'/g,
                         "&#39;"
                     );
-                    return `<button type="button" data-id='${product_id_arr}' class="btn btn-sm btn-info view-btn" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);color:white;border:1px solid #8455d9">View</button>`;
+                    return `<button type="button" data-id='${product_id_arr}' class="btn btn-sm btn-info view-btn" style="background-color:rgb(86 66 161);color:white;border:1px solid #8455d9">View</button>
+                    `;
                 },
             },
             {
                 data: "product_ids",
-                render: function (data) {
+                render: function (data, type, row) {
                     const product_id_arr = JSON.stringify(data).replace(
                         /'/g,
                         "&#39;"
                     );
+                    const lender_id = row.lender_id;
 
                     if (userRole === "Admin") {
-                        return `<button type="button" data-main-lender-id='${product_id_arr}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;"><i class="fas fa-pencil"></i></button>`;
+                        return `<button type="button" data-main-lender-id='${product_id_arr}' data-lender-id='${lender_id}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-pencil"></i></button>
+                        <button type="button" data-main-lender-id='${lender_id}' class="btn btn-sm btn-info delete-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-trash"></i></button>`;
                     } else {
                         return "";
                     }

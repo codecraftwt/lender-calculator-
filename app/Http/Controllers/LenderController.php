@@ -45,7 +45,9 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'product_models.id as product_id'
             )
+
             ->orderBy('main_lender_tables.id', 'desc') // ✅ ordering by lender id DESC
+            ->where('main_lender_tables.deleted_flag', 0)
             ->get();
 
         // Group subproduct IDs by lender
@@ -67,13 +69,16 @@ class LenderController extends Controller
 
     public function get_lender_products(Request $request)
     {
+        $lender_id = $request->input('lender_id');
+
+        // Check if there are 'pid' values provided in the request
         if ($request->has('pid') && !empty($request->pid)) {
             $idsRaw = is_array($request->pid) ? $request->pid : trim($request->pid, '[]');
             $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
             $ids = array_filter($ids, fn($id) => is_numeric($id));
 
             if (!empty($ids)) {
-                // Fetch all related data
+                // Fetch all related data for products
                 $rawResults = DB::table('product_models')
                     ->leftJoin('product_type_models', 'product_models.id', '=', 'product_type_models.product_id')
                     ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
@@ -90,7 +95,6 @@ class LenderController extends Controller
                     )
                     ->whereIn('product_models.id', $ids)
                     ->get();
-
 
                 // Group by product_id
                 $products = $rawResults->groupBy('product_id')->map(function ($group) {
@@ -115,6 +119,23 @@ class LenderController extends Controller
             $lenders = collect();
         }
 
+        // If lenders is empty, get data from main_lender_tables
+        if ($lenders->isEmpty()) {
+            $lenders = DB::table('main_lender_tables')
+                ->where('id', $lender_id)
+                ->where('deleted_flag', 0) // Check if deleted_flag is 0
+                ->select(
+                    'id as lender_id',
+                    'lender_name',
+                    'lender_logo',
+                    'email',
+                    'mobile_number',
+                    'website_url'
+                )
+                ->get();
+        }
+
+        // Return the data (either products or lender details)
         return response()->json($lenders);
     }
 
@@ -842,6 +863,112 @@ class LenderController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to delete Contact  .'
+            ]);
+        }
+    }
+
+    public function add_new_lender(Request $request)
+    {
+        $rules =
+            [
+                'new_lender_logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+                'new_lender_name' => ['required', 'string', 'min:2', 'max:255'],
+                'new_lender_website' => ['required', 'regex:/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*$/', 'max:255'],
+                'new_lender_email' => ['required', 'email', 'max:255'],
+                'new_mobile_number' => ['required', 'regex:/^[\d\s\+\-]{5,20}$/'], // allowing digits, spaces, plus, hyphen
+                'new_product_guide_type' => ['required', 'in:file,url'],
+                'new_product_guide_file' => [
+                    'nullable',
+                    'file',
+                    'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp',
+                    'max:5120',
+                ],
+                'new_product_guide_url' => [
+                    'nullable',
+                    'url',
+                    'max:255',
+                ],
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+
+        $data = [
+            'lender_name' => $request->new_lender_name,
+            'website_url' => $request->new_lender_website,
+            'email' => $request->new_lender_email,
+            'mobile_number' => $request->new_mobile_number,
+        ];
+
+        if ($request->hasFile('new_lender_logo')) {
+
+            $file = $request->file('new_lender_logo');
+            $filename = strtolower($request->new_lender_name) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/images'), $filename);
+            $data['lender_logo'] = $filename;
+        }
+
+        if ($request->hasFile('new_product_guide_file')) {
+
+            $file = $request->file('new_product_guide_file');
+            $filename = strtolower($request->new_lender_name) . '_guide.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/product_guide'), $filename);
+            $data['product_guide'] = $filename;
+        }
+
+        if ($request->new_product_guide_url) {
+            $data['product_guide'] = $request->new_product_guide_url;
+        }
+
+
+        $result = MainLenderTable::create($data);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Lender data updated successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update the data.'
+            ]);
+        }
+    }
+
+    public function delete_lender(Request $request)
+    {
+        $rules = [
+            'lender_id' => ['required', 'integer'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $result = MainLenderTable::where('id', $request->lender_id)->update(['deleted_flag' => 1]);
+
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Lender deleted successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete lender.'
             ]);
         }
     }

@@ -15,13 +15,16 @@ $('input[name="product_guide_type"]').on("change", function () {
 $(document).on("click", ".edit-main-lender-info", function () {
     resetMainLenderModalInfo();
     const main_lender_id = $(this).data("main-lender-id");
+    const lender_id = $(this).attr("data-lender-id");
+
     const modal = new bootstrap.Modal($("#Main_Lender_Edit_Modal")[0]);
     modal.show();
-    getMainModalData(main_lender_id);
+    getMainModalData(main_lender_id, lender_id);
 });
-function getMainModalData(main_lender_id) {
+function getMainModalData(main_lender_id, lender_id) {
     const formData = {
         pid: main_lender_id,
+        lender_id: lender_id,
     };
     $.ajax({
         url: "/get-lender-products",
@@ -66,6 +69,14 @@ function getMainModalData(main_lender_id) {
                         "data-main-lender-id",
                         lender.lender_id
                     );
+
+                    if (!lender.product_name) {
+                        $("#MainLenderloanProductsContainer").html(
+                            `<div class="text-danger text-center py-4">No products found</div>`
+                        );
+                        $("#MainLenderModalloader").hide();
+                        return;
+                    }
                 }
                 data.forEach(function (lender) {
                     const productTypeIds = JSON.stringify(
@@ -193,7 +204,7 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                     );
 
                     if (!lender.sub_product_name) {
-                        $(".lender-cards").html(
+                        $(".ProductEditModalContainer").html(
                             `<div class="text-danger text-center py-4">No subproduct found</div>`
                         );
                         $("#ProductEditModalloader").hide();
@@ -872,6 +883,16 @@ $(document).ready(function () {
                 }
 
             case "trading_time":
+                // Ensure trading_time is neither empty nor null
+                if (val === "" || val === null) {
+                    if (showErrorMessage) {
+                        $(`#invalid_${id}`)
+                            .removeClass("d-none")
+                            .text("Trading time is required.");
+                    }
+                    return false;
+                }
+
             case "gst_time":
             case "min_loan_amount":
             case "max_loan_amount":
@@ -913,7 +934,7 @@ $(document).ready(function () {
                 if ($(`#${id}`).val()?.length > 0) {
                     return true;
                 } else {
-                    if (showErrorMessage) {
+                    if (!showErrorMessage) {
                         $(`#invalid_${id}`)
                             .removeClass("d-none")
                             .text("Please select at least one option.");
@@ -2163,6 +2184,208 @@ $(document).ready(function () {
             });
         }
     });
+
+    // Add new lender js
+    $(document).on("click", ".add-new-lender-btn", function () {
+        const modal = new bootstrap.Modal($("#Add_New_Lender_Modal")[0]);
+        modal.show();
+    });
+
+    $(document).on("click", ".add-lender-submit-btn", function (e) {
+        e.preventDefault();
+
+        const lender_logo = $("#new_lender_logo").val().trim();
+        const lender_name = $("#new_lender_name").val().trim();
+        const lender_website = $("#new_lender_website").val().trim();
+        const lender_email = $("#new_lender_email").val().trim();
+        const lender_mobile = $("#new_mobile_number").val().trim();
+        const product_guide_type = $(
+            "input[name='new_product_guide_type']:checked"
+        ).val();
+        const product_guide_file = $("#new_product_guide_file").val().trim();
+        const product_guide_url = $("#new_product_guide_url").val().trim();
+
+        let isValid = true;
+
+        // Clear old errors
+        $(".text-danger").addClass("d-none");
+
+        // Lender Logo
+        if (lender_logo === "") {
+            $("#invalid_new_lender_logo")
+                .removeClass("d-none")
+                .text("Please upload valid logo.");
+            isValid = false;
+        }
+
+        // Lender Name
+        if (lender_name === "") {
+            $("#invalid_new_lender_name")
+                .removeClass("d-none")
+                .text("Please enter valid name.");
+            isValid = false;
+        }
+
+        // Website (basic URL check)
+        const urlRegex = /^(https?:\/\/)?([\w\-]+\.)+[a-z]{2,6}\/?.*$/i;
+        if (lender_website === "" || !urlRegex.test(lender_website)) {
+            $("#invalid_new_lender_website")
+                .removeClass("d-none")
+                .text("Please enter valid URL.");
+            isValid = false;
+        }
+
+        // Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (lender_email === "" || !emailRegex.test(lender_email)) {
+            $("#invalid_new_lender_email")
+                .removeClass("d-none")
+                .text("Please enter valid email.");
+            isValid = false;
+        }
+
+        // Mobile Number
+        const mobileRegex = /^\+?[0-9\s\-()]{5,20}$/;
+        if (lender_mobile === "" || !mobileRegex.test(lender_mobile)) {
+            $("#invalid_new_mobile_number")
+                .removeClass("d-none")
+                .text("Please enter valid mobile number.");
+            isValid = false;
+        }
+
+        // Product Guide Validation
+        if (product_guide_type === "file" && product_guide_file === "") {
+            $("#invalid_new_product_guide_file")
+                .removeClass("d-none")
+                .text("Please upload a valid file.");
+            isValid = false;
+        }
+        if (
+            product_guide_type === "url" &&
+            (product_guide_url === "" || !urlRegex.test(product_guide_url))
+        ) {
+            $("#invalid_new_product_guide_url")
+                .removeClass("d-none")
+                .text("Please enter a valid URL.");
+            isValid = false;
+        }
+
+        // Submit if valid
+        if (isValid) {
+            const form = $("#MainLenderAddForm")[0];
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: $(form).attr("action"),
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Lender added successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+
+                    $("#Add_New_Lender_Modal").modal("hide");
+                    refreshLenderTable(); // Assuming you have this function
+                },
+                error: function (error) {
+                    if (error.status === 422) {
+                        const errors = error.responseJSON.errors;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "error",
+                            title: firstError || "Validation failed!",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                        });
+
+                        $.each(errors, function (key, messages) {
+                            $(`#invalid_${key}`)
+                                .removeClass("d-none")
+                                .text(messages[0]);
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    }
+                },
+            });
+        }
+    });
+
+    $(document).on("click", ".delete-main-lender-info", function (e) {
+        e.preventDefault();
+
+        const lender_id = $(this).attr("data-main-lender-id");
+
+        // Show SweetAlert confirmation
+        Swal.fire({
+            title: "Are you sure to delete this lender?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d15de8", // Button color for "Yes"
+            cancelButtonColor: "#d33", // Button color for "No"
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If "Yes" is clicked, proceed with AJAX call
+                $.ajax({
+                    url: "/delete-lender",
+                    method: "POST",
+                    data: {
+                        _token: $("meta[name='csrf-token']").attr("content"), // CSRF token for security
+                        lender_id: lender_id,
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            toast: true,
+                            position: "top-end",
+                            icon: "success",
+                            title: "Contact deleted successfully!",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                        // Optionally reload or remove the contact row from the UI
+
+                        refreshLenderTable();
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong, please try again.",
+                        });
+                    },
+                });
+            } else if (result.isDismissed) {
+                // If "No" is clicked, just close the SweetAlert
+                Swal.fire({
+                    icon: "info",
+                    title: "Cancelled",
+                    text: "The contact was not deleted.",
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            }
+        });
+    });
 });
 
 $(document).ready(function () {
@@ -2223,4 +2446,18 @@ $(document).ready(function () {
     $container.css({
         width: "100%",
     });
+});
+
+$('input[name="new_product_guide_type"]').on("change", function () {
+    if ($(this).val() === "file") {
+        $("#newfileInputGroup").show();
+        $("#new_product_guide_file").attr("required", true);
+        $("#newurlInputGroup").hide();
+        $("#new_product_guide_url").attr("required", false).val("");
+    } else {
+        $("#newurlInputGroup").show();
+        $("#new_product_guide_url").attr("required", true);
+        $("#newfileInputGroup").hide();
+        $("#new_product_guide_file").attr("required", false).val("");
+    }
 });
