@@ -97,6 +97,10 @@ Route::post('/add-new-product', [LenderController::class, 'add_new_product'])->m
 Route::post('/add-new-sub-product', [LenderController::class, 'add_new_sub_product'])->middleware(['auth', 'admin']);
 Route::post('/add-new-contact', [LenderController::class, 'add_new_contact'])->middleware(['auth', 'admin']);
 Route::post('/delete-lender-contact', [LenderController::class, 'delete_lender_contact'])->middleware(['auth', 'admin']);
+Route::post('/add-new-lender', [LenderController::class, 'add_new_lender'])->middleware(['auth', 'admin']);
+Route::post('/delete-lender', [LenderController::class, 'delete_lender'])->middleware(['auth', 'admin']);
+
+
 
 
 
