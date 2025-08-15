@@ -11,6 +11,8 @@ use App\Models\MainLenderTable;
 use App\Models\ProductModel;
 use App\Models\ProductTypeModel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 
 
 
@@ -869,26 +871,25 @@ class LenderController extends Controller
 
     public function add_new_lender(Request $request)
     {
-        $rules =
-            [
-                'new_lender_logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
-                'new_lender_name' => ['required', 'string', 'min:2', 'max:255'],
-                'new_lender_website' => ['required', 'regex:/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*$/', 'max:255'],
-                'new_lender_email' => ['required', 'email', 'max:255'],
-                'new_mobile_number' => ['required', 'regex:/^[\d\s\+\-]{5,20}$/'], // allowing digits, spaces, plus, hyphen
-                'new_product_guide_type' => ['required', 'in:file,url'],
-                'new_product_guide_file' => [
-                    'nullable',
-                    'file',
-                    'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp',
-                    'max:5120',
-                ],
-                'new_product_guide_url' => [
-                    'nullable',
-                    'url',
-                    'max:255',
-                ],
-            ];
+        $rules = [
+            'new_lender_logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+            'new_lender_name' => ['required', 'string', 'min:2', 'max:255'],
+            'new_lender_website' => ['required', 'regex:/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-]*)*$/', 'max:255'],
+            'new_lender_email' => ['required', 'email', 'max:255'],
+            'new_mobile_number' => ['required', 'regex:/^[\d\s\+\-]{5,20}$/'],
+            'new_product_guide_type' => ['required', 'in:file,url'],
+            'new_product_guide_file' => [
+                'nullable',
+                'file',
+                'mimes:pdf,doc,docx,jpg,jpeg,png,gif,webp',
+                'max:5120',
+            ],
+            'new_product_guide_url' => [
+                'nullable',
+                'url',
+                'max:255',
+            ],
+        ];
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -899,6 +900,9 @@ class LenderController extends Controller
             ], 422);
         }
 
+        // Log the mobile number and incoming request data
+        Log::info('Incoming Request Data:', $request->all());
+        Log::info('Mobile Number:', ['mobile_number' => $request->new_mobile_number]);
 
         $data = [
             'lender_name' => $request->new_lender_name,
@@ -907,8 +911,8 @@ class LenderController extends Controller
             'mobile_number' => $request->new_mobile_number,
         ];
 
+        // Handle the file uploads
         if ($request->hasFile('new_lender_logo')) {
-
             $file = $request->file('new_lender_logo');
             $filename = strtolower($request->new_lender_name) . '_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('assets/images'), $filename);
@@ -916,7 +920,6 @@ class LenderController extends Controller
         }
 
         if ($request->hasFile('new_product_guide_file')) {
-
             $file = $request->file('new_product_guide_file');
             $filename = strtolower($request->new_lender_name) . '_guide.' . $file->getClientOriginalExtension();
             $file->move(public_path('assets/product_guide'), $filename);
@@ -927,6 +930,8 @@ class LenderController extends Controller
             $data['product_guide'] = $request->new_product_guide_url;
         }
 
+        // Log the data that is going to be inserted into the database
+        Log::info('Data to be inserted into the database:', $data);
 
         $result = MainLenderTable::create($data);
 
