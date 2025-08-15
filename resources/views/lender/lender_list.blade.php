@@ -658,10 +658,9 @@
 
 <!-- Product Add Modal  -->
 <div id="Product_Add_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="  max-width: 1750px; z-index: 2000;margin-left:118px">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 105%; max-width: 1760px; z-index: 1060;">
         <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-
             <div class="container">
                 <h4 class="text-center">Add New Product</h4>
                 <hr>
@@ -942,8 +941,8 @@
 <!-- Add New Lender  -->
 
 <div id="Add_New_Lender_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 1060;">
-        <div class="modal-content" style="min-height: 95vh !important; margin-top: 1vh !important;padding:20px;max-height: 96vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1200px; z-index: 1060;">
+        <div class="modal-content" style="min-height: 75vh !important; margin-top: 1vh !important;padding:20px;max-height: 75vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="container">
                 <h4 class="text-center">Add New Lender</h4>
