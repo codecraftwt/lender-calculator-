@@ -135,7 +135,10 @@ class IndexController extends Controller
                 'product_models.product_name',
                 'main_lender_tables.lender_name',
                 'main_lender_tables.lender_logo',
-            );
+            )
+            ->where('product_type_models.deleted_flag', 0)
+            ->where('product_models.deleted_flag', 0)
+            ->where('main_lender_tables.deleted_flag', 0);
 
 
 

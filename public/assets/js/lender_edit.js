@@ -82,13 +82,19 @@ function getMainModalData(main_lender_id, lender_id) {
                     const productTypeIds = JSON.stringify(
                         lender.subproduct_ids
                     );
-                    const cardHtml = `<div class="col-6 col-md-6 mb-2 d-flex justify-content-center view-product-edit-modal-btn" 
-                            data-product-type-id='${productTypeIds}' data-product-id='${
-                        lender.product_id
-                    }'>
+                    const cardHtml = `<div class="col-6 col-md-6 mb-2 d-flex justify-content-center">
                          <div class="lender-box-container position-relative">
                        
                            <!-- Original Card Content -->
+                           <div class="position-absolute top-0 end-0 p-3" style="z-index: 2;">
+                            <i class="fa fa-pencil view-product-edit-modal-btn"  data-product-type-id='${productTypeIds}' data-product-id='${
+                        lender.product_id
+                    }' style="cursor:pointer;color:rgb(86 66 161)"></i>
+                    &nbsp; &nbsp;
+                           <i class="fa fa-trash product-delete-btn" data-product-id='${
+                               lender.product_id
+                           }' style="cursor:pointer;color:rgb(86 66 161)"></i>
+                           </div>
                            <div class="lender-box d-flex flex-column align-items-center justify-content-center p-3"
                                 data-lender-sub-product-id="${
                                     lender.product_id
@@ -111,13 +117,13 @@ function getMainModalData(main_lender_id, lender_id) {
                            </div>
                        
                            <!-- Shutter Panels -->
-                           <div class="shutter left-shutter"></div>
-                           <div class="shutter right-shutter"></div>
+                           <!-- <div class="shutter left-shutter"></div>  -->
+                           <!-- <div class="shutter right-shutter"></div> -->
                        
                            <!-- Overlay Content -->
-                           <div class="shutter-content d-flex flex-column align-items-center justify-content-center">
-                             <i class="fas fa-pencil-alt fa-2x mb-2"></i>
-                             <span>Edit Product Details</span>
+                           <!-- <div class="shutter-content d-flex flex-column align-items-center justify-content-center"> -->
+                             <!-- <i class="fas fa-pencil-alt fa-2x mb-2"></i> -->
+                            <!-- d <span>Edit Product Details</span> --> 
                            </div>
                          </div>
                        </div>
@@ -140,6 +146,64 @@ function getMainModalData(main_lender_id, lender_id) {
         },
     });
 }
+
+$(document).on("click", ".product-delete-btn", function (e) {
+    e.preventDefault();
+    var productId = $(this).attr("data-product-id");
+
+    Swal.fire({
+        title: "Are you sure to delete this product?",
+        html: '<span style="color: red; ">All associated  sub-products will also be deleted.</span>',
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d15de8", // Button color for "Yes"
+        cancelButtonColor: "#d33", // Button color for "No"
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If "Yes" is clicked, proceed with AJAX call
+            $.ajax({
+                url: "/delete-lender-product",
+                method: "POST",
+                data: {
+                    _token: $("meta[name='csrf-token']").attr("content"), // CSRF token for security
+                    product_id: productId,
+                },
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Product deleted successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    refreshLenderTable();
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong, please try again.",
+                    });
+                },
+            });
+        } else if (result.isDismissed) {
+            // If "No" is clicked, just close the SweetAlert
+            Swal.fire({
+                icon: "info",
+                title: "Cancelled",
+                text: "The product was not deleted.",
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        }
+    });
+});
 
 function resetMainLenderModalInfo() {
     $("#main_lender_modal_logo").show();
@@ -212,13 +276,20 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                     }
                 }
                 data.forEach(function (lender) {
-                    const cardHtml = `<div class="col-md-4 view-sub-product-edit-modal-btn" data-sub-product-id="${
-                        lender.subproduct_id
-                    }">
+                    const cardHtml = `<div class="col-md-4  " >
                   <div class="card sub-product-card border p-3 h-100" style="background-color: #ffffff; height: 124px; width: 100%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border-radius: 20px; text-align: center; position: relative;">
                     <div class="row">
                       <div class="col-md-2" style="width:100px">
                         <img src="${baseImageUrl}/${lender.lender_logo.toLowerCase()}" alt="" style="height: 33px;">
+                         <div class="position-absolute top-0 end-0 p-3" style="z-index: 2;">
+                            <i class="fa fa-pencil view-sub-product-edit-modal-btn"  data-sub-product-id="${
+                                lender.subproduct_id
+                            }" style="cursor:pointer;color:rgb(86 66 161)"></i>
+                    &nbsp; &nbsp;
+                           <i class="fa fa-trash sub-product-delete-btn" data-sub-product-id="${
+                               lender.subproduct_id
+                           }" style="cursor:pointer;color:rgb(86 66 161)"></i>
+                           </div>
                       </div>
                       <div class="col-md-12">
                         <h5 class="fw-bold" style="color:#852aa3;">${
@@ -243,11 +314,7 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                         </small>
                       </div>
                     </div>
-                    <div class="left-shutter"></div>
-                    <div class="right-shutter"></div>
-                    <div class="shutter-content d-flex flex-column align-items-center justify-content-center">
-                      <i class="fas fa-pencil-alt"></i> Edit Subproduct
-                    </div>
+                     
                   </div>
                 </div>`;
                     $container.append(cardHtml);
@@ -280,6 +347,67 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
         },
     });
 }
+
+$(document).on("click", ".sub-product-delete-btn", function (e) {
+    e.preventDefault();
+    var sub_product_id = $(this).attr("data-sub-product-id");
+
+    Swal.fire({
+        title: "Are you sure to delete this product?",
+        html: '<span style="color: red; ">This action can not be undone.</span>',
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d15de8", // Button color for "Yes"
+        cancelButtonColor: "#d33", // Button color for "No"
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If "Yes" is clicked, proceed with AJAX call
+            $.ajax({
+                url: "/delete-lender-sub-product",
+                method: "POST",
+                data: {
+                    _token: $("meta[name='csrf-token']").attr("content"), // CSRF token for security
+                    sub_product_id: sub_product_id,
+                },
+                success: function (response) {
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        title: "Sub Product deleted successfully!",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+
+                    $("#Main_Lender_Edit_Modal").modal("hide");
+                    $("#Product_Edit_Modal").modal("hide");
+                    refreshLenderTable();
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong, please try again.",
+                    });
+                },
+            });
+        } else if (result.isDismissed) {
+            // If "No" is clicked, just close the SweetAlert
+            Swal.fire({
+                icon: "info",
+                title: "Cancelled",
+                text: "Thesub product was not deleted.",
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        }
+    });
+});
+
 function resetProductEditModalInfo() {
     $("#product_name").val("");
     $("#product_id").val("");
@@ -2345,11 +2473,19 @@ $(document).ready(function () {
         e.preventDefault();
 
         const lender_id = $(this).attr("data-main-lender-id");
+        const product_id_str = $(this).attr("data-product-id");
+        let product_id = [];
+
+        try {
+            product_id = JSON.parse(product_id_str); // converts "[26,27]" → [26, 27]
+        } catch (e) {
+            console.error("Invalid product_id:", product_id_str);
+        }
 
         // Show SweetAlert confirmation
         Swal.fire({
             title: "Are you sure to delete this lender?",
-            text: "This action cannot be undone.",
+            html: '<span style="color: red; ">All associated products and sub-products will also be deleted.</span>',
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d15de8", // Button color for "Yes"
@@ -2366,13 +2502,14 @@ $(document).ready(function () {
                     data: {
                         _token: $("meta[name='csrf-token']").attr("content"), // CSRF token for security
                         lender_id: lender_id,
+                        product_id: product_id,
                     },
                     success: function (response) {
                         Swal.fire({
                             toast: true,
                             position: "top-end",
                             icon: "success",
-                            title: "Contact deleted successfully!",
+                            title: "Lender deleted successfully!",
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
@@ -2394,7 +2531,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "info",
                     title: "Cancelled",
-                    text: "The contact was not deleted.",
+                    text: "The Lender was not deleted.",
                     timer: 2000,
                     showConfirmButton: false,
                 });

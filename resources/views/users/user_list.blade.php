@@ -23,8 +23,8 @@
                 <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Users</h3>
                 @if(auth()->check() && auth()->user()->role === 'Admin')
                 <a href="{{ url('/add-user') }}" style="text-decoration: none;" class="text-white"><button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1 add-new-lender-btn">
-                        <small><i class="fas fa-plus"></i> Add New</small></a>
-                </button>
+                        <small><i class="fas fa-plus"></i> Add New</small>
+                    </button></a>
                 @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
                 <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">

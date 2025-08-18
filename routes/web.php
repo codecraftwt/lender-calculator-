@@ -109,6 +109,11 @@ Route::post('/update-user-status', [UserController::class, 'update_user_status']
 Route::get('/get-user-data', [UserController::class, 'get_user_data'])->middleware(['auth', 'admin']);
 Route::post('/update-user-data', [UserController::class, 'update_user_data'])->middleware(['auth', 'admin']);
 
+// delete lender product and subproduct routes
+Route::post('/delete-lender-product', [LenderController::class, 'delete_lender_product'])->middleware(['auth', 'admin']);
+Route::post('/delete-lender-sub-product', [LenderController::class, 'delete_lender_sub_product'])->middleware(['auth', 'admin']);
+
+
 
 
 

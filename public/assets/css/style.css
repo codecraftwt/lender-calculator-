@@ -910,10 +910,6 @@ span.hover-white:hover {
     max-height: 65vh;  
 } */
 
-.sub-product-card:hover {
-    transform: translateY(-4px);
-}
-
 .contact-table {
     width: 100%;
     font-family: "Times New Roman", Times, serif;
@@ -1061,28 +1057,8 @@ span.hover-white:hover {
     pointer-events: none;
 }
 
-/* Hover effects */
-.lender-box-container:hover .left-shutter {
-    transform: translateX(0);
-}
-
-.lender-box-container:hover .right-shutter {
-    transform: translateX(0);
-}
-
-.lender-box-container:hover .shutter-content {
-    opacity: 1;
-}
-
-.lender-box-container:hover .lender-box {
-    opacity: 0.1;
-}
-
+ 
 /* Shutter container */
-.sub-product-card {
-    position: relative;
-    overflow: hidden;
-}
 
 /* Left and right shutters */
 .left-shutter,
@@ -1106,21 +1082,6 @@ span.hover-white:hover {
 /* Shutter content (Edit Subproduct text) */
 
 /* Hover effects */
-.sub-product-card:hover .left-shutter {
-    transform: translateX(0);
-}
-
-.sub-product-card:hover .right-shutter {
-    transform: translateX(0);
-}
-
-.sub-product-card:hover .shutter-content {
-    opacity: 1;
-}
-
-.sub-product-card:hover .card {
-    opacity: 0.1;
-}
 
 .dataTables_filter label {
     font-size: 0;

@@ -53,7 +53,7 @@ $(document).ready(function () {
 
                     if (userRole === "Admin") {
                         return `<button type="button" data-main-lender-id='${product_id_arr}' data-lender-id='${lender_id}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-pencil"></i></button>
-                        <button type="button" data-main-lender-id='${lender_id}' class="btn btn-sm btn-info delete-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-trash"></i></button>`;
+                        <button type="button" data-main-lender-id='${lender_id}' data-product-id='${product_id_arr}' class="btn btn-sm btn-info delete-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-trash"></i></button>`;
                     } else {
                         return "";
                     }
@@ -340,9 +340,9 @@ $(document).ready(function () {
                                                     product.sub_product_name ||
                                                     ""
                                                 }</h6>
-                                                <p class="m-0" style="font-weight:500">$$${
+                                                <p class="m-0" style="font-weight:500">$${
                                                     product.min_amount || 0
-                                                } - $$${
+                                                } - $${
                                     product.max_amount || 0
                                 }</p>
                                                 <p class="m-0" style="font-weight:500">Minimum Score Required: ${
@@ -417,7 +417,7 @@ $(document).ready(function () {
                                         <h6 class="fw-bold" style="color: #852aa3;">${
                                             product.sub_product_name || ""
                                         }</h6>
-                                        <p class="m-0" style="font-weight:500">$$${
+                                        <p class="m-0" style="font-weight:500">$${
                                             product.min_amount || 0
                                         } - $${product.max_amount || 0}</p>
                                         <p class="m-0" style="font-weight:500">Minimum Score Required: ${
