@@ -27,9 +27,19 @@
                                     style="border-radius: 8px; border: 1px solid #ccc; padding: 10px;">
 
                                 @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
                         </div>
@@ -46,9 +56,19 @@
                                     style="border-radius: 8px; border: 1px solid #ccc; padding: 10px;">
 
                                 @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
                         </div>
@@ -67,9 +87,19 @@
                                 </select>
 
                                 @error('role')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
                         </div>
@@ -86,9 +116,19 @@
                                     style="border-radius: 8px; border: 1px solid #ccc; padding: 10px;">
 
                                 @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
                         </div>

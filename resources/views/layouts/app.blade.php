@@ -45,7 +45,7 @@
                     @auth
                     @if(auth()->user()->role === 'Admin')
                     <li>
-                        <a href="{{ url('/add-user') }}" class="nav-link px-2">Add Broker/Admin</a>
+                        <a href="{{ url('/user-list') }}" class="nav-link px-2">Users</a>
                     </li>
                     @endif
                     <li>

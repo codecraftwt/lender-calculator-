@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container">
     <div class="row justify-content-center" style="min-height: 100vh;   padding-top: 50px;">
 
@@ -24,9 +28,19 @@
                                     autocomplete="email" autofocus
                                     style="border-radius: 8px; border: 1px solid #ccc; padding: 10px; transition: all 0.3s ease;">
                                 @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
                         </div>
@@ -49,9 +63,19 @@
                                 </div>
 
                                 @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        Swal.fire({
+                                            toast: true,
+                                            position: "top-end",
+                                            icon: "error",
+                                            title: "{{ $message }}",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true
+                                        });
+                                    });
+                                </script>
                                 @enderror
                             </div>
 
@@ -121,11 +145,11 @@
         </div>
         @endif
 
-        @if(session('error'))
+        @if(session('email'))
         <div id="sessionToast_error" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
             <div class="d-flex">
                 <div class="toast-body">
-                    {{ session('error') }}
+                    {{ session('email') }}
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>

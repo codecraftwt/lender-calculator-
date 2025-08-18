@@ -1225,3 +1225,78 @@ span.hover-white:hover {
 .dataTables_wrapper .dataTables_filter input {
     margin-top: 10px;
 }
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.4s;
+    border-radius: 30px;
+    background-color: #e35966; /* inactive color */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #25f253; /* active color */
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* user table css  */
+
+#userTable_wrapper {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+#userTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+/* #lenderTable th, */
+#userTable td {
+    /* border: 0.5px solid black !important; */
+}
+
+#userTable td,
+#userTable th {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+#userTable thead th {
+    background-color: white !important;
+}
+#userTable thead td {
+    background-color: white !important;
+}

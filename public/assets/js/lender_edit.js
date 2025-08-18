@@ -619,6 +619,12 @@ $(document).ready(function () {
     $(document).on("click", ".main_lender_edit_submit_btn", function (e) {
         e.preventDefault();
 
+        // const $btn = $(this); // Get the button element
+        // $btn.prop("disabled", true); // Disable the button
+        // $btn.html(
+        //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
+        // );
+
         let isValid = true;
 
         // Validate each field
@@ -701,6 +707,9 @@ $(document).ready(function () {
                             text: "Something went wrong!",
                         });
                     }
+
+                    //           $btn.prop("disabled", false);
+                    // $btn.html('Save Changes'); // Reset the button text
                 },
             });
         }
@@ -2193,6 +2202,12 @@ $(document).ready(function () {
 
     $(document).on("click", ".add-lender-submit-btn", function (e) {
         e.preventDefault();
+
+        // const $btn = $(this); // Get the button element
+        // $btn.prop("disabled", true); // Disable the button
+        // $btn.html(
+        //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
+        // );
 
         const lender_logo = $("#new_lender_logo").val().trim();
         const lender_name = $("#new_lender_name").val().trim();
