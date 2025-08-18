@@ -27,7 +27,7 @@
                     </button></a>
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
 
-                <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                <button id="filterToggleBtn" style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">
                         <i class="fas fa-filter"></i> Filter</small>
                 </button>
@@ -37,8 +37,49 @@
             <!-- <hr> -->
             <table id="lenderTable" class="table p-1 " style="table-layout: fixed;font-family:sans-serif;background-color:white">
                 <thead>
+                    <tr id="filterRow" class="d-none">
+                        <th>
+                            <label for="">Select Date From</label>
+                            <input type="date" id="start_date" name="start_date" class="form-control" style="border-radius: 0.375rem !important">
+                        </th>
+                        <th>
+                            <label for="">Select Date To</label>
+                            <input type="date" id="end_date" name="end_date" class="form-control" style="border-radius: 0.375rem !important">
+                        </th>
+                        <th>
+                            <label for="">Select Loan Amount</label>
+                            <select name="" id="" class="form-control">
+                                <option value="">Select</option>
+                                <option value="0-20000">Upto $20,000</option>
+
+                                <option value="20001-50000">$20,001 - $50,000</option>
+                                <option value="50001-100000">$50,001 - $100,000</option>
+                                <option value="100001-500000">$100,001 - $500,000</option>
+                                <option value="500001-1000000">$500,001 - $1,000,000</option>
+                                <option value="1000000-10000000">Above $1,000,000</option>
+                            </select>
+                        </th>
+
+                        <th>
+                            <label for="">Select Lender</label>
+                            <select name="" id="" class="form-control">
+                                <option value="">Select</option>
+                                <option value="">Upto $20,000</option>
+                            </select>
+                        </th>
+                        <th><label for="">Select status</label>
+                            <select name="" id="" class="form-control">
+                                <option value="">Select</option>
+                                <option value="0">Initial</option>
+                                <option value="3">Setteled</option>
+                                <option value="1">Submitted</option>
+                                <option value="2">In-progress</option>
+                            </select>
+                        </th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
                     <tr>
-                        <!-- <th>Sr.No</th> -->
                         <th> Date</th>
                         <th> Client Name</th>
                         <th>Business Name</th>

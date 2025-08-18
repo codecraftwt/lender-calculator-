@@ -975,3 +975,9 @@ $(document).ready(function () {
         });
     });
 });
+
+// $(document).ready(function () {
+//     $("#filterToggleBtn").click(function () {
+//         $("#filterRow").toggleClass("d-none"); // toggles the class
+//     });
+// });

@@ -952,7 +952,12 @@ class LenderController extends Controller
     {
         $rules = [
             'lender_id' => ['required', 'integer'],
+            'product_id' => ['nullable', 'array'],
         ];
+
+        $idsRaw = is_array($request->product_id) ? $request->product_id : trim($request->product_id, '[]');
+        $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
+        $ids = array_filter($ids, fn($id) => is_numeric($id));
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -964,8 +969,16 @@ class LenderController extends Controller
         }
 
         $result = MainLenderTable::where('id', $request->lender_id)->update(['deleted_flag' => 1]);
+        $productresult = ProductModel::where('lender_id', $request->lender_id)->update(['deleted_flag' => 1]);
 
-        if ($result) {
+        if (!empty($request->product_id)) {
+            $subproductresult = ProductTypeModel::whereIn('product_id', $ids)
+                ->update(['deleted_flag' => 1]);
+        } else {
+            $subproductresult = true;
+        }
+
+        if ($result !== false && $productresult !== false && $subproductresult !== false) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lender deleted successfully.'
@@ -974,6 +987,72 @@ class LenderController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to delete lender.'
+            ]);
+        }
+    }
+
+    public function delete_lender_product(Request $request)
+    {
+        $rules = [
+            'product_id' => ['required', 'integer'],
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+
+        $productresult = ProductModel::where('id', $request->product_id)->update(['deleted_flag' => 1]);
+        $subproductresult = ProductTypeModel::where('product_id', $request->product_id)->update(['deleted_flag' => 1]);
+
+        if ($productresult && $subproductresult) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product deleted successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete Product.'
+            ]);
+        }
+    }
+
+    public function delete_lender_sub_product(Request $request)
+    {
+        $rules = [
+            'sub_product_id' => ['required', 'integer'],
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+
+
+        $subproductresult = ProductTypeModel::where('id', $request->sub_product_id)->update(['deleted_flag' => 1]);
+
+        if ($subproductresult) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Sub Product deleted successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete Sub Product.'
             ]);
         }
     }
