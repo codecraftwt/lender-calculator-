@@ -27,13 +27,15 @@
                 </button>
                 @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
-                <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                <!-- <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1 d-none">
                     <small style="color: white;">
                         <i class="fas fa-filter"></i> Filter</small>
-                </button>
+                </button> -->
             </div>
             <table id="lenderTable" class="table  p-1">
                 <thead>
+
+
                     <tr>
                         <th>Sr.No</th>
                         <th>Lender Name</th>

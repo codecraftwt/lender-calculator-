@@ -180,7 +180,7 @@
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="industry_type" class="form-label">Select your industry</label>
-                                <select id="industry_type" name="industry_type" class="form-select select2" required>
+                                <select id="industry_type" name="industry_type" class="form-select select2 " required>
                                     <option value="">Select</option>
                                     <option value="Accounting & Bookkeeping">Accounting & Bookkeeping</option>
                                     <option value="Advertising & Marketing Services">Advertising & Marketing Services</option>
@@ -240,7 +240,7 @@
                                 <label for="restricted_industry" class="form-label">
                                     Please select if your client operates in any of the following commonly restricted or excluded industries:
                                 </label>
-                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
+                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required    >
                                     <option value="null">None of the below</option>
                                     @foreach ($restricted_industries as $industry)
                                     <option value="{{ $industry }}">{{ $industry }}</option>

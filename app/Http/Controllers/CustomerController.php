@@ -7,6 +7,7 @@ use App\Models\CustomerModel;
 use App\Models\LenderModel;
 use App\Models\LenderTypeModel;
 use App\Models\ProductTypeModel;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 
@@ -91,28 +92,65 @@ class CustomerController extends Controller
 
     public function list()
     {
-        return view('customer.customerlist');
+        $lenders = ProductTypeModel::select('sub_product_name')->where('deleted_flag', 0)->get();
+        return view('customer.customerlist', compact('lenders'));
     }
 
 
-    public function get_customers()
+    public function get_customers(Request $request)
     {
+
+
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $status = $request->status;
+        $loanRange = $request->loanRange ?? '';
+
+        $minVal = $maxVal = null;
+        if (strpos($loanRange, '-') !== false) {
+            $parts = array_map('trim', explode('-', $loanRange));
+            $minVal = isset($parts[0]) ? (float)$parts[0] : null;
+            $maxVal = isset($parts[1]) ? (float)$parts[1] : null;
+        }
+
         $user = auth()->user();
 
+        // Base query depending on role
         if ($user->role === 'Broker') {
-            // Broker: get only customers added by this user
             $customers = CustomerModel::where('deleted_flag', 0)
                 ->where('added_by', $user->id)
-                ->orderBy('id',"DESC")
-                ->get();
+                ->orderBy('id', 'DESC');
         } elseif ($user->role === 'Admin') {
-            // Admin: get all customers not deleted
-            $customers = CustomerModel::where('deleted_flag', 0)->orderBy('id', "DESC")->get();
+            $customers = CustomerModel::where('deleted_flag', 0)
+                ->orderBy('id', 'DESC');
         } else {
-            // Optionally, handle other roles or deny access
-            $customers = collect(); // empty collection or handle as needed
+            $customers = collect(); // empty collection for other roles
         }
-        
+
+        // Apply filters only if $customers is a query builder
+        if ($customers instanceof \Illuminate\Database\Eloquent\Builder) {
+
+            if (!empty($startDate)) {
+                $customers = $customers->where('created_at', '>=', Carbon::parse($startDate)->startOfDay());
+            }
+
+            if (!empty($endDate)) {
+                $customers = $customers->where('created_at', '<=', Carbon::parse($endDate)->endOfDay());
+            }
+
+            if ($minVal !== null && $minVal !== '' && $maxVal !== null && $maxVal !== '') {
+
+                $customers = $customers->whereBetween('loan_amt_needed', [$minVal, $maxVal]);
+            }
+
+            if ($status !== null && $status !== '') {
+                $customers = $customers->where('status', $status);
+            }
+
+            $customers = $customers->get();
+        }
+
+
         return response()->json($customers);
     }
 
@@ -383,4 +421,7 @@ class CustomerController extends Controller
             ]
         ]);
     }
+
+
+    public function filter_customers(Request $request) {}
 }

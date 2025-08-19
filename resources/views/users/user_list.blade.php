@@ -27,13 +27,42 @@
                     </button></a>
                 @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
-                <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                <button id="filterToggleBtn" style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">
                         <i class="fas fa-filter"></i> Filter</small>
                 </button>
             </div>
             <table id="userTable" class="table  p-1">
                 <thead>
+
+
+                    <tr id="filterRow" class="d-none">
+
+
+                        <th style="width: 300px !important;"><label for="">Select role</label>
+                            <select name="" id="role_filter" name="role_filter" class=" form-control" style="border-radius: 0.375rem !important">
+                                <option value="">Select</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Broker">Broker</option>
+
+                            </select>
+                        </th>
+                        <th><label for="">Select status</label>
+                            <select name="" id="status_filter" name="status_filter" class=" form-control" style="border-radius: 0.375rem !important">
+                                <option value="">Select</option>
+                                <option value="0">Active</option>
+                                <option value="1">Inactive</option>
+                            </select>
+                        </th>
+                        <th> <button id="clearfilter" style="border: none; background-color: rgb(86 66 161); width: 95px; height: 36px; margin-left:20px;padding:2px" class="  rounded border-none text-white p-1">
+                                <small style="color: white;">
+                                    Clear Filter</small>
+                            </button></th>
+                        <th></th>
+                        <th></th>
+
+
+                    </tr>
                     <tr>
 
                         <th> Name</th>
@@ -79,7 +108,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <div class="input-group">
-                                            <input type="text" id="email" name="email" class="form-control" autocomplete="off" />
+                                            <input type="text" id="email" name="email" class="form-control" readonly autocomplete="off" />
                                         </div>
                                         <p class="text-danger d-none" id="invalid_email">Please enter valid email.</p>
                                     </div>
@@ -164,10 +193,58 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-        <script src="{{ url('assets/js/user.js') }}"></script>
+        <!-- <script src="{{ url('assets/js/user.js') }}"></script> -->
 
 
         <!-- JSZip for Excel -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <!-- Main content ends here -->
         @endsection
+
+
+
+        <!-- const row = `
+        <tr>
+
+            <td>${item.name || ""}</td>
+            <td>${item.email || ""}</td>
+            <td>${item.role || "--"}</td>
+            <td>
+                ${
+                (item.deleted_flag == 0 &&
+                item.master_account == "No") ||
+                (item.deleted_flag == 1 &&
+                item.master_account == "No")
+                ? `<label class="switch">
+                    <input type="checkbox" class="status-toggle" data-id="${
+                                             item.id
+                                         }"
+                        ${
+                        item.deleted_flag==0 &&
+                        item.master_account=="No"
+                        ? "checked"
+                        : ""
+                        }>
+                    <span class="slider round"></span>
+                </label>`
+                : ""
+                }
+
+            </td>
+            <td>
+
+                ${
+                item.master_account == "No"
+                ? `<button
+                    type="button"
+                    data-id=' ${item.id}'
+                    class="btn btn-sm me-1 user-edit-btn"
+                    style="color:white; background-color: rgb(86 66 161) !important;">
+                    <i class="fas fa-pencil"></i>
+                </button>`
+                : ""
+                }
+
+            </td>
+
+        </tr>`; -->
