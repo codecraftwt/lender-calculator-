@@ -47,7 +47,7 @@ class UserController extends Controller
     public function get_users(Request $request)
     {
 
-        $users = User::orderBy('id', 'desc');
+        $users = User::orderBy('deleted_flag', 'asc')->orderBy('id', 'desc');
 
         if ($request->has('role') && $request->role !== '' && $request->role !== null) {
             $users = $users->where('role', $request->role);
