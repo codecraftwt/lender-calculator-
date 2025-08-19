@@ -27,7 +27,7 @@
                     </button></a>
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
 
-                <button id="filterToggleBtn" style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
+                <button id="filterCustomerToggleBtn" style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">
                         <i class="fas fa-filter"></i> Filter</small>
                 </button>
@@ -37,7 +37,7 @@
             <!-- <hr> -->
             <table id="lenderTable" class="table p-1 " style="table-layout: fixed;font-family:sans-serif;background-color:white">
                 <thead>
-                    <tr id="filterRow" class="d-none">
+                    <tr id="filterCustomerRow" class="d-none">
                         <th>
                             <label for="">Select Date From</label>
                             <input type="date" id="start_date" name="start_date" class="form-control" style="border-radius: 0.375rem !important">
@@ -48,27 +48,23 @@
                         </th>
                         <th>
                             <label for="">Select Loan Amount</label>
-                            <select name="" id="" class="form-control">
+                            <select name="" id="loan_amount" name="loan_amount" class="form-control" style="border-radius: 0.375rem !important">
                                 <option value="">Select</option>
                                 <option value="0-20000">Upto $20,000</option>
 
                                 <option value="20001-50000">$20,001 - $50,000</option>
-                                <option value="50001-100000">$50,001 - $100,000</option>
+                                <option value="50001-80000">$50,001 - $80,000</option>
+                                <option value="80001-100000">$80,001 - $100,000</option>
+
                                 <option value="100001-500000">$100,001 - $500,000</option>
                                 <option value="500001-1000000">$500,001 - $1,000,000</option>
                                 <option value="1000000-10000000">Above $1,000,000</option>
                             </select>
                         </th>
 
-                        <th>
-                            <label for="">Select Lender</label>
-                            <select name="" id="" class="form-control">
-                                <option value="">Select</option>
-                                <option value="">Upto $20,000</option>
-                            </select>
-                        </th>
+
                         <th><label for="">Select status</label>
-                            <select name="" id="" class="form-control">
+                            <select name="" id="status_filter" class=" form-control" style="border-radius: 0.375rem !important">
                                 <option value="">Select</option>
                                 <option value="0">Initial</option>
                                 <option value="3">Setteled</option>
@@ -76,8 +72,15 @@
                                 <option value="2">In-progress</option>
                             </select>
                         </th>
-                        <th> </th>
-                        <th> </th>
+                        <th><button id="clearfilter" style="border: none; background-color: rgb(86 66 161); width: 95px; height: 36px; margin-left:20px;padding:2px" class="  rounded border-none text-white p-1">
+                                <small style="color: white;font-weight:500">
+                                    Clear Filter</small>
+                            </button></th>
+                        </th>
+                        <th></th>
+                        <th></th>
+
+
                     </tr>
                     <tr>
                         <th> Date</th>

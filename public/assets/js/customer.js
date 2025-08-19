@@ -1,8 +1,19 @@
 $(document).ready(function () {
     function getCustomerData() {
+        const startDate = $("#start_date").val();
+        const endDate = $("#end_date").val();
+        const loanRange = $("#loan_amount").val();
+        const status = $("#status_filter").val();
+
         $.ajax({
             url: "/get-customers",
             method: "GET",
+            data: {
+                startDate: startDate,
+                endDate: endDate,
+                loanRange: loanRange,
+                status: status,
+            },
             success: function (data) {
                 const tableBody = $("#lenderTable tbody");
 
@@ -246,6 +257,10 @@ $(document).ready(function () {
             },
         });
     }
+
+    $("#start_date, #end_date, select").on("change", function () {
+        getCustomerData();
+    });
 
     $(document).on("click", ".view-product-btn", function (e) {
         e.preventDefault();
@@ -974,10 +989,18 @@ $(document).ready(function () {
             },
         });
     });
+    $("#clearfilter").on("click", function () {
+        $("#start_date").val("");
+        $("#end_date").val("");
+        $("#loan_amount").val("");
+        $("#status_filter").val("");
+
+        getCustomerData();
+    });
 });
 
-// $(document).ready(function () {
-//     $("#filterToggleBtn").click(function () {
-//         $("#filterRow").toggleClass("d-none"); // toggles the class
-//     });
-// });
+$(document).ready(function () {
+    $("#filterCustomerToggleBtn").click(function () {
+        $("#filterCustomerRow").toggleClass("d-none");
+    });
+});
