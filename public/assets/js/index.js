@@ -565,7 +565,12 @@ $(document).ready(function () {
 
                     let html = "";
                     $.each(companies, function (index, item) {
-                        html += `<a href="#" class="list-group-item list-group-item-action" data-abn="${item.Abn}">${item.Name}</a>`;
+                        html += `<a href="#" class="list-group-item list-group-item-action d-flex" data-abn="${item.Abn}">
+  <span style="font-weight:600">${item.Name}</span> 
+  <span style="color:#666666" class="ms-auto">
+    [ <small>ABN: </small> ${item.Abn} ]
+  </span>
+</a>`;
                     });
 
                     companyList.html(html);

@@ -32,37 +32,48 @@ $(document).ready(function () {
                 if (data.length > 0) {
                     data.forEach((item, index) => {
                         const row = `
-                                <tr>
-                                    
-                                    <td>${item.name || ""}</td>
-                                    <td>${item.email || ""}</td>
-                                    <td>${item.role || "--"}</td>
-                                    <td>
-                                    <label class="switch">
-                                        <input type="checkbox" class="status-toggle" data-id="${
-                                            item.id
-                                        }" ${
-                            item.deleted_flag == 0  
-                            
+        <tr>
+
+            <td>${item.name || ""}</td>
+            <td>${item.email || ""}</td>
+            <td>${item.role || "--"}</td>
+            <td>
+                ${
+                    (item.deleted_flag == 0 && item.master_account == "No") ||
+                    (item.deleted_flag == 1 && item.master_account == "No")
+                        ? `<label class="switch">
+                    <input type="checkbox" class="status-toggle" data-id="${
+                        item.id
+                    }"
+                        ${
+                            item.deleted_flag == 0 &&
+                            item.master_account == "No"
                                 ? "checked"
                                 : ""
-                        }> <span class="slider round"></span></label>
+                        }>
+                    <span class="slider round"></span>
+                </label>`
+                        : ""
+                }
 
-                                    </td>
-                                    <td>
-                                    
-                                    <button
-                                             type="button"
-                                             data-id=' ${item.id}'
-                                             class="btn btn-sm me-1 user-edit-btn"
-                                             style="color:white; background-color: rgb(86 66 161) !important;">
-                                             <i class="fas fa-pencil"></i>
-                                        </button>
-                                            
-                                    </td>
-                                        
-                                </tr>`;
+            </td>
+            <td>
 
+                ${
+                    item.master_account == "No"
+                        ? `<button
+                    type="button"
+                    data-id=' ${item.id}'
+                    class="btn btn-sm me-1 user-edit-btn"
+                    style="color:white; background-color: rgb(86 66 161) !important;">
+                    <i class="fas fa-pencil"></i>
+                </button>`
+                        : ""
+                }
+
+            </td>
+
+        </tr>`;
                         tableBody.append(row);
                     });
                 }

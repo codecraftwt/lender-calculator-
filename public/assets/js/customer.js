@@ -174,8 +174,9 @@ $(document).ready(function () {
                     $container.empty();
 
                     if (data.length < 1) {
+                        $("#applicableLenderCards").show();
                         $container.html(
-                            `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No lenders appicable.</p></div></div>`
+                            `<div class="text-danger text-center py-4"><div class="no-lenders-container"><div class="emoji">❌</div><p style="font-size: 18px; margin-top: 12px; font-weight: 600;">No lenders appicable at this moment.</p></div></div>`
                         );
                         $(".loan-info .from-amount").text("$0");
                         $(".loan-info .from-frequency").text("credit score:");
@@ -184,6 +185,7 @@ $(document).ready(function () {
                         $(".loan-info .max-amount").text(`$0`);
                         $(".loan-info .max-unsecured").text(`unsecured`);
                         $(".loan-info .max-secured").text(`$0 secured`);
+                        $("#MainModalloader").hide();
                         return;
                     } else {
                         const lender = data[0];
