@@ -48,7 +48,7 @@
                         <a href="{{ url('/user-list') }}" class="nav-link px-2">Users</a>
                     </li>
                     @endif
-                    <li>
+                    <!-- <li>
                         <a href="#" class="nav-link px-2 btn btn-login px-3 py-1 rounded-pill"
                             onclick="confirmLogout(event)">
                             Logout
@@ -56,9 +56,9 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-                    </li>
+                    </li> -->
 
-                    <!-- <div class="dropdown">
+                    <div class="dropdown">
                         <button class="btn btn-link " type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('assets/images/user_icon.webp') }}" id="user_profile_picture" alt="Profile Image" class="rounded-circle" style="width: 40px; height: 40px;">
                         </button>
@@ -70,7 +70,7 @@
                                 </a>
                             </li>
                             <li>
-                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item" style="color: rgb(86 66 161);font-weight:600">
                                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -78,7 +78,7 @@
                                 </form>
                             </li>
                         </ul>
-                    </div> -->
+                    </div>
 
                     @endauth
                     @guest
