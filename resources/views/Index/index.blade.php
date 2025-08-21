@@ -10,6 +10,17 @@
     <div class="col-lg-8 mb-4">
         <div class="panel ai-loan-matching shadow-sm" style="border-radius:20px;margin-top: 20px;">
 
+
+
+
+            <!-- <div id='bankstatements' data-code='FNCN'></div>
+            <script src='https://www.bankstatements.com.au/js/loader.js' async></script>
+            <noscript>
+                <iframe src='https://www.bankstatements.com.au/iframe/start/FNCN' style='width: 100%; height: 100%;'></iframe>
+            </noscript> -->
+
+
+
             <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787;border-top-left-radius:20px;border-top-right-radius:20px ">
                 <div class="header" style="height:62px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); text-align: center;border-top-left-radius:20px;border-top-right-radius:20px">
                     <h5 style="border-bottom: none;color:white">Client Loan Eligibility Form</h5>
@@ -240,7 +251,7 @@
                                 <label for="restricted_industry" class="form-label">
                                     Please select if your client operates in any of the following commonly restricted or excluded industries:
                                 </label>
-                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required    >
+                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
                                     <option value="null">None of the below</option>
                                     @foreach ($restricted_industries as $industry)
                                     <option value="{{ $industry }}">{{ $industry }}</option>
