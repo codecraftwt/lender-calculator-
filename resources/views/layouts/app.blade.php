@@ -131,8 +131,8 @@
                                         <div class="col-md-4 mb-3 visually-hidden">
                                             <input type="text" id="logged_user_id" name="logged_user_id" readonly class="form-control" autocomplete="off" />
                                         </div>
-                                        <div class="col-md-12 mb-3 d-flex justify-content-center align-items-center" style="height: 100px;">
-                                            <img src="" alt="" id="profile_picture" height="100px">
+                                        <div class="col-md-12 mb-3 d-flex justify-content-center align-items-center " style="height: 100px;">
+                                            <img src="" alt="" id="profile_picture" height="100px" style="border-radius:50%">
                                         </div>
                                         <div class="col-md-6 mb-3  ">
                                             <label for="profile_image" class="form-label">Profile Image</label>
