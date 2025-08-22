@@ -7,12 +7,13 @@ $(document).ready(function () {
 
         $.ajax({
             url: "/get-customers",
-            method: "GET",
+            method: "POST",
             data: {
                 startDate: startDate,
                 endDate: endDate,
                 loanRange: loanRange,
                 status: status,
+                _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (data) {
                 const tableBody = $("#lenderTable tbody");
@@ -118,7 +119,43 @@ $(document).ready(function () {
                 });
             },
             error: function () {
-                alert("Failed to fetch data.");
+                if (xhr.status === 405) {
+                    const errors = xhr.responseJSON.errors;
+                    const firstError = Object.values(errors)[0][0];
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "error",
+                        title: firstError || "Unsupported method requested!",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
+
+                    $.each(errors, function (key, messages) {
+                        $(`#invalid_${key}`)
+                            .removeClass("d-none")
+                            .text(messages[0]);
+                    });
+                } else if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    const firstError = Object.values(errors)[0][0];
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "error",
+                        title: firstError || "Validation failed!",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
+
+                    $.each(errors, function (key, messages) {
+                        $(`#invalid_${key}`)
+                            .removeClass("d-none")
+                            .text(messages[0]);
+                    });
+                }
             },
         });
     }
@@ -158,11 +195,12 @@ $(document).ready(function () {
             number_of_dishonours: $("#number_of_dishonours").val(),
             asset_backed: $("#asset_backed").val(),
             cid: cidArray,
+            _token: $('meta[name="csrf-token"]').attr("content"),
         };
         console.log(formData);
         $.ajax({
             url: "/get-applicable-lenders",
-            method: "GET",
+            method: "POST",
             data: formData,
             beforeSend: function () {
                 $("#MainModalloader").show();
@@ -309,6 +347,7 @@ $(document).ready(function () {
             asset_backed: $("#asset_backed").val(),
             product_ids: products,
             lenderId: lenderId,
+            _token: $('meta[name="csrf-token"]').attr("content"),
         };
 
         console.log(formData); // Debugging the request payload
@@ -316,7 +355,7 @@ $(document).ready(function () {
 
         $.ajax({
             url: "/get-sub-products",
-            method: "GET",
+            method: "POST",
             data: formData,
             beforeSend: function () {
                 $("#ProductModalloader").show();
@@ -542,13 +581,14 @@ $(document).ready(function () {
     function getLenderContactsData(lenderId) {
         const formData = {
             lenderId: lenderId,
+            _token: $('meta[name="csrf-token"]').attr("content"),
         };
 
         console.log(formData);
 
         $.ajax({
             url: "/get-lender-contacts",
-            method: "GET",
+            method: "POST",
             data: formData,
             beforeSend: function () {
                 $("#ContactdetailsModalloader").show();
@@ -921,9 +961,13 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/search-contact",
-            data: { search: search_value, lender_id: lender_id },
+            data: {
+                search: search_value,
+                lender_id: lender_id,
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
             beforeSend: function () {
                 $("#loader").show();
             },

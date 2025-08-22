@@ -49,15 +49,15 @@ Route::get('/contact-us', function () {
 
 
 // customer routes
-Route::post('/save_data', [CustomerController::class, 'save_data']);
-Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit']);
-Route::get('/customer-delete/{id}', [CustomerController::class, 'customer_delete']);
-Route::post('/update-customer-status', [CustomerController::class, 'update_customer_status']);
-Route::post('/update-customer', [CustomerController::class, 'update_customer']);
-Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth');
-Route::get('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth');
-Route::get('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth');
-Route::get('/get-sub-products', [CustomerController::class, 'get_sub_products'])->middleware('auth');
+Route::post('/save_data', [CustomerController::class, 'save_data'])->middleware(['auth', 'role:Admin,Broker']);
+Route::get('/customer-edit/{id}', [CustomerController::class, 'customer_edit'])->middleware('auth', 'role:Admin,Broker');
+Route::get('/customer-delete/{id}', [CustomerController::class, 'customer_delete'])->middleware('auth', 'role:Admin,Broker');
+Route::post('/update-customer-status', [CustomerController::class, 'update_customer_status'])->middleware('auth', 'role:Admin,Broker');
+Route::post('/update-customer', [CustomerController::class, 'update_customer'])->middleware('auth', 'role:Admin,Broker');
+Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('auth', 'role:Admin,Broker');
+Route::post('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth', 'role:Admin,Broker');
+Route::post('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth', 'role:Admin,Broker');
+Route::post('/get-sub-products', [CustomerController::class, 'get_sub_products'])->middleware('auth', 'role:Admin,Broker');
 
 
 // api route
@@ -71,51 +71,50 @@ Route::post('/logout', function () {
 
 // lender routes
 Route::get('/lender-list', [LenderController::class, 'lender_list']);
-Route::get('/get-lenders', [LenderController::class, 'get_lenders']);
-Route::get('/get-lender-products', [LenderController::class, 'get_lender_products']);
-Route::get('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);
-Route::get('/get-product-data-with-subproducts', [LenderController::class, 'get_product_data_with_subproducts']);
-Route::get('/get-sub-product-data', [LenderController::class, 'get_sub_product_data']);
+Route::post('/get-lenders', [LenderController::class, 'get_lenders']);
+Route::post('/get-lender-products', [LenderController::class, 'get_lender_products']);
+Route::post('/get-lender-subproducts', [LenderController::class, 'get_lender_subproducts']);
+Route::post('/get-product-data-with-subproducts', [LenderController::class, 'get_product_data_with_subproducts']);
+Route::post('/get-sub-product-data', [LenderController::class, 'get_sub_product_data']);
 
-Route::get('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
-Route::get('/search-contact', [LenderController::class, 'search_contact']);
-Route::get('/search-contact-details', [LenderController::class, 'search_contact_details']);
-Route::post('/update-lender-contact-data', [LenderController::class, 'update_lender_contact_data']);
+Route::post('/get-lender-contacts', [LenderController::class, 'get_lender_contacts']);
+Route::post('/search-contact', [LenderController::class, 'search_contact']);
+Route::post('/search-contact-details', [LenderController::class, 'search_contact_details'])->middleware('auth', 'role:Admin');
+Route::post('/update-lender-contact-data', [LenderController::class, 'update_lender_contact_data'])->middleware('auth', 'role:Admin');
 
 
-Route::get('/lender-edit/{id}', [LenderController::class, 'lender_edit']);
-Route::post('/update-main-lender-data', [LenderController::class, 'update_main_lender_data']);
-Route::post('/update-product-data', [LenderController::class, 'update_product_data']);
-Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data']);
+// Route::post('/lender-edit/', [LenderController::class, 'lender_edit']);
+Route::post('/update-main-lender-data', [LenderController::class, 'update_main_lender_data'])->middleware('auth', 'role:Admin');
+Route::post('/update-product-data', [LenderController::class, 'update_product_data'])->middleware('auth', 'role:Admin');
+Route::post('/update-sub-product-data', [LenderController::class, 'update_sub_product_data'])->middleware('auth', 'role:Admin');
 
 // add user
-Route::get('/add-user', [UserController::class, 'add_user'])->middleware(['auth', 'admin']);
-Route::post('/store-user', [UserController::class, 'store_user'])->middleware(['auth', 'admin']);
+Route::get('/add-user', [UserController::class, 'add_user'])->middleware(['auth', 'role:Admin']);
+Route::post('/store-user', [UserController::class, 'store_user'])->middleware(['auth', 'role:Admin']);
 
 // Add Lender Product
-Route::post('/add-new-product', [LenderController::class, 'add_new_product'])->middleware(['auth', 'admin']);
-Route::post('/add-new-sub-product', [LenderController::class, 'add_new_sub_product'])->middleware(['auth', 'admin']);
-Route::post('/add-new-contact', [LenderController::class, 'add_new_contact'])->middleware(['auth', 'admin']);
-Route::post('/delete-lender-contact', [LenderController::class, 'delete_lender_contact'])->middleware(['auth', 'admin']);
-Route::post('/add-new-lender', [LenderController::class, 'add_new_lender'])->middleware(['auth', 'admin']);
-Route::post('/delete-lender', [LenderController::class, 'delete_lender'])->middleware(['auth', 'admin']);
+Route::post('/add-new-product', [LenderController::class, 'add_new_product'])->middleware(['auth', 'role:Admin']);
+Route::post('/add-new-sub-product', [LenderController::class, 'add_new_sub_product'])->middleware(['auth', 'role:Admin']);
+Route::post('/add-new-contact', [LenderController::class, 'add_new_contact'])->middleware(['auth', 'role:Admin']);
+Route::post('/delete-lender-contact', [LenderController::class, 'delete_lender_contact'])->middleware(['auth', 'role:Admin']);
+Route::post('/add-new-lender', [LenderController::class, 'add_new_lender'])->middleware(['auth', 'role:Admin']);
+Route::post('/delete-lender', [LenderController::class, 'delete_lender'])->middleware(['auth', 'role:Admin']);
 
 
 // user list routes
 
-Route::get('/user-list', [UserController::class, 'user_list'])->middleware(['auth', 'admin']);
-Route::get('/get-users', [UserController::class, 'get_users']);
-Route::post('/update-user-status', [UserController::class, 'update_user_status'])->middleware(['auth', 'admin']);
-Route::get('/get-user-data', [UserController::class, 'get_user_data']);
-Route::post('/update-user-data', [UserController::class, 'update_user_data']);
-Route::post('/update-user-profile', [UserController::class, 'update_user_profile']);
-Route::post('send-password-change-otp', [UserController::class, 'send_password_change_otp']);
-
+Route::get('/user-list', [UserController::class, 'user_list'])->middleware(['auth', 'role:Admin']);
+Route::post('/get-users', [UserController::class, 'get_users'])->middleware(['auth', 'role:Admin']);
+Route::post('/update-user-status', [UserController::class, 'update_user_status'])->middleware(['auth', 'role:Admin']);
+Route::post('/get-user-data', [UserController::class, 'get_user_data'])->middleware(['auth', 'role:Admin']);
+Route::post('/update-user-data', [UserController::class, 'update_user_data'])->middleware(['auth', 'role:Admin,Broker']);
+Route::post('/update-user-profile', [UserController::class, 'update_user_profile'])->middleware(['auth', 'role:Admin,Broker']);
+Route::post('send-password-change-otp', [UserController::class, 'send_password_change_otp'])->middleware(['auth', 'role:Admin,Broker']);
 
 
 // delete lender product and subproduct routes
-Route::post('/delete-lender-product', [LenderController::class, 'delete_lender_product'])->middleware(['auth', 'admin']);
-Route::post('/delete-lender-sub-product', [LenderController::class, 'delete_lender_sub_product'])->middleware(['auth', 'admin']);
+Route::post('/delete-lender-product', [LenderController::class, 'delete_lender_product'])->middleware(['auth', 'role:Admin']);
+Route::post('/delete-lender-sub-product', [LenderController::class, 'delete_lender_sub_product'])->middleware(['auth', 'role:Admin']);
 
 // filter routes 
 Route::get('filter-customers', [CustomerController::class, 'filter_customers']);

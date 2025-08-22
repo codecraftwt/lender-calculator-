@@ -13,10 +13,11 @@ $(document).ready(function () {
         const role = $("#role_filter").val();
         $.ajax({
             url: "/get-users",
-            method: "GET",
+            method: "POST",
             data: {
                 status: status,
                 role: role,
+                _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (data) {
                 const tableBody = $("#userTable tbody");
@@ -198,10 +199,11 @@ $(document).ready(function () {
 
     function getUserData(user_id) {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/get-user-data",
             data: {
                 user_id: user_id,
+                _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
                 $("#name").val(response.name);
@@ -337,10 +339,11 @@ $(document).ready(function () {
 
     function getLoggedInUserData(user_id) {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/get-user-data",
             data: {
                 user_id: user_id,
+                _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
                 if (response.user_image) {

@@ -32,9 +32,65 @@ class LenderController extends Controller
         return view('lender.lender_list', compact('restricted_industries'));
     }
 
-    public function get_lenders()
+    public function get_lenders(Request $request)
     {
-        // Fetch all related data
+
+        // if ($request->isMethod('get')) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Unsupported method requested'
+        //     ], 405);
+        // }
+
+        // $rawResults = DB::table('main_lender_tables')
+        //     ->leftJoin('product_models', 'product_models.lender_id', '=', 'main_lender_tables.id')
+        //     ->leftJoin('product_type_models', 'product_type_models.product_id', '=', 'product_models.id')
+        //     ->select(
+        //         'main_lender_tables.id as lender_id',
+        //         'main_lender_tables.lender_name',
+        //         'main_lender_tables.lender_logo',
+        //         'main_lender_tables.email',
+        //         'main_lender_tables.mobile_number',
+        //         'main_lender_tables.website_url',
+        //         'product_models.id as product_id'
+        //     )
+
+        //     ->orderBy('main_lender_tables.id', 'desc') // ✅ ordering by lender id DESC
+        //     ->where('main_lender_tables.deleted_flag', 0)
+        //     ->get();
+
+        // // Group subproduct IDs by lender
+        // $lenders = $rawResults->groupBy('lender_id')->map(function ($group) {
+        //     return [
+        //         'lender_id' => $group[0]->lender_id,
+        //         'lender_name' => $group[0]->lender_name,
+        //         'lender_logo' => $group[0]->lender_logo,
+        //         'email' => $group[0]->email,
+        //         'mobile_number' => $group[0]->mobile_number,
+        //         'website_url' => $group[0]->website_url,
+        //         'product_ids' => $group->pluck('product_id')->filter()->unique()->values()
+        //     ];
+        // })->values();
+
+
+        // return response()->json($lenders);
+
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unsupported method requested'
+            ], 405);
+        }
+
+        // Validate input
+        $validated = $request->validate([
+            'sortBy'    => 'nullable|string|in:id,lender_name',
+            'direction' => 'nullable|string|in:asc,desc',
+        ]);
+
+        $sortBy = $validated['sortBy'] ?? 'id';
+        $direction = $validated['direction'] ?? 'desc';
+
         $rawResults = DB::table('main_lender_tables')
             ->leftJoin('product_models', 'product_models.lender_id', '=', 'main_lender_tables.id')
             ->leftJoin('product_type_models', 'product_type_models.product_id', '=', 'product_models.id')
@@ -47,24 +103,21 @@ class LenderController extends Controller
                 'main_lender_tables.website_url',
                 'product_models.id as product_id'
             )
-
-            ->orderBy('main_lender_tables.id', 'desc') // ✅ ordering by lender id DESC
             ->where('main_lender_tables.deleted_flag', 0)
+            ->orderBy("main_lender_tables.$sortBy", $direction)
             ->get();
 
-        // Group subproduct IDs by lender
         $lenders = $rawResults->groupBy('lender_id')->map(function ($group) {
             return [
-                'lender_id' => $group[0]->lender_id,
-                'lender_name' => $group[0]->lender_name,
-                'lender_logo' => $group[0]->lender_logo,
-                'email' => $group[0]->email,
+                'lender_id'     => $group[0]->lender_id,
+                'lender_name'   => $group[0]->lender_name,
+                'lender_logo'   => $group[0]->lender_logo,
+                'email'         => $group[0]->email,
                 'mobile_number' => $group[0]->mobile_number,
-                'website_url' => $group[0]->website_url,
-                'product_ids' => $group->pluck('product_id')->filter()->unique()->values()
+                'website_url'   => $group[0]->website_url,
+                'product_ids'   => $group->pluck('product_id')->filter()->unique()->values()
             ];
         })->values();
-
 
         return response()->json($lenders);
     }
@@ -383,8 +436,11 @@ class LenderController extends Controller
     }
 
 
-    public function lender_edit($id = null)
+    public function lender_edit(Request $request)
     {
+
+
+        // $rules  =  ['id']
         $lender_data = MainLenderTable::where('id', $id)->get();
         $lender_products = ProductModel::where('lender_id', $id)->get();
         $pid = $lender_products->pluck('id')->toArray();
@@ -591,10 +647,26 @@ class LenderController extends Controller
         }
     }
 
-    public function search_contact()
+    public function search_contact(Request $request)
     {
-        $search = request()->search;
-        $lender_id = request()->lender_id;
+
+        $rules = [
+            'search' => 'required',
+            'lender_id' => 'required|integer'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+
+        $search = $request->search;
+        $lender_id = $request->lender_id;
 
         $contactsWithLender = DB::table('lender_contacts_models')
             ->join('main_lender_tables', 'lender_contacts_models.lender_id', '=', 'main_lender_tables.id')

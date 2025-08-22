@@ -25,10 +25,11 @@ function getMainModalData(main_lender_id, lender_id) {
     const formData = {
         pid: main_lender_id,
         lender_id: lender_id,
+        _token: $("meta[name='csrf-token']").attr("content"),
     };
     $.ajax({
         url: "/get-lender-products",
-        method: "GET",
+        method: "POST",
         data: formData,
         beforeSend: function () {
             $("#MainLenderloanProductsContainer")
@@ -228,11 +229,12 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
     const formData = {
         product_id: product_id,
         sub_product_ids: sub_product_ids,
+        _token: $("meta[name='csrf-token']").attr("content"),
     };
 
     $.ajax({
         url: "/get-product-data-with-subproducts",
-        method: "GET",
+        method: "POST",
         data: formData,
         beforeSend: function () {
             $("#ProductEditModalContainer")
@@ -432,10 +434,11 @@ $(document).on("click", ".view-sub-product-edit-modal-btn", function () {
 function getSubProductData(sub_product_id) {
     const formData = {
         sub_product_id: sub_product_id,
+        _token: $("meta[name='csrf-token']").attr("content"),
     };
     $.ajax({
         url: "/get-sub-product-data",
-        method: "GET",
+        method: "POST",
         data: formData,
         beforeSend: function () {
             $("#SubProductEditModalContainer")
@@ -1205,8 +1208,11 @@ $(document).ready(function () {
     function getLenderContactsData(lenderId) {
         $.ajax({
             url: "/get-lender-contacts",
-            method: "GET",
-            data: { lenderId },
+            method: "POST",
+            data: {
+                lenderId: lenderId,
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
             beforeSend() {
                 $("#ContactEditModalloader").show();
                 $("#contactsEditAccordion").hide();
@@ -1420,9 +1426,13 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/search-contact",
-            data: { search: search_value, lender_id: lender_id },
+            data: {
+                search: search_value,
+                lender_id: lender_id,
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
             beforeSend: function () {},
             success: function (response) {
                 var contacts = response; // array of contacts
@@ -1588,9 +1598,12 @@ $(document).ready(function () {
 
     function getLenderContactsDetailData(dataId) {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/search-contact-details",
-            data: { contact_id: dataId },
+            data: {
+                contact_id: dataId,
+                _token: $("meta[name='csrf-token']").attr("content"),
+            },
             beforeSend: function () {},
             success: function (response) {
                 console.log(response);

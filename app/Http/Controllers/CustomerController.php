@@ -7,6 +7,8 @@ use App\Models\CustomerModel;
 use App\Models\LenderModel;
 use App\Models\LenderTypeModel;
 use App\Models\ProductTypeModel;
+use Illuminate\Support\Facades\Validator;
+
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
@@ -92,14 +94,19 @@ class CustomerController extends Controller
 
     public function list()
     {
-        $lenders = ProductTypeModel::select('sub_product_name')->where('deleted_flag', 0)->get();
-        return view('customer.customerlist', compact('lenders'));
+        return view('customer.customerlist');
     }
 
 
     public function get_customers(Request $request)
     {
 
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unsupported method requested'
+            ], 405);
+        }
 
         $startDate = $request->startDate;
         $endDate = $request->endDate;
@@ -107,56 +114,69 @@ class CustomerController extends Controller
         $loanRange = $request->loanRange ?? '';
 
         $minVal = $maxVal = null;
+
         if (strpos($loanRange, '-') !== false) {
             $parts = array_map('trim', explode('-', $loanRange));
+            // Make sure to convert values to floats to prevent any malicious string input
             $minVal = isset($parts[0]) ? (float)$parts[0] : null;
             $maxVal = isset($parts[1]) ? (float)$parts[1] : null;
         }
 
         $user = auth()->user();
 
-        // Base query depending on role
+
+        $customers = CustomerModel::where('deleted_flag', 0)
+            ->orderBy('id', 'DESC');
+
         if ($user->role === 'Broker') {
-            $customers = CustomerModel::where('deleted_flag', 0)
-                ->where('added_by', $user->id)
-                ->orderBy('id', 'DESC');
+            $customers->where('added_by', $user->id);
         } elseif ($user->role === 'Admin') {
-            $customers = CustomerModel::where('deleted_flag', 0)
-                ->orderBy('id', 'DESC');
         } else {
-            $customers = collect(); // empty collection for other roles
+
+            $customers = collect();
         }
 
-        // Apply filters only if $customers is a query builder
-        if ($customers instanceof \Illuminate\Database\Eloquent\Builder) {
 
-            if (!empty($startDate)) {
-                $customers = $customers->where('created_at', '>=', Carbon::parse($startDate)->startOfDay());
-            }
+        if (!empty($startDate)) {
 
-            if (!empty($endDate)) {
-                $customers = $customers->where('created_at', '<=', Carbon::parse($endDate)->endOfDay());
-            }
-
-            if ($minVal !== null && $minVal !== '' && $maxVal !== null && $maxVal !== '') {
-
-                $customers = $customers->whereBetween('loan_amt_needed', [$minVal, $maxVal]);
-            }
-
-            if ($status !== null && $status !== '') {
-                $customers = $customers->where('status', $status);
-            }
-
-            $customers = $customers->get();
+            $customers->where('created_at', '>=', Carbon::parse($startDate)->startOfDay());
         }
+
+        if (!empty($endDate)) {
+
+            $customers->where('created_at', '<=', Carbon::parse($endDate)->endOfDay());
+        }
+
+
+        if ($minVal !== null && $maxVal !== null) {
+
+            $customers->whereBetween('loan_amt_needed', [$minVal, $maxVal]);
+        }
+
+        if ($status !== null && $status !== '') {
+
+            $customers->where('status', $status);
+        }
+
+        $customers = $customers->get();
 
 
         return response()->json($customers);
     }
 
 
+
     public function get_applicable_lenders(Request $request)
     {
+
+
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unsupported method requested'
+            ], 405);
+        }
+
         if ($request->has('cid') && !empty($request->cid)) {
             $idsRaw = is_array($request->cid) ? $request->cid : trim($request->cid, '[]');
             $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
@@ -197,14 +217,22 @@ class CustomerController extends Controller
 
     public function get_sub_products(Request $request)
     {
+
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unsupported method requested'
+            ], 405);
+        }
+
         if ($request->has('product_ids') && !empty($request->product_ids)) {
             $idsRaw = is_array($request->product_ids) ? $request->product_ids : trim($request->product_ids, '[]');
             $ids = is_array($idsRaw) ? $idsRaw : explode(',', $idsRaw);
             $ids = array_filter($ids, fn($id) => is_numeric($id));
+
             $lender_id = $request->lender_id ?? null;
 
             if (!empty($ids)) {
-                // Fetch lender & product data (without joining lender_contacts)
                 $rawResults = DB::table('product_type_models')
                     ->join('product_models', 'product_models.id', '=', 'product_type_models.product_id')
                     ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
@@ -223,27 +251,22 @@ class CustomerController extends Controller
                         'product_type_models.sub_product_name',
                         'product_type_models.credit_score',
                         'product_type_models.interest_rate',
-                        'product_type_models.security_requirement',
-
-
+                        'product_type_models.security_requirement'
                     )
                     ->whereIn('product_type_models.id', $ids)
                     ->get();
 
-                // Get unique lender IDs from the results
                 $lenderIds = $rawResults->pluck('lender_id')->unique()->toArray();
 
-                // Fetch lender contacts separately with a limit of 4 per lender
                 $contactsRaw = DB::table('lender_contacts_models')
                     ->whereIn('lender_id', $lenderIds)
                     ->select('lender_id', 'contact_type', 'name', 'email', 'mobile_number', 'title')
                     ->get()
                     ->groupBy('lender_id')
                     ->map(function ($contacts) {
-                        return $contacts->take(4); // Limit to 4 contacts per lender
+                        return $contacts->take(4);
                     });
 
-                // Map lenders and attach contacts
                 $lenders = $rawResults->map(function ($product) use ($contactsRaw) {
                     return [
                         'lender_id' => $product->lender_id,
@@ -255,7 +278,7 @@ class CustomerController extends Controller
                         'max_amount' => $product->max_loan_amount,
                         'sub_product_name' => $product->sub_product_name,
                         'credit_score' => $product->credit_score,
-                        'email'    => $product->email,
+                        'email' => $product->email,
                         'mobile_number' => $product->mobile_number,
                         'website_url' => $product->website_url,
                         'product_guide' => $product->product_guide,
@@ -291,14 +314,10 @@ class CustomerController extends Controller
         if ($user->role === 'Broker') {
             $data = CustomerModel::where('id', $id)->where('deleted_flag', 0)->where('added_by', auth()->id())->get();
         } elseif ($user->role === 'Admin') {
-            // Admin: get all customers not deleted
             $data = CustomerModel::where('id', $id)->where('deleted_flag', 0)->get();
         }
 
 
-
-
-        // print_r($data);
         if (count($data) > 0) {
             return view('customer.customer_edit', compact('restricted_industries', 'data'));
         } else {
@@ -406,10 +425,26 @@ class CustomerController extends Controller
 
     public function update_customer_status(Request $request)
     {
-        $status = $request->input('status');
-        $customer_id = $request->input('customer_id');
 
-        // You can update the record here
+
+        $rules = [
+            'status' => 'required|integer',
+            'customer_id' => 'required|integer'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $status = $request->status;
+        $customer_id = $request->customer_id;
+
+
         CustomerModel::where('id', $customer_id)->update(['status' => $status]);
 
         return response()->json([

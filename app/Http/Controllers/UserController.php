@@ -27,14 +27,18 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed', // Confirms password matches confirmation
         ]);
 
-        User::create([
+        $result =  User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role' => $validated['role'],
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect()->back()->with('success', 'User created successfully.');
+        if ($result) {
+            return redirect()->back()->with('success', 'User created successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to store user details.');
+        }
     }
 
 
@@ -46,6 +50,14 @@ class UserController extends Controller
 
     public function get_users(Request $request)
     {
+
+
+        if ($request->isMethod('get')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unsupported method requested'
+            ], 405);
+        }
 
         $users = User::orderBy('deleted_flag', 'asc')->orderBy('id', 'desc');
 
