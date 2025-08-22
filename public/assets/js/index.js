@@ -6,6 +6,9 @@ $(document).ready(function () {
     let currentStep = 0,
         selectedOption = null;
 
+
+        $()
+
     // js for ajax
 
     function triggerAjax() {

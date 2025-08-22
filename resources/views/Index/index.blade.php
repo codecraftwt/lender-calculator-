@@ -266,7 +266,11 @@
                         </div>
                     </div>
 
+
                     <div class="loan-navigation d-flex justify-content-between align-items-center mt-4 p-4">
+
+
+
                         <div class="loan-info d-flex gap-2"></div>
                         <button type="submit" class="btn btn-submit btn-next-global">
                             <span id="next-btn">Submit</span>
