@@ -6,9 +6,6 @@ $(document).ready(function () {
     let currentStep = 0,
         selectedOption = null;
 
-
-        $()
-
     // js for ajax
 
     function triggerAjax() {
@@ -23,11 +20,12 @@ $(document).ready(function () {
             gst_date: $("#gst_date").val(),
             property_owner: $("#property_owner").val(),
             restricted_industry: $("#restricted_industry").val(),
+            _token: $('meta[name="csrf-token"]').attr("content"),
         };
         console.log(formData);
         $.ajax({
             url: "/get-lender",
-            method: "GET",
+            method: "POST",
             data: formData,
             beforeSend: function () {
                 $("#loader").show();
