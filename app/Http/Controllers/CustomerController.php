@@ -8,6 +8,8 @@ use App\Models\LenderModel;
 use App\Models\LenderTypeModel;
 use App\Models\ProductTypeModel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 use Carbon\Carbon;
 
@@ -100,14 +102,22 @@ class CustomerController extends Controller
 
     public function get_customers(Request $request)
     {
-
         if ($request->isMethod('get')) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Unsupported method requested'
+                'message' => 'Unsupported method requested.'
             ], 405);
         }
 
+        // $user = auth()->user();
+
+        // if ($user && $user->deleted_flag == 1) {
+        //     Auth::logout();
+
+        //     return redirect('/login')->withErrors([
+        //         'email' => 'Your account is deactivated. Please contact admin.',
+        //     ]);
+        // }
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $status = $request->status;
@@ -117,7 +127,6 @@ class CustomerController extends Controller
 
         if (strpos($loanRange, '-') !== false) {
             $parts = array_map('trim', explode('-', $loanRange));
-            // Make sure to convert values to floats to prevent any malicious string input
             $minVal = isset($parts[0]) ? (float)$parts[0] : null;
             $maxVal = isset($parts[1]) ? (float)$parts[1] : null;
         }
@@ -183,7 +192,7 @@ class CustomerController extends Controller
             $ids = array_filter($ids, fn($id) => is_numeric($id));
 
             if (!empty($ids)) {
-                // Fetch all related data
+
                 $rawResults = DB::table('product_type_models')
                     ->join('product_models', 'product_models.id', '=', 'product_type_models.product_id')
                     ->join('main_lender_tables', 'main_lender_tables.id', '=', 'product_models.lender_id')
@@ -196,7 +205,7 @@ class CustomerController extends Controller
                     ->whereIn('product_type_models.id', $ids)
                     ->get();
 
-                // Group subproduct IDs by lender
+
                 $lenders = $rawResults->groupBy('lender_id')->map(function ($group) {
                     return [
                         'lender_id' => $group[0]->lender_id,

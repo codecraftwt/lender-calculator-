@@ -300,19 +300,26 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                         <h6 class="fw-bold" style="color:#852aa3;">${
                             lender.sub_product_name || ""
                         }</h6>
-                        <p class="m-0" style="font-weight:500">$${
-                            lender.min_loan_amount || 0
-                        } - $${lender.max_loan_amount || 0}</p><br>
+                         <p class="m-0" style="font-weight:500">
+                           $${Number(
+                               lender.min_loan_amount || 0
+                           ).toLocaleString()} - 
+                           $${Number(lender.max_loan_amount || 0).toLocaleString()}
+                           </p><br>
                                        <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                            lender.credit_score || "500+"
                                        }</p>
-                        <p class="m-0" style="font-weight:600">APR: ${
-                            parseFloat(lender.interest_rate).toFixed(2) || ""
-                        }</p>
+                        ${
+                            lender.interest_rate && lender.interest_rate !== ""
+                                ? `<p class="m-0" style="font-weight:600">APR: ${parseFloat(
+                                      lender.interest_rate
+                                  ).toFixed(2)}</p>`
+                                : ""
+                        }
                         <small class="text-warning security_text d-none" style="font-weight:600">
-                          security required for loan amounts over $${
-                              lender.security_requirement
-                          } in this tier
+                          security required for loan amounts over $${Number(
+                              lender.security_requirement || 0
+                          ).toLocaleString()} in this tier
                         </small>
                       </div>
                     </div>
@@ -831,6 +838,12 @@ $(document).ready(function () {
 
                         // 🔁 Keep modal open
                         $("#mainLenderModal").modal("show");
+                    } else if (xhr.status === 401) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            html: "<span style='color:red'>Your account is deactivated. Please contact admin!</span>",
+                        });
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -951,7 +964,7 @@ $(document).ready(function () {
                 error: function (xhr) {
                     if (xhr.status === 422) {
                         const errors = xhr.responseJSON.errors;
-                        // Show first error as toast
+
                         const firstError = Object.values(errors)[0][0];
                         Swal.fire({
                             toast: true,
@@ -963,14 +976,12 @@ $(document).ready(function () {
                             timerProgressBar: true,
                         });
 
-                        // Show inline errors
                         $.each(errors, function (key, messages) {
                             $(`#invalid_${key}`)
                                 .removeClass("d-none")
                                 .text(messages[0]);
                         });
 
-                        // Keep modal open
                         $("#ProductEditModal").modal("show");
                     } else {
                         Swal.fire({
@@ -998,7 +1009,6 @@ $(document).ready(function () {
 
         switch (id) {
             case "sub_product_id":
-                // optional numeric validation
                 if (!val || /^[0-9]+$/.test(val)) {
                     return true;
                 } else {
@@ -1023,7 +1033,6 @@ $(document).ready(function () {
                 }
 
             case "trading_time":
-                // Ensure trading_time is neither empty nor null
                 if (val === "" || val === null) {
                     if (showErrorMessage) {
                         $(`#invalid_${id}`)
@@ -1042,7 +1051,6 @@ $(document).ready(function () {
             case "number_of_dishonours":
             case "negative_days":
             case "interest_rate":
-                // Numeric fields, allow decimals where applicable (adjust regex if needed)
                 if (val === "" || /^[0-9]+(\.[0-9]+)?$/.test(val)) {
                     return true;
                 } else {
@@ -1070,7 +1078,6 @@ $(document).ready(function () {
                 }
 
             case "restricted_industry":
-                // select multiple validation: ensure at least one selected
                 if ($(`#${id}`).val()?.length > 0) {
                     return true;
                 } else {
@@ -1087,13 +1094,11 @@ $(document).ready(function () {
         }
     };
 
-    // On form submit
     $(document).on("click", ".sub_product_edit_submit_btn", function (e) {
         e.preventDefault();
 
         let isValid = true;
 
-        // Validate all fields explicitly
         const fieldsToValidate = [
             "sub_product_id",
             "sub_product_name",
@@ -1117,7 +1122,7 @@ $(document).ready(function () {
         }
 
         if (isValid) {
-            const form = $(this).closest("form")[0]; // ✅ Fix here
+            const form = $(this).closest("form")[0];
             const formData = new FormData(form);
             $.ajax({
                 url: $(form).attr("action"),
@@ -1246,7 +1251,6 @@ $(document).ready(function () {
                         }
                     }
 
-                    // If data is grouped by state (object with keys)
                     if (
                         !Array.isArray(data) &&
                         typeof data === "object" &&
@@ -1260,7 +1264,6 @@ $(document).ready(function () {
                            </div>
                          `);
 
-                        // Extract lender info from first contact of any group (if needed)
                         let lenderInfo;
                         const stateKeys = Object.keys(data);
                         for (const key of stateKeys) {

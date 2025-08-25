@@ -18,14 +18,12 @@ $(document).ready(function () {
             success: function (data) {
                 const tableBody = $("#lenderTable tbody");
 
-                // Destroy existing DataTable instance safely
                 if ($.fn.DataTable.isDataTable("#lenderTable")) {
                     $("#lenderTable").DataTable().clear().destroy();
                 }
 
                 tableBody.empty();
 
-                // Append your data rows
                 if (data.length > 0) {
                     const getStatusColor = (status) => {
                         if (status == 0) return "#787f79"; // Bootstrap warning
@@ -118,24 +116,19 @@ $(document).ready(function () {
                     table.search(this.value).draw();
                 });
             },
-            error: function () {
+            error: function (xhr) {
                 if (xhr.status === 405) {
-                    const errors = xhr.responseJSON.errors;
-                    const firstError = Object.values(errors)[0][0];
+                    const message =
+                        xhr.responseJSON?.message ||
+                        "Unsupported method requested!";
                     Swal.fire({
                         toast: true,
                         position: "top-end",
                         icon: "error",
-                        title: firstError || "Unsupported method requested!",
+                        title: message,
                         showConfirmButton: false,
                         timer: 4000,
                         timerProgressBar: true,
-                    });
-
-                    $.each(errors, function (key, messages) {
-                        $(`#invalid_${key}`)
-                            .removeClass("d-none")
-                            .text(messages[0]);
                     });
                 } else if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
@@ -154,6 +147,18 @@ $(document).ready(function () {
                         $(`#invalid_${key}`)
                             .removeClass("d-none")
                             .text(messages[0]);
+                    });
+                } else if (xhr.status === 403) {
+                    const message =
+                        xhr.responseJSON?.message ||
+                        "Your account is deactivated.";
+                    Swal.fire({
+                        icon: "error",
+                        title: "Account Deactivated",
+                        text: message,
+                        confirmButtonText: "OK",
+                    }).then(() => {
+                        window.location.href = "/login"; // redirect to login
                     });
                 }
             },
@@ -335,7 +340,6 @@ $(document).ready(function () {
         getSubProductData(productTypeIds, lenderId);
     });
 
-    // function for the subproducts modal
     function getSubProductData(products, lenderId) {
         const formData = {
             trading_time: $("#time_in_business").val(),
@@ -350,7 +354,7 @@ $(document).ready(function () {
             _token: $('meta[name="csrf-token"]').attr("content"),
         };
 
-        console.log(formData); // Debugging the request payload
+        console.log(formData);
         resetLenderContactInfo();
 
         $.ajax({
@@ -365,7 +369,7 @@ $(document).ready(function () {
 
                 setTimeout(function () {
                     const $container = $("#loanProductsContainer");
-                    $container.empty(); // Clear previous content
+                    $container.empty();
 
                     if (data.length < 1) {
                         $container.html(`
@@ -403,7 +407,7 @@ $(document).ready(function () {
                     );
 
                     btn.setAttribute("data-lender-id", lender.lender_id);
-                    // Check if we have more than 3 products
+
                     if (data.length > 3) {
                         let carouselHtml = `
                      <div id="productCarousel" class="carousel slide" data-bs-ride="false">
@@ -439,25 +443,32 @@ $(document).ready(function () {
                                 <h6 class="fw-bold" style="color: #852aa3;">${
                                     product.sub_product_name || ""
                                 }</h6>
-                                <p class="m-0" style="font-weight:500">$$${
-                                    product.min_amount || 0
-                                } - $$${product.max_amount || 0}</p>
+                                 <p class="m-0" style="font-weight:500">
+                           $${Number(
+                               product.min_amount || 0
+                           ).toLocaleString()} - 
+                           $${Number(product.max_amount || 0).toLocaleString()}
+                           </p>
                                 <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                     product.credit_score || "500+"
                                 }</p>
-                                <p class="m-0" style="font-weight:600">APR: ${
-                                    parseFloat(product.interest_rate).toFixed(
-                                        2
-                                    ) || ""
-                                }</p>
+                                
+                                 ${
+                                     product.interest_rate &&
+                                     product.interest_rate !== ""
+                                         ? `<p class="m-0" style="font-weight:600">APR: ${parseFloat(
+                                               product.interest_rate
+                                           ).toFixed(2)}</p>`
+                                         : ""
+                                 }
                                 <small class="security_text text-warning ${
                                     product.security_requirement > 0
                                         ? "d-block"
                                         : "d-none"
                                 }" style="font-weight:600">
-                                    Security required for loan amounts over $$${
-                                        product.security_requirement
-                                    }
+                                    Security required for loan amounts over $${Number(
+                                        product.security_requirement || 0
+                                    ).toLocaleString()}
                                 </small><br>
                                 <a href="${guideUrl}" target="_blank" style="color:#852aa3; font-size:15px; margin-top:10px; font-weight:500" class="text-decoration-underline">
                                     View Product Guide <i class="fas fa-download"></i>
@@ -516,24 +527,32 @@ $(document).ready(function () {
                              <h6 class="fw-bold" style="color: #852aa3;">${
                                  product.sub_product_name || ""
                              }</h6>
-                             <p class="m-0" style="font-weight:500">$$${
-                                 product.min_amount || 0
-                             } - $${product.max_amount || 0}</p>
+                             <p class="m-0" style="font-weight:500">
+                           $${Number(
+                               product.min_amount || 0
+                           ).toLocaleString()} - 
+                           $${Number(product.max_amount || 0).toLocaleString()}
+                           </p>
                              <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                  product.credit_score || "500+"
                              }</p>
-                             <p class="m-0" style="font-weight:600">APR: ${
-                                 parseFloat(product.interest_rate).toFixed(2) ||
-                                 ""
-                             }</p>
+                             ${
+                                 product.interest_rate &&
+                                 product.interest_rate !== ""
+                                     ? `<p class="m-0" style="font-weight:600">APR: ${parseFloat(
+                                           product.interest_rate
+                                       ).toFixed(2)}</p>`
+                                     : ""
+                             }  
                              <small class="security_text text-warning ${
                                  product.security_requirement > 0
                                      ? "d-block"
                                      : "d-none"
                              }" style="font-weight:600">
-                                                   Security required for loan amounts over $${
-                                                       product.security_requirement
-                                                   }
+                                                   Security required for loan amounts over $${Number(
+                                                       product.security_requirement ||
+                                                           0
+                                                   ).toLocaleString()}
                                                </small><br>
                              <a href="${guideUrl}" target="_blank" style="color:#852aa3;font-size:15px;margin-top:10px;font-weight:500" class="text-decoration-underline">View Product Guide <i class="fas fa-download"></i></a>
                            </div>

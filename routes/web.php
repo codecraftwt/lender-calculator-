@@ -121,17 +121,6 @@ Route::get('filter-customers', [CustomerController::class, 'filter_customers']);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 Route::get('/slider', function () {
     return view('lender.slider');
 });
