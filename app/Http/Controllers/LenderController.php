@@ -104,6 +104,7 @@ class LenderController extends Controller
                 'product_models.id as product_id'
             )
             ->where('main_lender_tables.deleted_flag', 0)
+            ->where('product_models.deleted_flag', 0)
             ->orderBy("main_lender_tables.$sortBy", $direction)
             ->get();
 

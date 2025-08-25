@@ -202,6 +202,7 @@ class CustomerController extends Controller
                         'main_lender_tables.lender_logo',
                         'product_type_models.id as subproduct_id'
                     )
+                    ->where('product_models.deleted_flag', 0)
                     ->whereIn('product_type_models.id', $ids)
                     ->get();
 
