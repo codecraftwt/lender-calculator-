@@ -28,10 +28,7 @@
                 </button>
                 @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
-                <!-- <button style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1 d-none">
-                    <small style="color: white;">
-                        <i class="fas fa-filter"></i> Filter</small>
-                </button> -->
+               
             </div>
             <table id="lenderTable" class="table  p-1">
                 <thead>
@@ -1093,7 +1090,7 @@
             });
         });
         var userRole = '{{ auth()->check() ? auth()->user()->role : "" }}';
-        // var userStatus = '{{ auth()->check() ? auth()->user()->deleted_flag : "" }}';    
+        var userStatus = '{{ auth()->check() ? auth()->user()->deleted_flag : "" }}';
     </script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>

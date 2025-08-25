@@ -433,6 +433,21 @@ class LenderController extends Controller
 
 
 
+        if ($contactsWithLender->isEmpty()) {
+            $contactsWithLender = DB::table('main_lender_tables')
+                ->where('id', $lender_id)
+                ->where('deleted_flag', 0) // Check if deleted_flag is 0
+                ->select(
+                    'id as lender_id',
+                    'lender_name',
+                    'lender_logo',
+                    'email as lender_email',
+                    'mobile_number as lender_mobile ',
+                    'website_url'
+                )
+                ->get();
+        }
+
         return response()->json($contactsWithLender);
     }
 
