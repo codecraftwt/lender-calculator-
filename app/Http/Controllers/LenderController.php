@@ -445,7 +445,7 @@ class LenderController extends Controller
                     'lender_name',
                     'lender_logo',
                     'email as lender_email',
-                    'mobile_number as lender_mobile ',
+                    'mobile_number as lender_mobile',
                     'website_url'
                 )
                 ->get();

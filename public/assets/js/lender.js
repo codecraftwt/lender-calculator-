@@ -681,6 +681,62 @@ $(document).ready(function () {
                         $("#loader").hide();
                         $("#applicable_lenders").val(JSON.stringify(data));
                         return;
+                    } else if (data !== null) {
+                        $("#contact_edit_logo_loader").hide();
+                        $("#ContactModalloader").hide();
+                        $("#contactsAccordion").show();
+
+                        let lenderInfoo = data[0];
+
+                        if (lenderInfoo) {
+                            loadLenderLogo2(
+                                baseImageUrl +
+                                    "/" +
+                                    lenderInfoo.lender_logo.toLowerCase()
+                            );
+                            $("#modalLenderLogo2").attr(
+                                "src",
+                                `${baseImageUrl}/${lenderInfoo.lender_logo.toLowerCase()}`
+                            );
+
+                            $("#contact_edit_logo").css("display", "block");
+
+                            $("#edit_lender_contact_search").attr(
+                                "data-lender-id",
+                                lenderInfoo.lender_id
+                            );
+                            $(".add_new_contact_btn").attr(
+                                "data-main-lender-id",
+                                lenderInfoo.lender_id
+                            );
+
+                            const websiteUrl =
+                                lenderInfoo.website_url?.trim() || "";
+                            $("#contactmodalurl").attr(
+                                "href",
+                                websiteUrl.startsWith("http")
+                                    ? websiteUrl
+                                    : `https://${websiteUrl}`
+                            );
+                            $("#contactmodalwebsite").text(
+                                lenderInfoo.website_url || "N/A"
+                            );
+                            $("#phone").text(
+                                lenderInfoo.lender_mobile || "N/A"
+                            );
+                            $("#search_contact").attr(
+                                "data-lender-id",
+                                lenderInfoo.lender_id
+                            );
+
+                            $("#email").text(lenderInfoo.lender_email || "N/A");
+                        }
+
+                        $("#contactsAccordion").html(`
+                           <div class="text-center text-muted" style="font-style: italic;color:red">
+                               No contacts available.
+                           </div>
+                         `);
                     }
                 }, 2500);
             },
