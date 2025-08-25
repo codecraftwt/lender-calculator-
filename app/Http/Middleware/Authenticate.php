@@ -13,9 +13,15 @@ class Authenticate extends Middleware
     protected function redirectTo(Request $request)
     {
         if (! $request->expectsJson()) {
-            // Add flash message before redirect
-            session()->flash('error', 'Authentication required ');
-            return route('login');
+            // Web/browser requests → redirect
+            session()->flash('error', 'Authentication required');
+            return url('/login');
         }
+
+        // For API/AJAX requests → JSON response
+        abort(response()->json([
+            'status'  => 'error',
+            'message' => 'Authentication required.'
+        ], 401));
     }
 }

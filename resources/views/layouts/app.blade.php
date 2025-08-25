@@ -43,7 +43,7 @@
                     <li class=""><a href="{{ url('/customer-list') }}" class="nav-link px-2">Customers</a></li>
                     <li><a href="{{ url('/') }}" class="nav-link px-2">Contact us</a></li>
                     @auth
-                    @if(auth()->user()->role === 'Admin')
+                    @if( auth()->user()->deleted_flag !=1 && auth()->user()->role === 'Admin')
                     <li>
                         <a href="{{ url('/user-list') }}" class="nav-link px-2">Users</a>
                     </li>
