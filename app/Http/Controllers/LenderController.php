@@ -92,7 +92,10 @@ class LenderController extends Controller
         $direction = $validated['direction'] ?? 'desc';
 
         $rawResults = DB::table('main_lender_tables')
-            ->leftJoin('product_models', 'product_models.lender_id', '=', 'main_lender_tables.id')
+            ->leftJoin('product_models', function ($join) {
+                $join->on('product_models.lender_id', '=', 'main_lender_tables.id')
+                    ->where('product_models.deleted_flag', 0);
+            })
             ->leftJoin('product_type_models', 'product_type_models.product_id', '=', 'product_models.id')
             ->select(
                 'main_lender_tables.id as lender_id',
@@ -104,9 +107,9 @@ class LenderController extends Controller
                 'product_models.id as product_id'
             )
             ->where('main_lender_tables.deleted_flag', 0)
-            ->where('product_models.deleted_flag', 0)
             ->orderBy("main_lender_tables.$sortBy", $direction)
             ->get();
+
 
         $lenders = $rawResults->groupBy('lender_id')->map(function ($group) {
             return [

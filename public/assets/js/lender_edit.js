@@ -304,7 +304,9 @@ function getProductDataWithSubProducts(product_id, sub_product_ids) {
                            $${Number(
                                lender.min_loan_amount || 0
                            ).toLocaleString()} - 
-                           $${Number(lender.max_loan_amount || 0).toLocaleString()}
+                           $${Number(
+                               lender.max_loan_amount || 0
+                           ).toLocaleString()}
                            </p><br>
                                        <p class="m-0" style="font-weight:500">Minimum Score Required: ${
                                            lender.credit_score || "500+"
@@ -1410,6 +1412,43 @@ $(document).ready(function () {
                         $("#ContactEditModalloader").hide();
                         $("#applicable_lenders").val(JSON.stringify(data));
                         return;
+                    } else if(data !== null) {
+                        $("#contact_edit_logo_loader").hide();
+                        $("#ContactEditModalloader").hide();
+                        $("#contactsEditAccordion").show();
+ 
+                         let lenderInfoo = data[0];  
+                         
+
+                         if (lenderInfoo) {
+                            loadLenderLogo2(
+                                baseImageUrl +
+                                    "/" +
+                                    lenderInfoo.lender_logo.toLowerCase()
+                            );
+                            $("#contact_edit_logo").attr(
+                                "src",
+                                `${baseImageUrl}/${lenderInfoo.lender_logo.toLowerCase()}`
+                            );
+
+                            $("#contact_edit_logo").css("display", "block");
+
+                            $("#edit_lender_contact_search").attr(
+                                "data-lender-id",
+                                lenderInfoo.lender_id
+                            );
+                            $(".add_new_contact_btn").attr(
+                                "data-main-lender-id",
+                                lenderInfoo.lender_id
+                            );
+                        }
+                        
+
+                        $("#contactsEditAccordion").html(`
+                           <div class="text-center text-muted" style="font-style: italic;color:red">
+                               No contacts available.
+                           </div>
+                         `);
                     }
                 }, 2500);
             },
