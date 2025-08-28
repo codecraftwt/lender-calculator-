@@ -25,7 +25,7 @@
                 <a href="{{ url('/index') }}"><button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1">
                         <small><i class="fas fa-plus"></i> Add New</small>
                     </button></a>
-                <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
+                <div id="CustomercustomSearchWrapper" style="max-width: 500px; width: 100%;"></div>
 
                 <button id="filterCustomerToggleBtn" style="border: none; background-color: rgb(86 66 161); width: 100px; height: 41px; margin-left:auto" class="  rounded border-none text-white p-1">
                     <small style="color: white;">

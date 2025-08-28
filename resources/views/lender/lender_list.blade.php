@@ -27,7 +27,7 @@
                     <small><i class="fas fa-plus"></i> Add New</small>
                 </button>
                 @endif
-                <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
+                <div id="LendercustomSearchWrapper" style="max-width: 500px; width: 100%;"></div>
 
             </div>
             <table id="lenderTable" class="table  p-1">

@@ -69,18 +69,17 @@ $(document).ready(function () {
             const $customSearch = $(`
             <div class="search-input-wrapper position-relative d-inline-block">
                 <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
-                <input type="search" id="customSearchInput" class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+                <input type="search" id="LendercustomSearchInput" class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
             </div>
         `);
 
-            $("#customSearchWrapper").html($customSearch);
+            $("#LendercustomSearchWrapper").html($customSearch);
 
-            $("#customSearchInput").on("keyup", function () {
+            $("#LendercustomSearchInput").on("keyup", function () {
                 window.mainLenderTable.search(this.value).draw();
             });
         },
     });
-
 
     $(document).on("click", ".view-btn", function () {
         const dataId = $(this).attr("data-id");
