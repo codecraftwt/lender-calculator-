@@ -105,15 +105,15 @@ $(document).ready(function () {
                 const $customSearch = $(`
             <div class="search-input-wrapper position-relative d-inline-block">
                 <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
-                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+                <input type="search" id="CustomercustomSearchInput"  class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
             </div>
         `);
 
                 // ✅ Insert it into placeholder
-                $("#customSearchWrapper").html($customSearch);
+                $("#CustomercustomSearchWrapper").html($customSearch);
 
                 // ✅ Wire search input to DataTable instance
-                $("#customSearchInput").on("keyup", function () {
+                $("#CustomercustomSearchInput").on("keyup", function () {
                     table.search(this.value).draw();
                 });
             },
@@ -308,9 +308,6 @@ $(document).ready(function () {
         getCustomerData();
     });
 
-
-
-    
     $(document).on("click", ".view-product-btn", function (e) {
         e.preventDefault();
 
@@ -887,8 +884,8 @@ $(document).ready(function () {
             })
             .appendTo($customSearch);
 
-        // Place the custom search in your wrapper
-        $("#customSearchWrapper").html($customSearch);
+        // // Place the custom search in your wrapper
+        // $("#CustomercustomSearchWrapper").html($customSearch);
     });
 
     $(document).on("click", ".delete-btn", function () {
