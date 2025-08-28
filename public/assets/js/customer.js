@@ -16,6 +16,7 @@ $(document).ready(function () {
                 _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (data) {
+                // console.log(data[0].loan_amt_needed);
                 const tableBody = $("#lenderTable tbody");
 
                 if ($.fn.DataTable.isDataTable("#lenderTable")) {
@@ -307,6 +308,9 @@ $(document).ready(function () {
         getCustomerData();
     });
 
+
+
+    
     $(document).on("click", ".view-product-btn", function (e) {
         e.preventDefault();
 

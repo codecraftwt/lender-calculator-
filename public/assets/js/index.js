@@ -49,6 +49,13 @@ $(document).ready(function () {
                 // });
             },
             error: function (xhr, status, error) {
+                if (xhr.status == 401) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        html: "<span style='color:red'>Your account is deactivated. Please contact admin!</span>",
+                    });
+                }
                 console.error("Error fetching lenders:", error);
                 $("#loader").hide();
                 $(".lender-cards").html(

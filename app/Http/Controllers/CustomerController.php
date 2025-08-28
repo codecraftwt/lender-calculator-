@@ -109,15 +109,7 @@ class CustomerController extends Controller
             ], 405);
         }
 
-        // $user = auth()->user();
 
-        // if ($user && $user->deleted_flag == 1) {
-        //     Auth::logout();
-
-        //     return redirect('/login')->withErrors([
-        //         'email' => 'Your account is deactivated. Please contact admin.',
-        //     ]);
-        // }
         $startDate = $request->startDate;
         $endDate = $request->endDate;
         $status = $request->status;
@@ -127,8 +119,8 @@ class CustomerController extends Controller
 
         if (strpos($loanRange, '-') !== false) {
             $parts = array_map('trim', explode('-', $loanRange));
-            $minVal = isset($parts[0]) ? (float)$parts[0] : null;
-            $maxVal = isset($parts[1]) ? (float)$parts[1] : null;
+            $minVal = isset($parts[0]) ?  $parts[0] : null;
+            $maxVal = isset($parts[1]) ?  $parts[1] : null;
         }
 
         $user = auth()->user();
@@ -156,10 +148,9 @@ class CustomerController extends Controller
             $customers->where('created_at', '<=', Carbon::parse($endDate)->endOfDay());
         }
 
-
         if ($minVal !== null && $maxVal !== null) {
-
-            $customers->whereBetween('loan_amt_needed', [$minVal, $maxVal]);
+            $customers->whereRaw('CAST(loan_amt_needed AS UNSIGNED) >= ?', [$minVal])
+                ->whereRaw('CAST(loan_amt_needed AS UNSIGNED) <= ?', [$maxVal]);
         }
 
         if ($status !== null && $status !== '') {

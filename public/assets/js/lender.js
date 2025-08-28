@@ -42,8 +42,7 @@ $(document).ready(function () {
                         /'/g,
                         "&#39;"
                     );
-                    return `<button type="button" data-id='${product_id_arr}' class="btn btn-sm btn-info view-btn" style="background-color:rgb(86 66 161);color:white;border:1px solid #8455d9">View</button>
-                    `;
+                    return `<button type="button" data-id='${product_id_arr}' class="btn btn-sm btn-info view-btn" style="background-color:rgb(86 66 161);color:white;border:1px solid #8455d9">View</button>`;
                 },
             },
             {
@@ -55,32 +54,33 @@ $(document).ready(function () {
                     );
                     const lender_id = row.lender_id;
 
-                    // if (userRole === "Admin" && userStatus != 1) {
                     if (userRole === "Admin") {
                         return `<button type="button" data-main-lender-id='${product_id_arr}' data-lender-id='${lender_id}' class="btn btn-sm btn-info edit-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-pencil"></i></button>
-                        <button type="button" data-main-lender-id='${lender_id}' data-product-id='${product_id_arr}' class="btn btn-sm btn-info delete-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-trash"></i></button>`;
+                    <button type="button" data-main-lender-id='${lender_id}' data-product-id='${product_id_arr}' class="btn btn-sm btn-info delete-main-lender-info" style="color:white;background-color:rgb(86 66 161) !important;border:none;"><i class="fas fa-trash"></i></button>`;
                     } else {
                         return "";
                     }
                 },
             },
         ],
-    });
 
-    const $customSearch = $(`
+        // ✅ Wire custom search after table initialization
+        initComplete: function () {
+            const $customSearch = $(`
             <div class="search-input-wrapper position-relative d-inline-block">
                 <i class="fa fa-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #777;"></i>
-                <input type="search" id="customSearchInput"  class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
+                <input type="search" id="customSearchInput" class="form-control" style="padding-left: 45px; height: 36px; border-radius: 25px; border: 1px solid #ccc;">
             </div>
         `);
 
-    // ✅ Insert it into placeholder
-    $("#customSearchWrapper").html($customSearch);
+            $("#customSearchWrapper").html($customSearch);
 
-    // ✅ Wire search input to DataTable instance
-    $("#customSearchInput").on("keyup", function () {
-        mainLenderTable.search(this.value).draw();
+            $("#customSearchInput").on("keyup", function () {
+                window.mainLenderTable.search(this.value).draw();
+            });
+        },
     });
+
 
     $(document).on("click", ".view-btn", function () {
         const dataId = $(this).attr("data-id");
