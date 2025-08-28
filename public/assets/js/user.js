@@ -20,6 +20,7 @@ $(document).ready(function () {
                 _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (data) {
+               
                 const tableBody = $("#userTable tbody");
                 $("#lenderTable").DataTable();
                 // Destroy existing DataTable instance safely
@@ -343,7 +344,7 @@ $(document).ready(function () {
             url: "/get-user-data",
             data: {
                 user_id: user_id,
-                 _token: $('meta[name="csrf-token"]').attr("content"),
+                _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
                 if (response.user_image) {

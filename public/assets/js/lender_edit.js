@@ -1412,15 +1412,14 @@ $(document).ready(function () {
                         $("#ContactEditModalloader").hide();
                         $("#applicable_lenders").val(JSON.stringify(data));
                         return;
-                    } else if(data !== null) {
+                    } else if (data !== null) {
                         $("#contact_edit_logo_loader").hide();
                         $("#ContactEditModalloader").hide();
                         $("#contactsEditAccordion").show();
- 
-                         let lenderInfoo = data[0];  
-                         
 
-                         if (lenderInfoo) {
+                        let lenderInfoo = data[0];
+
+                        if (lenderInfoo) {
                             loadLenderLogo2(
                                 baseImageUrl +
                                     "/" +
@@ -1442,7 +1441,6 @@ $(document).ready(function () {
                                 lenderInfoo.lender_id
                             );
                         }
-                        
 
                         $("#contactsEditAccordion").html(`
                            <div class="text-center text-muted" style="font-style: italic;color:red">

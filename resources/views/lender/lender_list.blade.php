@@ -21,14 +21,14 @@
         <div class="col-lg-12 mb-4 p-4 " style="background-color: #dedede;min-width:1500px;margin-left:auto;margin-right:auto">
             <div style="height:76px;" class="header d-flex align-items-center ml-4">
                 <h3 class="m-2" style="color:rgb(48 30 119);font-weight:600">Lenders</h3>
-                <!-- && auth()->user()->deleted_flag !=1 -->
-                @if(auth()->check() && auth()->user()->role === 'Admin')
+
+                @if(auth()->check() && auth()->user()->role === 'Admin' && auth()->user()->deleted_flag !=1)
                 <button style="border: none; background-color: rgb(86 66 161); width: 180px; height: 41px;" class="m-5 rounded border-none text-white p-1 add-new-lender-btn">
                     <small><i class="fas fa-plus"></i> Add New</small>
                 </button>
                 @endif
                 <div id="customSearchWrapper" style="max-width: 500px; width: 100%;"></div>
-               
+
             </div>
             <table id="lenderTable" class="table  p-1">
                 <thead>
@@ -42,8 +42,8 @@
                         <th>Mobile Number</th>
                         <th>Website</th>
                         <th>Products</th>
-                        <!-- && auth()->user()->deleted_flag !=1 -->
-                        @if(auth()->check() && auth()->user()->role === 'Admin')
+
+                        @if(auth()->check() && auth()->user()->role === 'Admin' && auth()->user()->deleted_flag !=1)
                         <th>Actions</th>
                         @endif
                     </tr>
