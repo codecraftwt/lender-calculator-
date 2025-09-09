@@ -70,6 +70,9 @@
                                 <option value="3">Setteled</option>
                                 <option value="1">Submitted</option>
                                 <option value="2">In-progress</option>
+                                <option value="4">Approved</option>
+                                <option value="5">Declined</option>
+
                             </select>
                         </th>
                         <th><button id="clearfilter" style="border: none; background-color: rgb(86 66 161); width: 95px; height: 36px; margin-left:20px;padding:2px" class="  rounded border-none text-white p-1">

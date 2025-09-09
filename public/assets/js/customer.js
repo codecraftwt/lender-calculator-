@@ -28,9 +28,11 @@ $(document).ready(function () {
                 if (data.length > 0) {
                     const getStatusColor = (status) => {
                         if (status == 0) return "#787f79"; // Bootstrap warning
-                        if (status == 1) return "#fcc110fa"; // Bootstrap danger
-                        if (status == 2) return "#e35966"; // Bootstrap success
-                        if (status == 3) return "#25f253"; // Bootstrap success
+                        if (status == 1) return "#6262f0"; // Bootstrap danger
+                        if (status == 2) return "#f5b43c"; // Bootstrap success
+                        if (status == 3) return "#3de362"; // Bootstrap success
+                        if (status == 4) return "teal";
+                        if (status == 5) return "#e35966";
                         return "#6af56ab0"; // default
                     };
 
@@ -57,6 +59,9 @@ $(document).ready(function () {
     <option value="3" ${item.status == 3 ? "selected" : ""}>settled</option>
     <option value="2" ${item.status == 2 ? "selected" : ""}>in-progress</option>
     <option value="1" ${item.status == 1 ? "selected" : ""}>submitted</option>
+    <option value="4" ${item.status == 4 ? "selected" : ""}>approved</option>
+    <option value="5" ${item.status == 5 ? "selected" : ""}>declined</option>
+
  </select></th>
     <td>
         <a href="/customer-edit/${item.id}">
