@@ -1104,7 +1104,7 @@ $(document).ready(function () {
                     error: function (xhr) {
                         Swal.fire(
                             "Error",
-                            "Failed to send data to Google Sheet.",
+                            "Failed to send data  to Google Sheet.",
                             "error"
                         );
                         console.error(xhr.responseText);
