@@ -4,6 +4,31 @@
 
 @section('content')
 <!-- Main content starts here -->
+
+<style>
+    .fetch-button {
+        margin: 5px;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        padding: 8px 16px;
+        width: auto;
+        background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .fetch-button:hover {
+        background: linear-gradient(90deg, #3a2f8a 0%, #b14dc8 100%);
+        transform: scale(1.03);
+    }
+
+    .fetch-button:active {
+        transform: scale(0.97);
+    }
+</style>
 <div class="row gx-4">
     <!-- Left Panel -->
     <div class="col-lg-2 mb-4"></div>
@@ -129,6 +154,21 @@
                                 <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid Loan amount.</p>
                             </div>
 
+                            <div class="col-md-6 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
+                                <label for="document_id" class="form-label">Documnet ID</label>
+                                <div class="input-group">
+                                    <!-- <span class="input-group-text">$</span> -->
+                                    <input type="text" id="document_id" name="document_id" class="form-control" required>
+                                    <button style="margin: 5px;border:none;border-radius:7px;color:white;padding: 5px;width: 78px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);" type="button" id="submit-document-id">
+                                        <span class="spinner" id="spinner" style="display:none; margin-right: 6px;">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </span> <b id="btn-text">Submit</b></button>
+
+                                </div>
+
+                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid documnent id.</p>
+                            </div>
+
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="monthly_revenue" class="form-label">Monthly Revenue</label>
                                 <div class="input-group">
@@ -136,6 +176,22 @@
                                     <input type="text" id="monthly_revenue" name="monthly_revenue" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_monthly_revenue">Please enter valid monthly revenue.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="text" id="negative_days" name="negative_days" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative days.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="number_of_dishonours" class="form-label">Number of Dishonours</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
@@ -172,22 +228,7 @@
                                 <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
-                                    <input type="text" id="negative_days" name="negative_days" class="form-control" required>
-                                </div>
-                                <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative days.</p>
-                            </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="number_of_dishonours" class="form-label">Number of Dishonours</label>
-                                <div class="input-group">
-                                    <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" required>
-                                </div>
-                                <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
-                            </div>
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="industry_type" class="form-label">Select your industry</label>
@@ -282,6 +323,68 @@
     </div>
     <div class="col-lg-2 mb-4"></div>
 </div>
+
+
+
+
+<!-- Illion Data Modal -->
+<div class="modal fade" id="illionModal" tabindex="-1" aria-labelledby="illionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius:10px;">
+            <div class="modal-header" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); color: #fff;">
+                <h5 class="modal-title" id="illionModalLabel">Illion Bank Statement Summary (<span id="doc_id" style="font-size: 15px;"></span>)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- <div id="illion-summary" class="row g-3">
+                    <div class="col-md-6"><b>Reference:</b> <span id="ref"></span></div>
+                    <div class="col-md-6"><b>Submission Time:</b> <span id="sub_time"></span></div>
+                    <div class="col-md-6"><b>Monthly Income:</b> <span id="monthly_income"></span></div>
+                    <div class="col-md-6"><b>Monthly Turnover:</b> <span id="monthly_turnover"></span></div>
+                    <div class="col-md-6"><b>Annual Income:</b> <span id="annual_income"></span></div>
+                    <div class="col-md-6"><b>Days in Negative:</b> <span id="days_negative"></span></div>
+                    <div class="col-md-6"><b>Dishonours (Total):</b> <span id="dishonours"></span></div>
+                    <div class="col-md-6"><b>SACC Loans:</b> <span id="sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Non-SACC Loans:</b> <span id="non_sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Cashflow Loans:</b> <span id="cashflow_loans"></span></div>
+                </div> -->
+                <div id="illion-summary" class="row g-3">
+                    <div class="col-md-6"><b>Reference:</b> <span id="ref"></span></div>
+                    <div class="col-md-6"><b>Submission Time:</b> <span id="sub_time"></span></div>
+
+                    <div class="col-md-6"><b>Monthly Income (BF002):</b> <span id="monthly_income"></span></div>
+                    <div class="col-md-6"><b>Monthly Turnover (BM001):</b> <span id="monthly_turnover"></span></div>
+                    <div class="col-md-6"><b>Annual Income:</b> <span id="annual_income"></span></div>
+                    <div class="col-md-6"><b>Annual Turnover:</b> <span id="annual_turnover"></span></div>
+
+                    <div class="col-md-6"><b>Days in Negative:</b> <span id="days_negative"></span></div>
+                    <div class="col-md-6"><b>Dishonours (EBP009):</b> <span id="dishonours"></span></div>
+
+                    <div class="col-md-6"><b>Non-SACC Loans (DM079):</b> <span id="non_sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Ongoing Non-SACC Loans (DM090):</b> <span id="ongoing_non_sacc_loans"></span></div>
+
+                    <div class="col-md-6"><b>SACC Loans (DM091):</b> <span id="sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Ongoing SACC Loans (DM042):</b> <span id="ongoing_sacc_loans"></span></div>
+
+                    <div class="col-md-6"><b>Cashflow Lenders (BF017):</b> <span id="cashflow_loans"></span></div>
+
+                    <div class="col-md-6"><b>Overdrawn Count (AB006):</b> <span id="overdraw_count"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (30 Days - FN006):</b> <span id="overdraw_30"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (90 Days - FN007):</b> <span id="overdraw_90"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (180 Days - FN008):</b> <span id="overdraw_180"></span></div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Internal CSS -->
 

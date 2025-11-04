@@ -22,9 +22,9 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email', // Check email is unique
+            'email' => 'required|email|unique:users,email',
             'role' => 'required|in:Admin,Broker',
-            'password' => 'required|string|min:8|confirmed', // Confirms password matches confirmation
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $result =  User::create([

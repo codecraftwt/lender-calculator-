@@ -5,6 +5,12 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LenderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AbnController;
+use App\Http\Controllers\GoogleSheetController;
+
+
+
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -124,3 +130,11 @@ Route::get('filter-customers', [CustomerController::class, 'filter_customers']);
 Route::get('/slider', function () {
     return view('lender.slider');
 });
+
+
+Route::get('admin-dashboard', [IndexController::class, 'admin_dashboard']);
+Route::get('admin-table', [IndexController::class, 'admin_table']);
+Route::get('admin-login', [IndexController::class, 'admin_login']);
+
+Route::get('/fetch-bank-statement', [AbnController::class, 'fetch_bank_statement'])->middleware(['auth', 'role:Admin,Broker']);
+Route::post('/store-illion-data', [GoogleSheetController::class, 'storeIllionData'])->middleware(['auth', 'role:Admin,Broker']);

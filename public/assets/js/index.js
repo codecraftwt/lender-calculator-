@@ -689,4 +689,458 @@ $(document).ready(function () {
                 );
             });
     });
+
+    $("#submit-document-id").on("click", function () {
+        var document_id = $("#document_id").val();
+        // console.log(document_id);
+
+        const button = document.getElementById("submit-document-id");
+        const spinner = button.querySelector(".spinner");
+        const btnText = document.getElementById("btn-text");
+        btnText.style.display = "none";
+        spinner.style.display = "inline-block";
+
+        $.ajax({
+            url: "fetch-bank-statement",
+            method: "GET",
+            data: { document_id: document_id },
+            dataType: "json",
+            // success: function (response) {
+            //     spinner.style.display = "none";
+            //     btnText.style.display = "inline-block";
+            //     button.style.opacity = 0.5;
+            //     button.disabled = true;
+            //     console.log(response);
+            // },
+            // success: function (response) {
+            //     spinner.style.display = "none";
+            //     btnText.style.display = "inline-block";
+            //     console.log(response);
+
+            //     if (!response.success) {
+            //         Swal.fire("Error", "Failed to fetch Illion data", "error");
+            //         return;
+            //     }
+
+            //     const data = response.data || {};
+            //     const metrics = data.decisionMetrics || []; // array of {id,name,type,value,...}
+
+            //     // helper to find metric object (returns undefined if not found)
+            //     function getMetric(id) {
+            //         return metrics.find((m) => m.id === id);
+            //     }
+
+            //     // helper to get numeric or object value
+            //     function metricValue(id) {
+            //         const m = getMetric(id);
+            //         if (!m) return null;
+            //         return m.value;
+            //     }
+
+            //     // If the metric value is an object with months, return formatted string and numeric helpers
+            //     function formatMonthlyMetric(metricObj) {
+            //         // metricObj is either a string/number OR an object like { "Month 1": "1126.94", ... }
+            //         if (metricObj == null)
+            //             return { display: "N/A", average: 0, total: 0 };
+
+            //         if (typeof metricObj === "object") {
+            //             const months = Object.values(metricObj).map(
+            //                 (v) => parseFloat(v) || 0
+            //             );
+            //             const total = months.reduce((s, n) => s + n, 0);
+            //             const avg = months.length ? total / months.length : 0;
+            //             // create friendly small HTML/text for months
+            //             const monthParts = Object.entries(metricObj).map(
+            //                 ([k, v]) => `${k}: ${parseFloat(v).toFixed(2)}`
+            //             );
+            //             return {
+            //                 display: monthParts.join(" | "),
+            //                 average: avg,
+            //                 total: total,
+            //             };
+            //         } else {
+            //             // string or number
+            //             const n = parseFloat(metricObj) || 0;
+            //             return {
+            //                 display: parseFloat(metricObj).toFixed(2),
+            //                 average: n,
+            //                 total: n,
+            //             };
+            //         }
+            //     }
+
+            //     // populate basic info
+            //     $("#ref").text(data.reference || "N/A");
+            //     $("#sub_time").text(data.submissionTime || "N/A");
+
+            //     // Monthly Income BF002 (object -> month map)
+            //     const bf002 = metricValue("BF002");
+            //     const bf002Res = formatMonthlyMetric(bf002);
+            //     $("#monthly_income").text(bf002Res.display);
+
+            //     // Monthly Turnover BM001
+            //     const bm001 = metricValue("BM001");
+            //     const bm001Res = formatMonthlyMetric(bm001);
+            //     $("#monthly_turnover").text(bm001Res.display);
+
+            //     // Annual Income = average monthly income * 12 (use bf002 average if available)
+            //     const annualIncome = (bf002Res.average || 0) * 12;
+            //     $("#annual_income").text(
+            //         annualIncome ? annualIncome.toFixed(2) : "0.00"
+            //     );
+
+            //     // Dishonours: check decisionMetrics AB007 or EBP009 (some responses use AB/EBP variants)
+            //     const dishonourMetric =
+            //         metricValue("EBP009") ??
+            //         metricValue("AB007") ??
+            //         metricValue("EB007");
+            //     // if dishonourMetric is object/number handle
+            //     if (typeof dishonourMetric === "object") {
+            //         $("#dishonours").text(JSON.stringify(dishonourMetric));
+            //     } else {
+            //         $("#dishonours").text(
+            //             dishonourMetric !== null &&
+            //                 dishonourMetric !== undefined
+            //                 ? dishonourMetric
+            //                 : "0"
+            //         );
+            //     }
+
+            //     // Loans
+            //     $("#sacc_loans").text(metricValue("DM091") ?? "0");
+            //     $("#non_sacc_loans").text(metricValue("DM079") ?? "0");
+            //     $("#cashflow_loans").text(metricValue("BF017") ?? "N/A");
+
+            //     // DAYS IN NEGATIVE and DAYS < $500
+            //     // We prefer statementSummary.dayEndBalances which holds per-day balances for an account (array of {date, balance})
+            //     // The API may have multiple accounts. We'll try to find the first account with statementSummary.dayEndBalances.
+            //     const banks = data.banks || [];
+            //     let dayEndBalancesAll = []; // array of {date: 'YYYY-MM-DD', balance: '123.45' or number}
+
+            //     for (const bank of banks) {
+            //         const bankAccounts = bank.bankAccounts || [];
+            //         for (const acc of bankAccounts) {
+            //             const ss = acc.statementSummary;
+            //             if (ss && Array.isArray(ss.dayEndBalances)) {
+            //                 // append with account identifier if you want - for now just push entries
+            //                 dayEndBalancesAll = dayEndBalancesAll.concat(
+            //                     ss.dayEndBalances
+            //                 );
+            //             }
+            //         }
+            //     }
+
+            //     // helper to count days where balance < threshold and optionally within lastDays
+            //     function countDaysBelow(threshold, lastDays) {
+            //         if (!dayEndBalancesAll.length) return 0;
+            //         // convert to array of objects with date and numeric balance
+            //         const arr = dayEndBalancesAll.map((d) => ({
+            //             date: new Date(d.date),
+            //             bal:
+            //                 parseFloat(
+            //                     String(d.balance).replace(/[^0-9\.-]/g, "")
+            //                 ) || 0,
+            //         }));
+            //         // if lastDays supplied, compute cutoff date
+            //         let cutoff = null;
+            //         if (lastDays) {
+            //             const latestDate = arr.reduce(
+            //                 (a, b) => (a.date > b.date ? a : b),
+            //                 arr[0]
+            //             ).date;
+            //             cutoff = new Date(latestDate);
+            //             cutoff.setDate(cutoff.getDate() - lastDays + 1); // inclusive lastDays
+            //         }
+            //         return arr.filter(
+            //             (d) =>
+            //                 d.bal < threshold && (!cutoff || d.date >= cutoff)
+            //         ).length;
+            //     }
+
+            //     // fill days negative (total & last 30/60/90/180)
+            //     const daysNegTotal = dayEndBalancesAll.length
+            //         ? countDaysBelow(0, null)
+            //         : data.daysInNegative ?? "N/A";
+            //     const daysNeg30 = countDaysBelow(0, 30);
+            //     const daysNeg60 = countDaysBelow(0, 60);
+            //     const daysNeg90 = countDaysBelow(0, 90);
+            //     const daysNeg180 = countDaysBelow(0, 180);
+
+            //     $("#days_negative").text(
+            //         `Total: ${daysNegTotal} | 30d: ${daysNeg30} | 60d: ${daysNeg60} | 90d: ${daysNeg90} | 180d: ${daysNeg180}`
+            //     );
+
+            //     // fill days with EOD < $500 similarly
+            //     const daysUnder500Total = countDaysBelow(500, null);
+            //     const under500_30 = countDaysBelow(500, 30);
+            //     const under500_60 = countDaysBelow(500, 60);
+            //     const under500_90 = countDaysBelow(500, 90);
+            //     const under500_180 = countDaysBelow(500, 180);
+
+            //     // append or show elsewhere; here we append to modal body (you can create dedicated fields)
+            //     $("#ending_under_500").remove(); // avoid duplicates
+            //     $("#illion-summary").append(
+            //         `<div id="ending_under_500" class="col-12"><b>Days EOD < $500:</b> Total: ${daysUnder500Total} | 30d: ${under500_30} | 60d: ${under500_60} | 90d: ${under500_90} | 180d: ${under500_180}</div>`
+            //     );
+
+            //     // Show modal
+            //     $("#illionModal").modal("show");
+
+            //     // optionally make the raw metrics viewable (for debugging)
+            //     // console.log("decisionMetrics:", metrics);
+            // },
+            success: function (response) {
+                spinner.style.display = "none";
+                btnText.style.display = "inline-block";
+                console.log(response);
+                $("#doc_id").html(response.data.documentId);
+
+                if (!response.success) {
+                    Swal.fire("Error", "Failed to fetch Illion data", "error");
+                    return;
+                }
+
+                const data = response.data || {};
+                const metrics = data.decisionMetrics || []; // array of {id,name,type,value,...}
+
+                // helper to find metric object (returns undefined if not found)
+                function getMetric(id) {
+                    return metrics.find((m) => m.id === id);
+                }
+
+                // helper to get numeric or object value
+                function metricValue(id) {
+                    const m = getMetric(id);
+                    if (!m) return null;
+                    return m.value;
+                }
+
+                // If the metric value is an object with months, return formatted string and numeric helpers
+                function formatMonthlyMetric(metricObj) {
+                    if (metricObj == null)
+                        return { display: "N/A", average: 0, total: 0 };
+
+                    if (typeof metricObj === "object") {
+                        const months = Object.values(metricObj).map(
+                            (v) => parseFloat(v) || 0
+                        );
+                        const total = months.reduce((s, n) => s + n, 0);
+                        const avg = months.length ? total / months.length : 0;
+                        const monthParts = Object.entries(metricObj).map(
+                            ([k, v]) => `${k}: ${parseFloat(v).toFixed(2)}`
+                        );
+                        return {
+                            display: monthParts.join(" | "),
+                            average: avg,
+                            total: total,
+                        };
+                    } else {
+                        const n = parseFloat(metricObj) || 0;
+                        return {
+                            display: n.toFixed(2),
+                            average: n,
+                            total: n,
+                        };
+                    }
+                }
+
+                // populate basic info
+                $("#ref").text(data.reference || "N/A");
+                $("#sub_time").text(data.submissionTime || "N/A");
+
+                // Monthly Income (BF002)
+                const bf002 = metricValue("BF002");
+                const bf002Res = formatMonthlyMetric(bf002);
+                $("#monthly_income").text(bf002Res.display);
+
+                // Monthly Turnover (BM001)
+                const bm001 = metricValue("BM001");
+                const bm001Res = formatMonthlyMetric(bm001);
+                $("#monthly_turnover").text(bm001Res.display);
+
+                // Annual Income & Turnover
+                const annualIncome = (bf002Res.average || 0) * 12;
+                const annualTurnover = (bm001Res.average || 0) * 12;
+                $("#annual_income").text(
+                    annualIncome ? annualIncome.toFixed(2) : "0.00"
+                );
+                $("#annual_turnover").text(
+                    annualTurnover ? annualTurnover.toFixed(2) : "0.00"
+                );
+
+                // Dishonours (EBP009)
+                const dishonourMetric = metricValue("EBP009");
+                if (typeof dishonourMetric === "object") {
+                    const dishonourParts = Object.entries(dishonourMetric).map(
+                        ([k, v]) => `${k}: ${v}`
+                    );
+                    $("#dishonours").text(dishonourParts.join(" | "));
+                } else {
+                    $("#dishonours").text(dishonourMetric ?? "0");
+                }
+
+                // Loans
+                $("#non_sacc_loans").text(metricValue("DM079") ?? "0");
+                $("#ongoing_non_sacc_loans").text(metricValue("DM090") ?? "0");
+                $("#sacc_loans").text(metricValue("DM091") ?? "0");
+                $("#ongoing_sacc_loans").text(metricValue("DM042") ?? "0");
+                $("#cashflow_loans").text(metricValue("BF017") ?? "0");
+
+                // Overdraws & Overdrawn Fees
+                $("#overdraw_count").text(metricValue("AB006") ?? "0");
+                $("#overdraw_30").text(metricValue("FN006") ?? "0");
+                $("#overdraw_90").text(metricValue("FN007") ?? "0");
+                $("#overdraw_180").text(metricValue("FN008") ?? "0");
+
+                // DAYS IN NEGATIVE and DAYS < $500
+                const banks = data.banks || [];
+                let dayEndBalancesAll = [];
+
+                for (const bank of banks) {
+                    const bankAccounts = bank.bankAccounts || [];
+                    for (const acc of bankAccounts) {
+                        const ss = acc.statementSummary;
+                        if (ss && Array.isArray(ss.dayEndBalances)) {
+                            dayEndBalancesAll = dayEndBalancesAll.concat(
+                                ss.dayEndBalances
+                            );
+                        }
+                    }
+                }
+
+                // helper to count days where balance < threshold and optionally within lastDays
+                function countDaysBelow(threshold, lastDays = null) {
+                    if (!dayEndBalancesAll?.length) return 0;
+
+                    // Convert balances and dates safely
+                    const arr = dayEndBalancesAll.map((d) => ({
+                        date: new Date(d.date),
+                        bal:
+                            parseFloat(
+                                String(d.balance).replace(/[^0-9.-]/g, "")
+                            ) || 0,
+                    }));
+
+                    // Determine cutoff date if counting for last X days
+                    let cutoff = null;
+                    if (lastDays) {
+                        const latestDate = arr.reduce(
+                            (a, b) => (a.date > b.date ? a : b),
+                            arr[0]
+                        ).date;
+                        cutoff = new Date(latestDate);
+                        cutoff.setDate(cutoff.getDate() - lastDays + 1);
+                    }
+
+                    // Count number of days with balance below threshold (e.g., 0)
+                    return arr.filter(
+                        (d) =>
+                            d.bal < threshold && (!cutoff || d.date >= cutoff)
+                    ).length;
+                }
+
+                // ---------------------------
+                // Days in Negative Summary
+                // ---------------------------
+                const daysNegTotal = countDaysBelow(0); // Total negative days
+                const daysNeg30 = countDaysBelow(0, 30); // Last 30 days
+                const daysNeg60 = countDaysBelow(0, 60); // Last 60 days
+                const daysNeg90 = countDaysBelow(0, 90); // Last 90 days
+                const daysNeg180 = countDaysBelow(0, 180); // Last 180 days
+
+                // Display nicely in UI
+                $("#days_negative").text(
+                    `Total: ${daysNegTotal} | 30d: ${daysNeg30} | 60d: ${daysNeg60} | 90d: ${daysNeg90} | 180d: ${daysNeg180}`
+                );
+
+                // Ending Daily Balances < $500
+                const daysUnder500Total = countDaysBelow(500, null);
+                const under500_30 = countDaysBelow(500, 30);
+                const under500_60 = countDaysBelow(500, 60);
+                const under500_90 = countDaysBelow(500, 90);
+                const under500_180 = countDaysBelow(500, 180);
+
+                $("#ending_under_500").remove();
+                $("#illion-summary").append(
+                    `<div id="ending_under_500" class="col-12"><b>Days EOD < $500:</b> Total: ${daysUnder500Total} | 30d: ${under500_30} | 60d: ${under500_60} | 90d: ${under500_90} | 180d: ${under500_180}</div>`
+                );
+
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                });
+
+                // Convert monthly metric objects to arrays of numeric values
+                function objectToValues(obj) {
+                    if (!obj || typeof obj !== "object") return [];
+                    return Object.values(obj).map((v) => parseFloat(v) || 0);
+                }
+
+                $.ajax({
+                    url: "/store-illion-data",
+                    method: "POST",
+                    data: {
+                        monthly_income: objectToValues(bf002),
+                        monthly_turnover: objectToValues(bm001),
+                        annual_income: annualIncome.toFixed(2),
+                        annual_turnover: annualTurnover.toFixed(2),
+                        dishonours: objectToValues(dishonourMetric),
+                    },
+                    success: function (res) {
+                        console.log("Google Sheet update:", res);
+                        if (res.status === "success") {
+                            Swal.fire(
+                                "Success",
+                                "Data synced to Google Sheet!",
+                                "success"
+                            );
+                        } else {
+                            Swal.fire("Error", res.message, "error");
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire(
+                            "Error",
+                            "Failed to send data to Google Sheet.",
+                            "error"
+                        );
+                        console.error(xhr.responseText);
+                    },
+                });
+
+                // Show modal
+                $("#illionModal").modal("show");
+            },
+            error: function (xhr, status) {
+                spinner.style.display = "none";
+                btnText.style.display = "inline-block";
+                button.disabled = false;
+
+                // Check if there's an error message from the server
+                let errorMessage =
+                    xhr.responseJSON && xhr.responseJSON.message
+                        ? xhr.responseJSON.message // If the response has a message
+                        : "Something went wrong, please try again."; // Default error message
+
+                // Show SweetAlert with the error message
+                Swal.fire({
+                    icon: "error", // This shows an error icon
+                    title: "Oops...",
+                    text: errorMessage, // Display the error message from the server or a default message
+                    confirmButtonText: "OK",
+                });
+            },
+        });
+    });
+
+    $("#document_id").on("input", function () {
+        $("#btn-text").css("display", "inline-block");
+        const button = document.getElementById("submit-document-id");
+        button.disabled = false;
+        button.style.opacity = 1;
+        // console.log("hellos");
+    });
 });

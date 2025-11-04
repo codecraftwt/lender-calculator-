@@ -259,4 +259,20 @@ class IndexController extends Controller
 
         return response()->json($lenders);
     }
+
+
+    public function admin_dashboard()
+    {
+        return view('admin_template.dashboard');
+    }
+
+    public function admin_table()
+    {
+        return view('admin_template.admin_table');
+    }
+
+    public  function admin_login()
+    {
+        return view('admin_template.admin_login');
+    }
 }
