@@ -30,6 +30,33 @@ class ProductTypeModel extends Model
         'gst_time',
         'sub_product_name',
         'interest_rate',
-        'security_requirement'
+        'security_requirement',
+
+
+        'dishonours_in_30_days',
+        'dishonours_in_60_days',
+        'dishonours_in_90_days',
+        'dishonours_in_180_days',
+
+        'days_in_negative_in_30_days',
+        'days_in_negative_in_60_days',
+        'days_in_negative_in_90_days',
+        'days_in_negative_in_180_days',
+
+        'overdrawn_fees_in_30_days',
+        'overdrawn_fees_in_60_days',
+        'overdrawn_fees_in_90_days',
+        'overdrawn_fees_in_180_days',
+        'overdrawn_fees_total',
+
+        'eod_balance_count_in_30_days',
+        'eod_balance_count_in_60_days',
+        'eod_balance_count_in_90_days',
+        'eod_balance_count_in_180_days',
+        'eod_balance_count_total',
+
+        'number_of_sacc_loans',
+        'number_of_cash_flow_loans'
+
     ];
 }

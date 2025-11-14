@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Helpers\LuhnHelper;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -61,6 +62,8 @@ class AbnController extends Controller
 
     public function fetch_bank_statement(Request $request)
     {
+
+       
         // 1. Validate document_id
         $validated = $request->validate([
             'document_id' => 'required|string',
@@ -68,6 +71,8 @@ class AbnController extends Controller
 
         // 2. Get values
         $documentId = $validated['document_id'];
+
+
 
         // Initialize the LuhnHelper with the necessary parameters
         $alphabet = 'BCDFGHJKMNPQRSTVWXYZ23456789';  // Alphabet as per client request

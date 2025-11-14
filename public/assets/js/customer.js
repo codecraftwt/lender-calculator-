@@ -41,57 +41,89 @@ $(document).ready(function () {
                             item.applicable_lenders
                         ).replace(/'/g, "&#39;");
 
-                        const row = `
-    <tr>
-    <td>${item.created_at ? item.created_at.substring(0, 10) : ""}</td>
-    <td>${item.director_name || ""}</td>
-    <td>${item.company_name || ""}</td>
-    
-    <td>$${item.loan_amt_needed || ""}</td>
-    <th><select name="status" 
-        style="width: 127px; border-radius:25px; border:none; background-color:${getStatusColor(
-            item.status
-        )}; color:white; height:35px"
-        class="btn no-arrow status" data-customer-id="${item.id}">
-    <option value="0" ${
-        item.status == 0 ? "selected" : ""
-    }>choose status</option>
-    <option value="3" ${item.status == 3 ? "selected" : ""}>settled</option>
-    <option value="2" ${item.status == 2 ? "selected" : ""}>in-progress</option>
-    <option value="1" ${item.status == 1 ? "selected" : ""}>submitted</option>
-    <option value="4" ${item.status == 4 ? "selected" : ""}>approved</option>
-    <option value="5" ${item.status == 5 ? "selected" : ""}>declined</option>
+                        const viewDetailsBtn =
+                            masterAccount === "Yes"
+                                ? `
+                               <td>
+                                   <button
+                                       type="button"
+                                       class="view-btn-details"
+                                       data-id='${item.id}'
+                                       style="color:rgb(86 66 161); border:none;background: none;">
+                                       <i class="fas fa-eye" style="font-size:20px"></i>
+                                   </button>
+                               </td>
+                               `
+                                : "";
 
- </select></th>
-    <td>
-        <a href="/customer-edit/${item.id}">
-            <button
-                type="button"
-                data-id='${applicableLendersStr}'
-                class="btn btn-sm me-1"
-                style="color:rgb(86 66 161);">
-                <i class="fas fa-pencil"></i>
-            </button></a>
-            <button
-    type="button"
-    data-id="${item.id}"
-    class="btn btn-sm delete-btn"
-    style="color:rgb(86 66 161);">
-    <i class="fas fa-trash"></i>
- </button>
-    </td>
-    <td>
-        <button
-            type="button"
-            data-id='${applicableLendersStr}'
-            class="btn btn-sm btn-info view-btn"
-            style="background: rgb(86 66 161);
-                   color:white;
-                   border:1px solid #8455d9">
-            View
-        </button>
-    </td>
-    </tr>`;
+                        const row = `
+                          <tr>
+                          <td>${
+                              item.created_at
+                                  ? item.created_at.substring(0, 10)
+                                  : ""
+                          }</td>
+                          <td>${item.director_name || ""}</td>
+                          <td>${item.company_name || ""}</td>
+                          
+                          <td>$${item.loan_amt_needed || ""}</td>
+                          <th><select name="status" 
+                              style="width: 127px; border-radius:25px; border:none; background-color:${getStatusColor(
+                                  item.status
+                              )}; color:white; height:35px"
+                              class="btn no-arrow status" data-customer-id="${
+                                  item.id
+                              }">
+                          <option value="0" ${
+                              item.status == 0 ? "selected" : ""
+                          }>choose status</option>
+                          <option value="3" ${
+                              item.status == 3 ? "selected" : ""
+                          }>settled</option>
+                          <option value="2" ${
+                              item.status == 2 ? "selected" : ""
+                          }>in-progress</option>
+                          <option value="1" ${
+                              item.status == 1 ? "selected" : ""
+                          }>submitted</option>
+                          <option value="4" ${
+                              item.status == 4 ? "selected" : ""
+                          }>approved</option>
+                          <option value="5" ${
+                              item.status == 5 ? "selected" : ""
+                          }>declined</option>
+
+                       </select></th>
+                          <td>
+                              <a href="/customer-edit/${item.id}">
+                                  <button
+                                      type="button"
+                                      data-id='${applicableLendersStr}'
+                                      class="btn btn-sm me-1"
+                                      style="color:rgb(86 66 161);">
+                                      <i class="fas fa-pencil"></i>
+                                  </button></a>
+                                  <button
+                          type="button"
+                          data-id="${item.id}"
+                          class="btn btn-sm delete-btn"
+                          style="color:rgb(86 66 161);">
+                          <i class="fas fa-trash"></i>
+                       </button>
+                          </td>
+                          <td>
+                              <button
+                                  type="button"
+                                  data-id='${applicableLendersStr}'
+                                  class="btn btn-sm btn-info view-btn"
+                                  style="background: rgb(86 66 161);
+                                         color:white;
+                                         border:1px solid #8455d9">
+                                  View
+                              </button>
+                          </td>
+                            ${viewDetailsBtn}
+                          `;
 
                         tableBody.append(row);
                     });
@@ -1074,4 +1106,77 @@ $(document).ready(function () {
     $("#filterCustomerToggleBtn").click(function () {
         $("#filterCustomerRow").toggleClass("d-none");
     });
+});
+
+$(document).on("click", ".view-btn-details", function () {
+    const dataId = $(this).attr("data-id");
+    console.log(dataId);
+
+    $.ajax({
+        url: "/get-customer-details",
+        method: "POST",
+        data: { dataId: dataId },
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+
+        success: function (data) {
+            console.log(data[0].monthly_revenue);
+
+            $("#annual_income").text(data[0].monthly_revenue);
+            monthly_income = (data[0].monthly_revenue / 12).toFixed(0);
+            $("#monthly_income").text(monthly_income);
+            $("#ongoing_sacc_loans").text(data[0].number_of_sacc_loans);
+            $("#cash_flow_loans_count").text(data[0].number_of_cash_flow_loans);
+
+            $("#days_negative_in_30_days").text(
+                data[0].days_in_negative_in_30_days
+            );
+            $("#days_negative_in_60_days").text(
+                data[0].days_in_negative_in_60_days
+            );
+            $("#days_negative_in_90_days").text(
+                data[0].days_in_negative_in_90_days
+            );
+            $("#days_negative").text(data[0].negative_days);
+
+            $("#dishonours_in_30_days").text(data[0].dishonours_in_30_days);
+            $("#dishonours_in_60_days").text(data[0].dishonours_in_60_days);
+            $("#dishonours_in_90_days").text(data[0].dishonours_in_90_days);
+            $("#dishonours").text(data[0].number_of_dishonours);
+
+            $("#overdraw_count_in_30_days").text(
+                data[0].overdrawn_fees_in_30_days
+            );
+            $("#overdraw_count_in_90_days").text(
+                data[0].overdrawn_fees_in_90_days
+            );
+            $("#overdraw_count").text(data[0].overdrawn_fees_total);
+
+            $("#eod_balance_in_30_days").text(
+                data[0].eod_balance_count_in_30_days
+            );
+            $("#eod_balance_in_60_days").text(
+                data[0].eod_balance_count_in_60_days
+            );
+            $("#eod_balance_in_90_days").text(
+                data[0].eod_balance_count_in_90_days
+            );
+            $("#eod_balance").text(data[0].eod_balance_count_total);
+            $("#doc_id").text(data[0].document_id);
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Error fetching lenders:", error);
+            $("#loader").hide();
+            $(".lender-cards").html(
+                `<div class="text-danger text-center py-4">Unable to load lenders. Please try again.</div>`
+            );
+        },
+    });
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("customer_details_modal")
+    );
+    modal.show();
 });

@@ -485,6 +485,56 @@ function getSubProductData(sub_product_id) {
                     $("#security_requirement").val(lender.security_requirement);
                     $("#sub_product_modal_lender_logo").attr("src", final_url);
 
+                    // new data
+                    $("#sacc_loans").val(lender.number_of_sacc_loans);
+                    $("#cashflow_loans").val(lender.number_of_cash_flow_loans);
+                    $("#overdrawn_fees").val(lender.eod_balance_count_total);
+                    $("#eod_balance").val(lender.overdrawn_fees_total);
+
+                    $("#negative_days_in_30").val(
+                        lender.days_in_negative_in_30_days
+                    );
+                    $("#negative_days_in_60").val(
+                        lender.days_in_negative_in_60_days
+                    );
+                    $("#negative_days_in_90").val(
+                        lender.days_in_negative_in_90_days
+                    );
+                    $("#negative_days_in_180").val(
+                        lender.days_in_negative_in_180_days
+                    );
+
+                    $("#dishonours_in_30").val(lender.dishonours_in_30_days);
+                    $("#dishonours_in_60").val(lender.dishonours_in_60_days);
+                    $("#dishonours_in_90").val(lender.dishonours_in_90_days);
+                    $("#dishonours_in_180").val(lender.dishonours_in_180_days);
+
+                    $("#overdrawn_fees_in_30").val(
+                        lender.overdrawn_fees_in_30_days
+                    );
+                    $("#overdrawn_fees_in_60").val(
+                        lender.overdrawn_fees_in_60_days
+                    );
+                    $("#overdrawn_fees_in_90").val(
+                        lender.overdrawn_fees_in_90_days
+                    );
+                    $("#overdrawn_fees_in_180").val(
+                        lender.overdrawn_fees_in_180_days
+                    );
+
+                    $("#eod_balance_in_30").val(
+                        lender.eod_balance_count_in_30_days
+                    );
+                    $("#eod_balance_in_60").val(
+                        lender.eod_balance_count_in_60_days
+                    );
+                    $("#eod_balance_in_90").val(
+                        lender.eod_balance_count_in_90_days
+                    );
+                    $("#eod_balance_in_180").val(
+                        lender.eod_balance_count_in_180_days
+                    );
+
                     if (
                         lender.property_owner === "Yes" ||
                         lender.property_owner === "No"
@@ -1052,6 +1102,28 @@ $(document).ready(function () {
             case "credit_score":
             case "number_of_dishonours":
             case "negative_days":
+            case "sacc_loans":
+            case "cashflow_loans":
+            case "overdrawn_fees":
+            case "eod_balance":
+            case "negative_days_in_30":
+            case "negative_days_in_60":
+            case "negative_days_in_90":
+            case "negative_days_in_180":
+            case "dishonours_in_30":
+            case "dishonours_in_60":
+            case "dishonours_in_90":
+            case "dishonours_in_180":
+            case "overdrawn_fees_in_30":
+            case "overdrawn_fees_in_60":
+            case "overdrawn_fees_in_90":
+            case "overdrawn_fees_in_180":
+            case "overdrawn_fees":
+            case "eod_balance_in_30":
+            case "eod_balance_in_60":
+            case "eod_balance_in_90":
+            case "eod_balance_in_180":
+
             case "interest_rate":
                 if (val === "" || /^[0-9]+(\.[0-9]+)?$/.test(val)) {
                     return true;
@@ -1117,6 +1189,27 @@ $(document).ready(function () {
             "interest_rate",
             "restricted_industry",
             "security_requirement",
+            "sacc_loans",
+            "cashflow_loans",
+            "overdrawn_fees",
+            "eod_balance",
+            "negative_days_in_30",
+            "negative_days_in_60",
+            "negative_days_in_90",
+            "negative_days_in_180",
+            "dishonours_in_30",
+            "dishonours_in_60",
+            "dishonours_in_90",
+            "dishonours_in_180",
+            "overdrawn_fees_in_30",
+            "overdrawn_fees_in_60",
+            "overdrawn_fees_in_90",
+            "overdrawn_fees_in_180",
+            "overdrawn_fees",
+            "eod_balance_in_30",
+            "eod_balance_in_60",
+            "eod_balance_in_90",
+            "eod_balance_in_180",
         ];
 
         for (const field of fieldsToValidate) {
@@ -1982,6 +2075,8 @@ $(document).ready(function () {
     $(document).on("click", ".sub_product_add_submit_btn", function (e) {
         e.preventDefault();
 
+        
+
         const existing_product_id = $("#existing_product_id").val().trim();
         const new_sub_product_name = $("#new_sub_product_name").val().trim();
         const new_trading_time = $("#new_trading_time").val().trim();
@@ -1992,15 +2087,42 @@ $(document).ready(function () {
         const new_annual_income = $("#new_annual_income").val().trim();
         const new_credit_score = $("#new_credit_score").val().trim();
         const new_property_owner = $("#new_property_owner").val();
-        const new_number_of_dishonours = $("#new_number_of_dishonours")
-            .val()
-            .trim();
-        const new_negative_days = $("#new_negative_days").val().trim();
         const new_interest_rate = $("#new_interest_rate").val().trim();
-        const new_security_requirement = $("#new_security_requirement")
-            .val()
-            .trim();
+        const new_security_requirement = $("#new_security_requirement").val().trim();
         const new_restricted_industry = $("#new_restricted_industry").val();
+
+        const new_number_of_dishonours = $("#new_number_of_dishonours").val().trim();
+        const add_dishonours_in_30 = $("#add_dishonours_in_30").val().trim();
+        const add_dishonours_in_60 = $("#add_dishonours_in_60").val().trim();
+        const add_dishonours_in_90 = $("#add_dishonours_in_90").val().trim();
+        const add_dishonours_in_180 = $("#add_dishonours_in_180").val().trim();
+
+        
+        const new_negative_days = $("#new_negative_days").val().trim();
+        const add_negative_days_in_30 = $("#add_negative_days_in_30").val().trim();
+       const add_negative_days_in_60 = $("#add_negative_days_in_60").val().trim();
+        const add_negative_days_in_90 = $("#add_negative_days_in_90").val().trim();
+       const add_negative_days_in_180 = $("#add_negative_days_in_180").val().trim();
+
+        const add_overdrawn_fees_in_30 = $("#add_overdrawn_fees_in_30").val().trim();
+        const add_overdrawn_fees_in_60 = $("#add_overdrawn_fees_in_60").val().trim();
+        const add_overdrawn_fees_in_90 = $("#add_overdrawn_fees_in_90").val().trim();
+        const add_overdrawn_fees_in_180 = $("#add_overdrawn_fees_in_180").val().trim();
+        const add_overdrawn_fees = $("#add_overdrawn_fees").val().trim();
+
+
+        const add_eod_balance_in_30 = $("#add_eod_balance_in_30").val().trim();
+        const add_eod_balance_in_60 = $("#add_eod_balance_in_60").val().trim();
+        const add_eod_balance_in_90 = $("#add_eod_balance_in_90").val().trim();
+        const add_eod_balance_in_180 = $("#add_eod_balance_in_180").val().trim();
+        const add_eod_balance = $("#add_eod_balance").val().trim();
+
+        const add_sacc_loans = $("#add_sacc_loans").val().trim();
+        const add_cashflow_loans = $("#add_cashflow_loans").val().trim();
+
+
+
+        
 
         let isValid = true;
 
@@ -2121,6 +2243,53 @@ $(document).ready(function () {
                 .text("Please enter valid negative days.");
             isValid = false;
         }
+
+
+        // for all new fields
+
+        const fieldsToValidate = [
+            "add_negative_days_in_30",
+            "add_negative_days_in_60",
+            "add_negative_days_in_90",
+            "add_negative_days_in_180",
+            "add_overdrawn_fees_in_30",
+            "add_overdrawn_fees_in_60",
+            "add_overdrawn_fees_in_90",
+            "add_overdrawn_fees_in_180",
+            "add_overdrawn_fees",
+            "add_eod_balance_in_30",
+            "add_eod_balance_in_60",
+            "add_eod_balance_in_90",
+            "add_eod_balance_in_180",
+            "add_eod_balance",
+            "add_dishonours_in_30",
+            "add_dishonours_in_60",
+            "add_dishonours_in_90",
+            "add_dishonours_in_180",
+            "add_sacc_loans",
+            "add_cashflow_loans",
+        ];
+
+        // Loop through each field and validate
+        fieldsToValidate.forEach((id) => {
+            const value = $(`#${id}`).val().trim();
+
+            if (
+                value !== "" && // Allow empty
+                value !== null && // Allow null
+                (isNaN(value) || value < 0)
+            ) {
+                $(`#invalid_${id}`)
+                    .removeClass("d-none")
+                    .text("Please enter valid negative days.");
+                isValid = false;
+            } else {
+                // Hide error if valid
+                $(`#invalid_${id}`).addClass("d-none");
+            }
+        });
+
+
 
         // For new_interest_rate
         if (

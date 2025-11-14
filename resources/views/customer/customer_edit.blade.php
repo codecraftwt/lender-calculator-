@@ -126,13 +126,134 @@
                                 <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid Loan amount.</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
+                            <div class="col-md-6 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
+                                <label for="document_id" class="form-label">Documnet ID</label>
+                                <div class="input-group">
+                                    <!-- <span class="input-group-text">$</span> -->
+                                    <input type="text" id="document_id" name="document_id" class="form-control" value="{{ $customer['document_id'] }}" required>
+                                    <button style="margin: 5px;border:none;border-radius:7px;color:white;padding: 5px;width: 78px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);" type="button" id="submit-document-id">
+                                        <span class="spinner" id="spinner" style="display:none; margin-right: 6px;">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </span> <b id="btn-text">Submit</b></button>
+
+                                </div>
+                                <p class="" id="doc_id_status" style="margin-top: 10px;"></p>
+                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid documnent id.</p>
+                            </div>
+
+
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
                                 <label for="monthly_revenue" class="form-label">Monthly Revenue</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="text" id="monthly_revenue" name="monthly_revenue" value="{{ $customer['monthly_revenue'] }}" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_monthly_revenue">Please enter valid monthly revenue.</p>
+                            </div>
+
+
+                            <!-- negative days -->
+                            <div class="col-md-6 mb-3 loan-details  visually-hidden">
+                                <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="text" id="negative_days" name="negative_days" class="form-control" value="{{ $customer['negative_days'] }}" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative days.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details  visually-hidden">
+                                <input type="text" id="negative_days_in_180" name="negative_days_in_180" class="form-control" value="{{ $customer['days_in_negative_in_180_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_90" name="negative_days_in_90" class="form-control" value="{{ $customer['days_in_negative_in_90_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_60" name="negative_days_in_60" class="form-control" value="{{ $customer['days_in_negative_in_60_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_30" name="negative_days_in_30" class="form-control" value="{{ $customer['days_in_negative_in_30_days'] }}" required>
+                            </div>
+
+                            <!-- dishonours -->
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_dishonours" class="form-label">Number of Dishonours</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" value="{{ $customer['number_of_dishonours'] }}" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_30" name="dishonours_in_30" class="form-control" value="{{ $customer['dishonours_in_30_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_60" name="dishonours_in_60" class="form-control" value="{{ $customer['dishonours_in_60_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_90" name="dishonours_in_90" class="form-control" value="{{ $customer['dishonours_in_90_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_180" name="dishonours_in_180" class="form-control" value="{{ $customer['dishonours_in_180_days'] }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_sacc_loans" class="form-label">No. of SACC Loans</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_sacc_loans" name="number_of_sacc_loans" class="form-control" value="{{ $customer['number_of_sacc_loans'] }}" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_sacc_loans">Please enter valid number_of_sacc_loans.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_cash_flow_loans" class="form-label">No. of Cash Flow Loans</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_cash_flow_loans" name="number_of_cash_flow_loans" class="form-control" value="{{ $customer['number_of_cash_flow_loans'] }}" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_cash_flow_loans">Please enter valid number_of_cash_flow_loans.</p>
+                            </div>
+                            <!-- EOD balance -->
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="eod_balance" class="form-label">Count of days where Day end eod balance < $500 </label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance" name="eod_balance" class="form-control" value="{{ $customer['eod_balance_count_total'] }}" required readonly>
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance">Please enter valid eod_balance.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_30" name="eod_balance_in_30" class="form-control" value="{{ $customer['eod_balance_count_in_30_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_60" name="eod_balance_in_60" class="form-control" value="{{ $customer['eod_balance_count_in_60_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_90" name="eod_balance_in_90" class="form-control" value="{{ $customer['eod_balance_count_in_90_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_180" name="eod_balance_in_180" class="form-control" value="{{ $customer['eod_balance_count_in_180_days'] }}" required>
+                            </div>
+
+                            <!-- Overdrawn Fees  -->
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="overdrawn_fees" class="form-label">Number of overdrawns </label>
+                                <div class="input-group">
+                                    <input type="text" id="overdrawn_fees" name="overdrawn_fees" class="form-control" value="{{ $customer['overdrawn_fees_total'] }}" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_overdrawn_fees">Please enter valid overdrawn_fees.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_30" name="overdran_fees_in_30" value="{{ $customer['overdrawn_fees_in_30_days'] }}" class="form-control" required>
+                            </div>
+                            <!-- <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_60" name="overdran_fees_in_60" class="form-control" required>
+                            </div> -->
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_90" name="overdran_fees_in_90" class="form-control" value="{{ $customer['overdrawn_fees_in_90_days'] }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_180" name="overdran_fees_in_180" class="form-control" value="{{ $customer['overdrawn_fees_in_180_days'] }}" required>
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
@@ -170,7 +291,7 @@
                                 <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 loan-details">
+                            <!-- <div class="col-md-6 mb-3 loan-details">
                                 <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
@@ -185,7 +306,7 @@
                                     <input type="text" id="number_of_dishonours" name="number_of_dishonours" value="{{ $customer['number_of_dishonours'] }}" class="form-control" required>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
-                            </div>
+                            </div> -->
                             @php
                             $industries = [
                             "Accounting & Bookkeeping",

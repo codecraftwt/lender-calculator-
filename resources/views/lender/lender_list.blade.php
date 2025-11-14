@@ -400,9 +400,9 @@
 </div>
 
 <!-- Sub Product Edit Modal -->
-<div id="Sub_Product_Edit_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
+<div id="Sub_Product_Edit_Modal" class="modal fade " tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2050;">
-        <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+        <div class="modal-content" style="overflow-y: auto;min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
             <form id="SubProductEditForm" method="POST" action="{{ url('/update-sub-product-data') }}" enctype="multipart/form-data">
                 @csrf
@@ -487,20 +487,8 @@
                         </select>
                         <p class="text-danger d-none" id="invalid_property_owner">Please select a valid option.</p>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="number_of_dishonours" class="form-label">Max No. of dishonours allowed</label>
-                        <div class="input-group">
-                            <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" autocomplete="off" />
-                        </div>
-                        <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours.</p>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="negative_days" class="form-label">Max No. of negative days allowed</label>
-                        <div class="input-group">
-                            <input type="text" id="negative_days" name="negative_days" class="form-control" autocomplete="off" />
-                        </div>
-                        <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative days</p>
-                    </div>
+
+
                     <div class="col-md-4 mb-3">
                         <label for="interest_rate" class="form-label">Interest Rate</label>
                         <div class="input-group">
@@ -515,6 +503,22 @@
                         </div>
                         <p class="text-danger d-none" id="invalid_security_requirement">Please enter valid security amount.</p>
                     </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="sacc_loans" class="form-label">Number of SACC (Payday) Loans (max) </label>
+                        <div class="input-group">
+                            <input type="text" id="sacc_loans" name="sacc_loans" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_sacc_loans">Please enter valid sacc_loans</p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="cashflow_loans" class="form-label">Number of competitor/cashflow loans (max)</label>
+                        <div class="input-group">
+                            <input type="text" id="cashflow_loans" name="cashflow_loans" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_cashflow_loans">Please enter valid cashflow_loans</p>
+                    </div>
+
                     <div class="col-md-4 mb-3 loan-details">
                         <label for="restricted_industry" class="form-label">
                             Restricted or excluded industries:
@@ -524,11 +528,183 @@
                         </select>
                         <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
                     </div>
+
+
+                    <!--Days in negative -->
+                    <hr>
+                    <h5> Days in negative</h5>
+                    <hr>
+
                     <div class="col-md-4 mb-3">
-                        <button type="submit" class="btn btn-success m-5 sub_product_edit_submit_btn" style="background-color:rgb(86 66 161);border:none">
-                            Save Changes
-                        </button>
+                        <label for="negative_days_in_30" class="form-label">Max No. of negative days allowed in 30 days</label>
+                        <div class="input-group">
+                            <input type="text" id="negative_days_in_30" name="negative_days_in_30" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_negative_days_in_30">Please enter valid negative_days_in_30</p>
                     </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="negative_days_in_60" class="form-label">Max No. of negative days allowed in 60 days</label>
+                        <div class="input-group">
+                            <input type="text" id="negative_days_in_60" name="negative_days_in_60" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_negative_days_in_60">Please enter valid negative_days_in_30</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="negative_days_in_90" class="form-label">Max No. of negative days allowed in 90 days</label>
+                        <div class="input-group">
+                            <input type="text" id="negative_days_in_90" name="negative_days_in_90" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_negative_days_in_90">Please enter valid negative_days_in_90</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="negative_days_in_180" class="form-label">Max No. of negative days allowed in 180 days</label>
+                        <div class="input-group">
+                            <input type="text" id="negative_days_in_180" name="negative_days_in_180" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_negative_days_in_180">Please enter valid negative_days_in_180</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="negative_days" class="form-label">Total Max No. of Day in Negative allowed</label>
+                        <div class="input-group">
+                            <input type="text" id="negative_days" name="negative_days" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative_days.</p>
+                    </div>
+
+
+                    <!-- Number of Dishonours -->
+                    <hr>
+                    <h5>Number of Dishonours</h5>
+                    <hr>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="dishonours_in_30" class="form-label">Max No. of Dishonours allowed in 30 days</label>
+                        <div class="input-group">
+                            <input type="text" id="dishonours_in_30" name="dishonours_in_30" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_dishonours_in_30">Please enter valid dishonours_in_30</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="dishonours_in_60" class="form-label">Max No. of Dishonours allowed in 60 days</label>
+                        <div class="input-group">
+                            <input type="text" id="dishonours_in_60" name="dishonours_in_60" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_dishonours_in_60">Please enter valid dishonours_in_60</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="dishonours_in_90" class="form-label">Max No. of Dishonours allowed in 90 days</label>
+                        <div class="input-group">
+                            <input type="text" id="dishonours_in_90" name="dishonours_in_90" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_dishonours_in_90">Please enter valid dishonours_in_90</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="dishonours_in_180" class="form-label">Max No. of Dishonours allowed in 180 days</label>
+                        <div class="input-group">
+                            <input type="text" id="dishonours_in_180" name="dishonours_in_180" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_dishonours_in_180">Please enter valid dishonours_in_180</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="number_of_dishonours" class="form-label">Total Max No. of Dishonours allowed </label>
+                        <div class="input-group">
+                            <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number_of_dishonours</p>
+                    </div>
+
+                    <!-- overdrawn fees -->
+                    <hr>
+                    <h5>Overdrawn Fees</h5>
+                    <hr>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="overdrawn_fees_in_30" class="form-label">Max No. of Overdrawn Fees Accepetable in 30 days</label>
+                        <div class="input-group">
+                            <input type="text" id="overdrawn_fees_in_30" name="overdrawn_fees_in_30" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_overdrawn_fees_in_30">Please enter valid overdrawn_fees_in_30</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="overdrawn_fees_in_60" class="form-label">Max No. of Overdrawn Fees Accepetable in 60 days </label>
+                        <div class="input-group">
+                            <input type="text" id="overdrawn_fees_in_60" name="overdrawn_fees_in_60" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_overdrawn_fees_in_60">Please enter valid overdrawn_fees_in_60</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="overdrawn_fees_in_90" class="form-label">Max No. of Overdrawn Fees Accepetable in 90 days</label>
+                        <div class="input-group">
+                            <input type="text" id="overdrawn_fees_in_90" name="overdrawn_fees_in_90" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_overdrawn_fees_in_90">Please enter valid overdrawn_fees_in_90</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="overdrawn_fees_in_180" class="form-label">Max No. of Overdrawn Fees Accepetable in 180 days </label>
+                        <div class="input-group">
+                            <input type="text" id="overdrawn_fees_in_180" name="overdrawn_fees_in_180" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_overdrawn_fees_in_180">Please enter valid overdrawn_fees_in_180</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="overdrawn_fees" class="form-label">Total Max No. of Overdrawn Fees Accepetable </label>
+                        <div class="input-group">
+                            <input type="text" id="overdrawn_fees" name="overdrawn_fees" class="form-control" autocomplete="off" />
+                        </div>
+                        <p class="text-danger d-none" id="invalid_overdrawn_fees">Please enter valid overdrawn_fees</p>
+                    </div>
+
+
+                    <!-- eod_balance -->
+                    <hr>
+                    <h5>Number of days where Day End Balance is < $500 </h5>
+                            <hr>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="eod_balance_in_30" class="form-label">Number of days where Day End Balance is <$500 in 30 days</label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance_in_30" name="eod_balance_in_30" class="form-control" autocomplete="off" />
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance_in_30">Please enter valid eod_balance_in_30</p>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="eod_balance_in_60" class="form-label">Number of days where Day End Balance is <$500 in 60 days</label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance_in_60" name="eod_balance_in_60" class="form-control" autocomplete="off" />
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance_in_60">Please enter valid eod_balance_in_60</p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="eod_balance_in_90" class="form-label">Number of days where Day End Balance is <$500 in 90 days</label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance_in_90" name="eod_balance_in_90" class="form-control" autocomplete="off" />
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance_in_90">Please enter valid eod_balance_in_90</p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="eod_balance_in_180" class="form-label">Number of days where Day End Balance is <$500 in 180 days</label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance_in_180" name="eod_balance_in_180" class="form-control" autocomplete="off" />
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance_in_180">Please enter valid eod_balance_in_180</p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="eod_balance" class="form-label">Total Number of days where Day End Balance is <$500 </label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance" name="eod_balance" class="form-control" autocomplete="off" />
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance">Please enter valid eod_balance</p>
+                            </div>
+
+
+
+                            <div class="col-md-4 mb-3">
+                                <button type="submit" class="btn btn-success m-5 sub_product_edit_submit_btn" style="background-color:rgb(86 66 161);border:none">
+                                    Save Changes
+                                </button>
+                            </div>
                 </div>
             </form>
             <div class="modal-footer mt-1">
@@ -712,7 +888,7 @@
 
 <div id="Sub_Product_Add_Modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="width: 100%; max-width: 1660px; z-index: 2090;">
-        <div class="modal-content" style="min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
+        <div class="modal-content" style="overflow-y: auto;min-height: 97vh !important; margin-top: 2vh !important;padding:20px;max-height: 97vh;box-shadow: 0 0 15px rgba(133, 42, 163, 0.9);">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
 
             <div class="container">
@@ -800,20 +976,37 @@
                                     </select>
                                     <p class="text-danger d-none" id="invalid_new_property_owner">Please select a valid option.</p>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <!-- <div class="col-md-4 mb-3">
                                     <label for="new_number_of_dishonours" class="form-label">Max No. of dishonours allowed</label>
                                     <div class="input-group">
                                         <input type="text" id="new_number_of_dishonours" name="new_number_of_dishonours" class="form-control" autocomplete="off" />
                                     </div>
                                     <p class="text-danger d-none" id="invalid_new_number_of_dishonours">Please enter valid number of dishonours.</p>
-                                </div>
-                                <div class="col-md-4 mb-3">
+                                </div> -->
+                                <!-- <div class="col-md-4 mb-3">
                                     <label for="new_negative_days" class="form-label">Max No. of negative days allowed</label>
                                     <div class="input-group">
                                         <input type="text" id="new_negative_days" name="new_negative_days" class="form-control" autocomplete="off" />
                                     </div>
                                     <p class="text-danger d-none" id="invalid_new_negative_days">Please enter valid negative days</p>
+                                </div> -->
+                                <div class="col-md-4 mb-3add_sacc_loans">
+                                    <label for="add_sacc_loans" class="form-label">Number of SACC (Payday) Loans (max) </label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_sacc_loans" name="add_sacc_loans" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_sacc_loans">Please enter valid add_sacc_loans</p>
                                 </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_cashflow_loans" class="form-label">Number of competitor/cashflow loans (max)</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_cashflow_loans" name="add_cashflow_loans" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_cashflow_loans">Please enter valid add_cashflow_loans</p>
+                                </div>
+
+
                                 <div class="col-md-4 mb-3">
                                     <label for="new_interest_rate" class="form-label">Interest Rate</label>
                                     <div class="input-group">
@@ -840,11 +1033,183 @@
                                     </select>
                                     <p class="text-danger d-none" id="invalid_new_restricted_industry">Please select at least one option.</p>
                                 </div>
+
+
+                                <!-- Days in negative -->
+                                <hr>
+                                <h5> Days in negative</h5>
+                                <hr>
+
                                 <div class="col-md-4 mb-3">
-                                    <button type="submit" class="btn btn-success m-5 sub_product_add_submit_btn" style="background-color:rgb(86 66 161);border:none">
-                                        Save Changes
-                                    </button>
+                                    <label for="add_negative_days_in_30" class="form-label">Max No. of negative days allowed in 30 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_negative_days_in_30" name="add_negative_days_in_30" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_negative_days_in_30">Please enter valid add_negative_days_in_30</p>
                                 </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_negative_days_in_60" class="form-label">Max No. of negative days allowed in 60 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_negative_days_in_60" name="add_negative_days_in_60" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_negative_days_in_60">Please enter valid add_negative_days_in_60</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_negative_days_in_90" class="form-label">Max No. of negative days allowed in 90 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_negative_days_in_90" name="add_negative_days_in_90" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_negative_days_in_90">Please enter valid add_negative_days_in_90</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_negative_days_in_180" class="form-label">Max No. of negative days allowed in 180 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_negative_days_in_180" name="add_negative_days_in_180" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_negative_days_in_180">Please enter valid add_negative_days_in_180</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_negative_days" class="form-label">Total Max No. of negative days allowed</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_negative_days" name="new_negative_days" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_negative_days">Please enter valid negative days</p>
+                                </div>
+
+                                <!-- DNumber of Dishonours -->
+                                <hr>
+                                <h5>Number of Dishonours</h5>
+                                <hr>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_dishonours_in_30" class="form-label">Max No. of Dishonours allowed in 30 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_dishonours_in_30" name="add_dishonours_in_30" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_dishonours_in_30">Please enter valid add_dishonours_in_30</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_dishonours_in_60" class="form-label">Max No. of Dishonours allowed in 60 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_dishonours_in_60" name="add_dishonours_in_60" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_dishonours_in_60">Please enter valid add_dishonours_in_60</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_dishonours_in_90" class="form-label">Max No. of Dishonours allowed in 90 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_dishonours_in_90" name="add_dishonours_in_90" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_dishonours_in_90">Please enter valid add_dishonours_in_90</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_dishonours_in_180" class="form-label">Max No. of Dishonours allowed in 180 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_dishonours_in_180" name="add_dishonours_in_180" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_dishonours_in_180">Please enter valid add_dishonours_in_180</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="new_number_of_dishonours" class="form-label">Total Max No. of dishonours allowed</label>
+                                    <div class="input-group">
+                                        <input type="text" id="new_number_of_dishonours" name="new_number_of_dishonours" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_new_number_of_dishonours">Please enter valid number of dishonours.</p>
+                                </div>
+
+
+                                <!-- overdrawn fees -->
+                                <hr>
+                                <h5>Overdrawn Fees</h5>
+                                <hr>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_overdrawn_fees_in_30" class="form-label">Max No. of Overdrawn Fees Accepetable in 30 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_overdrawn_fees_in_30" name="add_overdrawn_fees_in_30" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_overdrawn_fees_in_30">Please enter valid add_overdrawn_fees_in_30</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_overdrawn_fees_in_60" class="form-label">Max No. of Overdrawn Fees Accepetable in 60 days </label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_overdrawn_fees_in_60" name="add_overdrawn_fees_in_60" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_overdrawn_fees_in_60">Please enter valid add_overdrawn_fees_in_60</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_overdrawn_fees_in_90" class="form-label">Max No. of Overdrawn Fees Accepetable in 90 days</label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_overdrawn_fees_in_90" name="add_overdrawn_fees_in_90" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_overdrawn_fees_in_90">Please enter valid add_overdrawn_fees_in_90</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_overdrawn_fees_in_180" class="form-label">Max No. of Overdrawn Fees Accepetable in 180 days </label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_overdrawn_fees_in_180" name="add_overdrawn_fees_in_180" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_overdrawn_fees_in_180">Please enter valid add_overdrawn_fees_in_180</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="add_overdrawn_fees" class="form-label">Total Max No. of Overdrawn Fees Accepetable </label>
+                                    <div class="input-group">
+                                        <input type="text" id="add_overdrawn_fees" name="add_overdrawn_fees" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <p class="text-danger d-none" id="invalid_add_overdrawn_fees">Please enter valid add_overdrawn_fees</p>
+                                </div>
+
+                                <!-- eod balande -->
+                                <hr>
+                                <h5>Number of days where Day End Balance is < $500 </h5>
+                                        <hr>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="add_eod_balance_in_30" class="form-label">Number of days where Day End Balance is <$500 in 30 days</label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="add_eod_balance_in_30" name="add_eod_balance_in_30" class="form-control" autocomplete="off" />
+                                                    </div>
+                                                    <p class="text-danger d-none" id="invalid_add_eod_balance_in_30">Please enter valid add_eod_balance_in_30</p>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="add_eod_balance_in_60" class="form-label">Number of days where Day End Balance is <$500 in 60 days</label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="add_eod_balance_in_60" name="add_eod_balance_in_60" class="form-control" autocomplete="off" />
+                                                    </div>
+                                                    <p class="text-danger d-none" id="invalid_add_eod_balance_in_60">Please enter valid add_eod_balance_in_60</p>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="add_eod_balance_in_90" class="form-label">Number of days where Day End Balance is <$500 in 90 days</label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="add_eod_balance_in_90" name="add_eod_balance_in_90" class="form-control" autocomplete="off" />
+                                                    </div>
+                                                    <p class="text-danger d-none" id="invalid_add_eod_balance_in_90">Please enter valid add_eod_balance_in_90</p>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="add_eod_balance_in_180" class="form-label">Number of days where Day End Balance is <$500 in 180 days</label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="add_eod_balance_in_180" name="add_eod_balance_in_180" class="form-control" autocomplete="off" />
+                                                    </div>
+                                                    <p class="text-danger d-none" id="invalid_add_eod_balance_in_180">Please enter valid add_eod_balance_in_180</p>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="add_eod_balance" class="form-label">Total Number of days where Day End Balance is <$500 </label>
+                                                    <div class="input-group">
+                                                        <input type="text" id="add_eod_balance" name="add_eod_balance" class="form-control" autocomplete="off" />
+                                                    </div>
+                                                    <p class="text-danger d-none" id="invalid_add_eod_balance">Please enter valid add_eod_balance</p>
+                                        </div>
+
+
+
+
+                                        <div class="col-md-4 mb-3">
+                                            <button type="submit" class="btn btn-success m-5 sub_product_add_submit_btn" style="background-color:rgb(86 66 161);border:none">
+                                                Save Changes
+                                            </button>
+                                        </div>
                             </div>
                         </form>
 
