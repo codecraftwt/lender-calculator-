@@ -5,6 +5,12 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LenderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AbnController;
+use App\Http\Controllers\GoogleSheetController;
+
+
+
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -58,6 +64,9 @@ Route::get('/customer-list', [CustomerController::class, 'list'])->middleware('a
 Route::post('/get-customers', [CustomerController::class, 'get_customers'])->middleware('auth', 'role:Admin,Broker');
 Route::post('/get-applicable-lenders', [CustomerController::class, 'get_applicable_lenders'])->middleware('auth', 'role:Admin,Broker');
 Route::post('/get-sub-products', [CustomerController::class, 'get_sub_products'])->middleware('auth', 'role:Admin,Broker');
+
+Route::post('/get-customer-details', [CustomerController::class, 'get_customer_details'])->middleware('auth', 'role:Admin');
+
 
 
 // api route
@@ -124,3 +133,12 @@ Route::get('filter-customers', [CustomerController::class, 'filter_customers']);
 Route::get('/slider', function () {
     return view('lender.slider');
 });
+
+
+Route::get('admin-dashboard', [IndexController::class, 'admin_dashboard']);
+Route::get('admin-table', [IndexController::class, 'admin_table']);
+Route::get('admin-login', [IndexController::class, 'admin_login']);
+
+Route::get('/fetch-bank-statement', [AbnController::class, 'fetch_bank_statement'])->middleware(['auth', 'role:Admin,Broker']);
+Route::post('/store-illion-data', [GoogleSheetController::class, 'storeIllionData'])->middleware(['auth', 'role:Admin,Broker']);
+Route::get('/get-all-lenders-name', [IndexController::class, 'get_all_lenders_name'])->middleware(['auth', 'role:Admin,Broker']);

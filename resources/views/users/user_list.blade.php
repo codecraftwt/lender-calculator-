@@ -216,7 +216,7 @@
                 (item.deleted_flag == 1 &&
                 item.master_account == "No")
                 ? `<label class="switch">
-                    <input type="checkbox" class="status-toggle" data-id="${
+                    <input type="checkbox" class="  " data-id="${
                                              item.id
                                          }"
                         ${

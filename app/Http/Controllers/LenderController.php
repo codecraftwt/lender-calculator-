@@ -311,6 +311,7 @@ class LenderController extends Controller
                 'product_type_models.security_requirement'
             )
             ->whereIn('product_type_models.id', $ids)
+            ->where('product_type_models.deleted_flag',0)
             ->get();
 
         if ($rawResults->isNotEmpty()) {
@@ -382,8 +383,38 @@ class LenderController extends Controller
                 'product_type_models.restricted_industry',
                 'product_type_models.security_requirement',
 
+                'product_type_models.number_of_sacc_loans',
+                'product_type_models.number_of_cash_flow_loans',
+                'product_type_models.eod_balance_count_total',
+                'product_type_models.overdrawn_fees_total',
+
+                'product_type_models.days_in_negative_in_30_days',
+                'product_type_models.days_in_negative_in_60_days',
+                'product_type_models.days_in_negative_in_90_days',
+                'product_type_models.days_in_negative_in_180_days',
+
+                'product_type_models.dishonours_in_30_days',
+                'product_type_models.dishonours_in_60_days',
+                'product_type_models.dishonours_in_90_days',
+                'product_type_models.dishonours_in_180_days',
+
+                'product_type_models.overdrawn_fees_in_30_days',
+                'product_type_models.overdrawn_fees_in_60_days',
+                'product_type_models.overdrawn_fees_in_90_days',
+                'product_type_models.overdrawn_fees_in_180_days',
+
+                'product_type_models.eod_balance_count_in_30_days',
+                'product_type_models.eod_balance_count_in_60_days',
+                'product_type_models.eod_balance_count_in_90_days',
+                'product_type_models.eod_balance_count_in_180_days',
+
+
+
+
+
             )
             ->where('product_type_models.id', $subProductId)
+            ->where('product_type_models.deleted_flag', 0)
             ->get();
 
         $restricted_industries = ProductTypeModel::whereNotNull('restricted_industry')
@@ -623,6 +654,30 @@ class LenderController extends Controller
             'restricted_industry.*' => ['string'],
             'security_requirement' => ['nullable', 'numeric'],
 
+            'sacc_loans' => ['nullable', 'numeric'],
+            'cashflow_loans' => ['nullable', 'numeric'],
+            'overdrawn_fees' => ['nullable', 'numeric'],
+            'eod_balance' => ['nullable', 'numeric'],
+
+            'negative_days_in_30' => ['nullable', 'numeric'],
+            'negative_days_in_60' => ['nullable', 'numeric'],
+            'negative_days_in_90' => ['nullable', 'numeric'],
+            'negative_days_in_180' => ['nullable', 'numeric'],
+
+            'dishonours_in_30' => ['nullable', 'numeric'],
+            'dishonours_in_60' => ['nullable', 'numeric'],
+            'dishonours_in_90' => ['nullable', 'numeric'],
+            'dishonours_in_180' => ['nullable', 'numeric'],
+
+            'overdrawn_fees_in_30' => ['nullable', 'numeric'],
+            'overdrawn_fees_in_60' => ['nullable', 'numeric'],
+            'overdrawn_fees_in_90' => ['nullable', 'numeric'],
+            'overdrawn_fees_in_180' => ['nullable', 'numeric'],
+
+            'eod_balance_in_30' => ['nullable', 'numeric'],
+            'eod_balance_in_60' => ['nullable', 'numeric'],
+            'eod_balance_in_90' => ['nullable', 'numeric'],
+            'eod_balance_in_180' => ['nullable', 'numeric'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -649,6 +704,33 @@ class LenderController extends Controller
             'interest_rate' => $request->interest_rate,
             'security_requirement' => $request->security_requirement,
             'restricted_industry' => json_encode($request->restricted_industry),
+
+            'number_of_sacc_loans' => $request->sacc_loans,
+            'number_of_cash_flow_loans' => $request->cashflow_loans,
+            'overdrawn_fees_total' => $request->overdrawn_fees,
+            'eod_balance_count_total' => $request->eod_balance,
+
+            'days_in_negative_in_60_days' => $request->negative_days_in_60,
+            'days_in_negative_in_90_days' => $request->negative_days_in_90,
+            'days_in_negative_in_180_days' => $request->negative_days_in_180,
+            'days_in_negative_in_30_days' => $request->negative_days_in_30,
+
+            'dishonours_in_30_days' => $request->dishonours_in_30,
+            'dishonours_in_60_days' => $request->dishonours_in_60,
+            'dishonours_in_90_days' => $request->dishonours_in_90,
+            'dishonours_in_180_days' => $request->dishonours_in_180,
+
+            'overdrawn_fees_in_30_days' => $request->overdrawn_fees_in_30,
+            'overdrawn_fees_in_60_days' => $request->overdrawn_fees_in_60,
+            'overdrawn_fees_in_90_days' => $request->overdrawn_fees_in_90,
+            'overdrawn_fees_in_180_days' => $request->overdrawn_fees_in_180,
+
+
+            'eod_balance_count_in_30_days' => $request->eod_balance_in_30,
+            'eod_balance_count_in_60_days' => $request->eod_balance_in_60,
+            'eod_balance_count_in_90_days' => $request->eod_balance_in_90,
+            'eod_balance_count_in_180_days' => $request->eod_balance_in_180,
+
         ];
 
         $result = ProductTypeModel::where('id', $request->sub_product_id)->update($data);
@@ -822,12 +904,40 @@ class LenderController extends Controller
             'new_annual_income' => ['nullable', 'numeric'],  // Corrected typo
             'new_credit_score' => ['nullable', 'integer', 'min:0', 'max:1200'],
             'new_property_owner' => ['required', 'in:Yes,No'],
-            'new_number_of_dishonours' => ['nullable', 'integer'],
-            'new_negative_days' => ['nullable', 'integer'],
             'new_interest_rate' => ['nullable', 'numeric'],
             'new_security_requirement' => ['nullable', 'integer'],
             'existing_product_id' => ['required', 'integer'],
             'new_restricted_industry' => ['nullable', 'array'],
+
+            'new_number_of_dishonours' => ['nullable', 'integer'],
+            'add_dishonours_in_30' => ['nullable', 'integer'],
+            'add_dishonours_in_60' => ['nullable', 'integer'],
+            'add_dishonours_in_90' => ['nullable', 'integer'],
+            'add_dishonours_in_180' => ['nullable', 'integer'],
+
+
+            'new_negative_days' => ['nullable', 'integer'],
+            'add_negative_days_in_30' => ['nullable', 'integer'],
+            'add_negative_days_in_60' => ['nullable', 'integer'],
+            'add_negative_days_in_90' => ['nullable', 'integer'],
+            'add_negative_days_in_180' => ['nullable', 'integer'],
+
+            'add_overdrawn_fees_in_30' => ['nullable', 'integer'],
+            'add_overdrawn_fees_in_60' => ['nullable', 'integer'],
+            'add_overdrawn_fees_in_90' => ['nullable', 'integer'],
+            'add_overdrawn_fees_in_180' => ['nullable', 'integer'],
+            'add_overdrawn_fees' => ['nullable', 'integer'],
+
+            'add_eod_balance_in_30' => ['nullable', 'integer'],
+            'add_eod_balance_in_60' => ['nullable', 'integer'],
+            'add_eod_balance_in_90' => ['nullable', 'integer'],
+            'add_eod_balance_in_180' => ['nullable', 'integer'],
+            'add_eod_balance' => ['nullable', 'integer'],
+
+            'add_sacc_loans' => ['nullable', 'integer'],
+            'add_cashflow_loans' => ['nullable', 'integer'],
+
+
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -850,12 +960,43 @@ class LenderController extends Controller
             'annual_income' => $request->new_annual_income,
             'credit_score' => $request->new_credit_score,
             'property_owner' => $request->new_property_owner,
-            'number_of_dishonours' => $request->new_number_of_dishonours,
-            'negative_days' => $request->new_negative_days,
             'interest_rate' => $request->new_interest_rate,
             'security_requirement' => $request->new_security_requirement,
             'restricted_industry' => $request->has('new_restricted_industry') ? json_encode($request->new_restricted_industry) : null, // Convert to JSON if exists
+
+
+            'number_of_dishonours' => $request->new_number_of_dishonours,
+            'dishonours_in_30_days' => $request->add_dishonours_in_30,
+            'dishonours_in_60_days' => $request->add_dishonours_in_60,
+            'dishonours_in_90_days' => $request->add_dishonours_in_90,
+            'dishonours_in_180_days' => $request->add_dishonours_in_180,
+
+
+            'negative_days' => $request->new_negative_days,
+            'days_in_negative_in_30_days' => $request->add_negative_days_in_30,
+            'days_in_negative_in_60_days' => $request->add_negative_days_in_60,
+            'days_in_negative_in_90_days' => $request->add_negative_days_in_90,
+            'days_in_negative_in_180_days' => $request->add_negative_days_in_180,
+
+            'overdrawn_fees_in_30_days' => $request->add_overdrawn_fees_in_30,
+            'overdrawn_fees_in_60_days' => $request->add_overdrawn_fees_in_60,
+            'overdrawn_fees_in_90_days' => $request->add_overdrawn_fees_in_90,
+            'overdrawn_fees_in_180_days' => $request->add_overdrawn_fees_in_180,
+
+
+            'eod_balance_count_in_30_days' => $request->add_eod_balance_in_30,
+            'eod_balance_count_in_60_days' => $request->add_eod_balance_in_60,
+            'eod_balance_count_in_90_days' => $request->add_eod_balance_in_90,
+            'eod_balance_count_in_180_days' => $request->add_eod_balance_in_180,
+
+            'number_of_sacc_loans' => $request->add_sacc_loans,
+            'number_of_cash_flow_loans' => $request->add_cashflow_loans,
+            'overdrawn_fees_total' => $request->add_overdrawn_fees,
+            'eod_balance_count_total' => $request->add_eod_balance,
+
         ];
+
+        Log::info('sub Product data', $data);
 
         try {
             $result = ProductTypeModel::create($data);

@@ -42,11 +42,41 @@ class CustomerController extends Controller
                 'director_email'       => 'required|email',
                 'director_phone'       => 'required|string',
                 'applicable_lenders'   => 'nullable |string',
-                'gst_time'             => 'nullable|numeric'
+                'gst_time'             => 'nullable|numeric',
+                'document_id' => 'required',
+
+                'number_of_sacc_loans' => 'nullable|numeric',
+                'number_of_cash_flow_loans' => 'nullable|numeric',
+                'overdrawn_fees' => 'nullable|numeric',
+                'eod_balance' => 'nullable|numeric',
+
+                'negative_days_in_30' => 'nullable|numeric',
+                'negative_days_in_60' => 'nullable|numeric',
+                'negative_days_in_90' => 'nullable|numeric',
+                'negative_days_in_180' => 'nullable|numeric',
+
+                'dishonours_in_30' => 'nullable|numeric',
+                'dishonours_in_60' => 'nullable|numeric',
+                'dishonours_in_90' => 'nullable|numeric',
+                'dishonours_in_180' => 'nullable|numeric',
+
+                'overdran_fees_in_30' => 'nullable|numeric',
+                // 'overdran_fees_in_60' => 'nullable|numeric',
+                'overdran_fees_in_90' => 'nullable|numeric',
+                'overdran_fees_in_180' => 'nullable|numeric',
+
+                'eod_balance_in_30' => 'nullable|numeric',
+                'eod_balance_in_60' => 'nullable|numeric',
+                'eod_balance_in_90' => 'nullable|numeric',
+                'eod_balance_in_180' => 'nullable|numeric',
+
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->errors());
         }
+
+
+        // return response()->json($validated);
 
         $industries = $request->input('restricted_industry', []);
 
@@ -83,8 +113,39 @@ class CustomerController extends Controller
             'property_owner'        => $validated['property_owner'],
             'industry_type'         => $validated['industry_type'],
             'gst_time'              => $validated['gst_time'],
+
+
+            'number_of_sacc_loans' => $validated['number_of_sacc_loans'],
+            'number_of_cash_flow_loans' => $validated['number_of_cash_flow_loans'],
+            'overdrawn_fees_total' => $validated['overdrawn_fees'],
+            'eod_balance_count_total' => $validated['eod_balance'],
+
+            'days_in_negative_in_60_days' => $validated['negative_days_in_60'],
+            'days_in_negative_in_90_days' => $validated['negative_days_in_90'],
+            'days_in_negative_in_180_days' => $validated['negative_days_in_180'],
+            'days_in_negative_in_30_days' => $validated['negative_days_in_30'],
+
+            'dishonours_in_30_days' => $validated['dishonours_in_30'],
+            'dishonours_in_60_days' => $validated['dishonours_in_60'],
+            'dishonours_in_90_days' => $validated['dishonours_in_90'],
+            'dishonours_in_180_days' => $validated['dishonours_in_180'],
+
+            'overdrawn_fees_in_30_days' => $validated['overdran_fees_in_30'],
+            // 'overdrawn_fees_in_60_days' => $validated['overdran_fees_in_60'],
+            'overdrawn_fees_in_90_days' => $validated['overdran_fees_in_90'],
+            'overdrawn_fees_in_180_days' => $validated['overdran_fees_in_180'],
+
+
+            'eod_balance_count_in_30_days' => $validated['eod_balance_in_30'],
+            'eod_balance_count_in_60_days' => $validated['eod_balance_in_60'],
+            'eod_balance_count_in_90_days' => $validated['eod_balance_in_90'],
+            'eod_balance_count_in_180_days' => $validated['eod_balance_in_180'],
+            'document_id' => $validated['document_id'],
             'added_by' => auth()->id(),
         ]);
+
+
+
 
 
         if ($data) {
@@ -354,6 +415,34 @@ class CustomerController extends Controller
                 'applicable_lenders'   => 'nullable|string',
                 'gst_time'             => 'nullable|numeric',
                 'customer_id'          => 'required|numeric',
+                'document_id' => 'required',
+
+                'number_of_sacc_loans' => 'nullable|numeric',
+                'number_of_cash_flow_loans' => 'nullable|numeric',
+                'overdrawn_fees' => 'nullable|numeric',
+                'eod_balance' => 'nullable|numeric',
+
+                'negative_days_in_30' => 'nullable|numeric',
+                'negative_days_in_60' => 'nullable|numeric',
+                'negative_days_in_90' => 'nullable|numeric',
+                'negative_days_in_180' => 'nullable|numeric',
+
+                'dishonours_in_30' => 'nullable|numeric',
+                'dishonours_in_60' => 'nullable|numeric',
+                'dishonours_in_90' => 'nullable|numeric',
+                'dishonours_in_180' => 'nullable|numeric',
+
+                'overdran_fees_in_30' => 'nullable|numeric',
+                // 'overdran_fees_in_60' => 'nullable|numeric',
+                'overdran_fees_in_90' => 'nullable|numeric',
+                'overdran_fees_in_180' => 'nullable|numeric',
+
+                'eod_balance_in_30' => 'nullable|numeric',
+                'eod_balance_in_60' => 'nullable|numeric',
+                'eod_balance_in_90' => 'nullable|numeric',
+                'eod_balance_in_180' => 'nullable|numeric',
+
+
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->errors());
@@ -394,6 +483,33 @@ class CustomerController extends Controller
             'property_owner'        => $validated['property_owner'],
             'industry_type'         => $validated['industry_type'],
             'gst_time'              => $validated['gst_time'],
+
+            'number_of_sacc_loans' => $validated['number_of_sacc_loans'],
+            'number_of_cash_flow_loans' => $validated['number_of_cash_flow_loans'],
+            'overdrawn_fees_total' => $validated['overdrawn_fees'],
+            'eod_balance_count_total' => $validated['eod_balance'],
+
+            'days_in_negative_in_60_days' => $validated['negative_days_in_60'],
+            'days_in_negative_in_90_days' => $validated['negative_days_in_90'],
+            'days_in_negative_in_180_days' => $validated['negative_days_in_180'],
+            'days_in_negative_in_30_days' => $validated['negative_days_in_30'],
+
+            'dishonours_in_30_days' => $validated['dishonours_in_30'],
+            'dishonours_in_60_days' => $validated['dishonours_in_60'],
+            'dishonours_in_90_days' => $validated['dishonours_in_90'],
+            'dishonours_in_180_days' => $validated['dishonours_in_180'],
+
+            'overdrawn_fees_in_30_days' => $validated['overdran_fees_in_30'],
+            // 'overdrawn_fees_in_60_days' => $validated['overdran_fees_in_60'],
+            'overdrawn_fees_in_90_days' => $validated['overdran_fees_in_90'],
+            'overdrawn_fees_in_180_days' => $validated['overdran_fees_in_180'],
+
+
+            'eod_balance_count_in_30_days' => $validated['eod_balance_in_30'],
+            'eod_balance_count_in_60_days' => $validated['eod_balance_in_60'],
+            'eod_balance_count_in_90_days' => $validated['eod_balance_in_90'],
+            'eod_balance_count_in_180_days' => $validated['eod_balance_in_180'],
+            'document_id' => $validated['document_id'],
         ]);
 
 
@@ -460,4 +576,50 @@ class CustomerController extends Controller
 
 
     public function filter_customers(Request $request) {}
+
+    public function get_customer_details(Request $request)
+    {
+        $rules = [
+            'dataId' => 'required|integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+
+        $customer_data = CustomerModel::select(
+            'monthly_revenue',
+            'negative_days',
+            'number_of_dishonours',
+            'overdrawn_fees_total',
+            'eod_balance_count_total',
+            'number_of_sacc_loans',
+            'number_of_cash_flow_loans',
+            'document_id',
+            'days_in_negative_in_30_days',
+            'days_in_negative_in_60_days',
+            'days_in_negative_in_90_days',
+
+            'dishonours_in_30_days',
+            'dishonours_in_60_days',
+            'dishonours_in_90_days',
+
+            'overdrawn_fees_in_30_days',
+            // 'overdrawn_fees_in_60_days',
+            'overdrawn_fees_in_90_days',
+
+            'eod_balance_count_in_30_days',
+            'eod_balance_count_in_60_days',
+            'eod_balance_count_in_90_days',
+
+        )->where('id', $request->dataId)->where('deleted_flag', 0)->get();
+
+        return response()->json($customer_data);
+    }
 }

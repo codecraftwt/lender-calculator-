@@ -93,6 +93,10 @@
                         <th>status</th>
                         <th>Actions</th>
                         <th>Lenders</th>
+                        @if(auth()->check() && auth()->user()->master_account === 'Yes')
+                        <th>Details</th>
+                        @endif
+
                     </tr>
                 </thead>
                 <tbody>
@@ -323,6 +327,82 @@
         </div>
     </div>
 
+    <!-- Customer Details Modal -->
+
+    <div class="modal fade" id="customer_details_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius:10px;">
+                <div class="modal-header" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); color: #fff;">
+                    <h5 class="modal-title" id="illionModalLabel">Client's Details (<span id="doc_id" style="font-size: 15px;"></span>)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div id="illion-summary" class="row g-3">
+
+
+                        <div class="col-md-6"><b>Monthly Income :</b> <span id="monthly_income"></span></div>
+                        <div class="col-md-6"><b>Annual Income:</b> <span id="annual_income"></span></div>
+                        <div class="col-md-6"><b>Ongoing SACC Loans :</b> <span id="ongoing_sacc_loans"></span></div>
+                        <div class="col-md-6"><b>Cash Flow Loans :</b> <span id="cash_flow_loans_count"></span></div>
+                        <hr>
+                        <b>Days in Negative</b>
+
+                        <div class="col-md-6" style="font-weight: 600;"> In 30 days: <span id="days_negative_in_30_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 60 days: <span id="days_negative_in_60_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 90 days: <span id="days_negative_in_90_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 180 days: <span id="days_negative"></span></div>
+                        <hr>
+                        <b>Dishonours</b>
+
+                        <div class="col-md-6" style="font-weight: 600;"> In 30 days: <span id="dishonours_in_30_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 60 days: <span id="dishonours_in_60_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 90 days: <span id="dishonours_in_90_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;"> In 180 days: <span id="dishonours"></span></div>
+                        <hr>
+                        <b>Overdrawn</b>
+
+                        <div class="col-md-6" style="font-weight: 600;">In 30 days : <span id="overdraw_count_in_30_days"></span></div>
+
+                        <div class="col-md-6" style="font-weight: 600;">In 90 days : <span id="overdraw_count_in_90_days"></span></div>
+                        <div class="col-md-6" style="font-weight: 600;">In 180 days : <span id="overdraw_count"></span></div>
+                        <hr>
+
+                        <b>Number of days Where Day End Balande < $500:</b>
+
+                                <div class="col-md-6" style="font-weight: 600;">In 30 days : <span id="eod_balance_in_30_days"></span></div>
+                                <div class="col-md-6" style="font-weight: 600;">In 60 days : <span id="eod_balance_in_60_days"></span></div>
+                                <div class="col-md-6" style="font-weight: 600;">In 90 days : <span id="eod_balance_in_90_days"></span></div>
+                                <div class="col-md-6" style="font-weight: 600;">In 180 days : <span id="eod_balance"></span></div>
+
+
+
+                                <!-- <div class="col-md-6"><b>Number of days Where Day <br>End Balande < $500:</b> <span id="eod_balance"></span></div> -->
+
+
+
+
+
+
+                                <!-- <div class="col-md-6"><b>Cashflow Lenders :</b> <span id="cashflow_loans"></span></div> -->
+
+
+                                <!-- <div class="col-md-6"><b>Overdrawn Fees (30 Days - FN006):</b> <span id="overdraw_30"></span></div>
+                        <div class="col-md-6"><b>Overdrawn Fees (90 Days - FN007):</b> <span id="overdraw_90"></span></div>
+                        <div class="col-md-6"><b>Overdrawn Fees (180 Days - FN008):</b> <span id="overdraw_180"></span></div> -->
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @php
 $baseImageUrl = "{{ url('assets/images') }}";
@@ -366,6 +446,10 @@ $base_product_guide_url = "{{ url('assets/product-guides') }}";
             toast.show();
         });
     });
+</script>
+
+<script>
+    const masterAccount = "{{ auth()->user()->master_account }}";
 </script>
 
 
