@@ -4,468 +4,508 @@
 
 @section('content')
 <!-- Main content starts here -->
+
+<style>
+    .fetch-button {
+        margin: 5px;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        padding: 8px 16px;
+        width: auto;
+        background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .fetch-button:hover {
+        background: linear-gradient(90deg, #3a2f8a 0%, #b14dc8 100%);
+        transform: scale(1.03);
+    }
+
+    .fetch-button:active {
+        transform: scale(0.97);
+    }
+</style>
 <div class="row gx-4">
     <!-- Left Panel -->
-    <div class="col-lg-6 mb-4">
-        <div class="panel ai-loan-matching p-4 rounded-3 shadow-sm">
-            <div class="panel-header text-center mb-3">
-                <span class="badge bg-gradient-ai-loan px-3 py-1 rounded-pill fw-semibold">AI LOAN MATCHING</span>
-            </div>
-            <h5 class="text-center mb-4">What is your loan for?</h5>
-            <div class="multi-step-form">
-                <div class="step step-1 active">
-                    <div class="loan-options d-grid gap-3">
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm" data-step="1" data-next-step="2">
-                            <!-- <i class="bi bi-cash-stack fs-2 text-purple"></i> -->
-                            <i class="fas fa-business-time fs-2 text-purple"></i>
-                            <span class="text-center mt-2 small">For Business Purpose</span>
-                        </div>
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm" data-step="1" data-next-step="2">
-                            <i class="bi bi-car-front fs-2 text-purple"></i>
-                            <span class="text-center mt-2 small">Car, Bike, Boat or Equipement</span>
-                        </div>
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm " data-step="1" data-next-step="2">
-                            <!-- <i class="bi bi-pie-chart fs-2 text-white"></i> -->
-                            <i class="fas fa-user fs-2 text-purple"></i>
-                            <span class="text-center mt-2 small text-purple">For Personal Purpose</span>
-                        </div>
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm" data-step="1" data-next-step="2">
-                            <!-- <i class="bi bi-hammer fs-4 text-purple"></i> -->
-                            <i class="fas fa-building fs-4 text-purple"></i>
-                            <span class="text-center mt-2 small">Commercial Propery</span>
-                        </div>
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm" data-step="1" data-next-step="2">
-                            <!-- <i class="bi bi-cup-straw fs-4 text-purple"></i> -->
-                            <i class="fas fa-home fs-4 text-purple"></i>
-                            <span class="text-center mt-2 small">Home,Land or Investment</span>
-                        </div>
-                        <div class="loan-option d-flex flex-column align-items-center p-3 rounded-3 shadow-sm" data-step="1" data-next-step="2">
-                            <i class="bi bi-airplane fs-4 text-purple"></i>
-                            <span class="text-center mt-2 small">Travel / Holiday</span>
-                        </div>
+    <div class="col-lg-2 mb-4"></div>
+    <div class="col-lg-8 mb-4">
+        <div class="panel ai-loan-matching shadow-sm" style="border-radius:20px;margin-top: 20px;">
 
-                    </div>
+
+
+
+            <!-- <div id='bankstatements' data-code='FNCN'></div>
+            <script src='https://www.bankstatements.com.au/js/loader.js' async></script>
+            <noscript>
+                <iframe src='https://www.bankstatements.com.au/iframe/start/FNCN' style='width: 100%; height: 100%;'></iframe>
+            </noscript> -->
+
+
+
+            <div class="multi-step-form " style="margin: 0; padding:0;box-shadow: 5px 5px 5px 2px #878787;border-top-left-radius:20px;border-top-right-radius:20px ">
+                <div class="header" style="height:62px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); text-align: center;border-top-left-radius:20px;border-top-right-radius:20px">
+                    <h5 style="border-bottom: none;color:white">Client Loan Eligibility Form</h5>
                 </div>
-
-
-                <!-- the commented code can used to show the more option when we need more information og for what the user want the loan
-                  -->
-                <!-- <div class="step step-2 d-none">
-                    <h5 class="text-center mb-4">Car, Bike, Boat or Equipment Finance</h5>
-                    <p class="text-center mb-3">For Personal or Business Use?</p>
-                    <div class="d-flex justify-content-center gap-4 mb-4">
-                        <div class="option-box p-3 rounded-3 shadow-sm text-center cursor-pointer" data-next-step="3">
-                            <i class="bi bi-bicycle fs-1 text-purple"></i>
-                            <div class="mt-2 fw-semibold">For Personal Use</div>
-                        </div>
-                        <div class="option-box p-3 rounded-3 shadow-sm text-center cursor-pointer" data-next-step="3">
-                            <i class="bi bi-truck fs-1 text-purple"></i>
-                            <div class="mt-2 fw-semibold">For Business Use</div>
-                        </div>
-                    </div>
-                    <label for="purchasePrice" class="form-label text-center d-block fw-semibold">Loan Amount</label>
-                    <div class="purchase-price-wrapper mb-4 ">
-                        <input type="text" id="purchasePrice" class="form-control ml-86" placeholder="$..." />
-                    </div>
-                    <p class="text-center mb-3">Preferred repayment term?</p>
-                    <div class="d-flex justify-content-center gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">6 Months</button>
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">12 Months</button>
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">2 Years</button>
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">3 Years</button>
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">4 Years</button>
-                        <button class="btn btn-outline-primary rounded-3" data-next-step="3">5 Years</button>
-                    </div>
-
-                </div> -->
-                <div class="step step-2 d-none">
-                    <form method="POST" action="#" class="car-bike-boat-form">
+                <form method="POST" action="{{ url('/save_data') }}" id="lender_form" class="car-bike-boat-form p-4">
+                    @csrf
+                    <div class="col-12 step active" data-step="1">
                         <div class="row">
-                            <!-- Trading Time -->
+                            <h5 class="text-center section-title">Client Details</h5>
+                            <hr>
+
                             <div class="col-md-6 mb-3">
-                                <label for="trading_time" class="form-label">Select Your Trading Time</label>
-                                <select id="trading_time" name="trading_time" class="form-control">
-                                    <option value="">Select Trading Time</option>
-                                    @foreach ($trading_times as $trading_time)
-                                    <option value="{{ $trading_time['trading_time'] }}">{{ $trading_time['trading_time'] }} Months</option>
-                                    @endforeach
-                                </select>
+                                <label for="company_name" class="form-label">Company Name</label>
+                                <div class="input-group">
+                                    <input type="text" id="company_name" name="company_name" class="form-control" autocomplete="off" />
+                                </div>
+                                <div id="company_list" class="list-group mt-1" style="min-height: 40px;"></div>
+                                <p class="text-danger d-none" id="invalid_company_name">Please enter valid Name.</p>
                             </div>
 
-                            <!-- GST Registration -->
                             <div class="col-md-6 mb-3">
-                                <label for="gst" class="form-label">Do you have ABN/GST Registration?</label>
-                                <select id="gst" name="gst" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
+                                <label for="director_name" class="form-label">Director Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                    <input type="text" id="director_name" name="director_name" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_director_name">Please enter valid Name.</p>
                             </div>
 
-                            <!-- Age -->
                             <div class="col-md-6 mb-3">
-                                <label for="age" class="form-label">Enter Your Age</label>
-                                <input type="text" id="age" name="age" class="form-control">
+                                <label for="director_email" class="form-label">Director Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="text" id="director_email" name="director_email" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_director_email">Please enter valid email.</p>
                             </div>
 
-                            <!-- Loan Amount -->
                             <div class="col-md-6 mb-3">
+                                <label for="director_phone" class="form-label">Director Phone</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                    <input type="text" id="director_phone" name="director_phone" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_director_phone">Please enter valid Phone.</p>
+                            </div>
+
+                            <h5 class="text-center mt-3">Loan Details</h5>
+                            <hr>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="abn_date" class="form-label">Date of ABN registration</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="date" id="abn_date" name="abn_date" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_abn_date">Please enter valid monthly revenue.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="time_in_business" class="form-label">Time in Business (Months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+                                    <input type="text" id="time_in_business" name="time_in_business" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_time_in_business">Please enter valid Time.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="entity_type" class="form-label">Entity Type</label>
+                                <input type="text" id="entity_type" name="entity_type" class="form-control" required readonly>
+
+                                <p class="text-danger d-none" id="invalid_entity_type">Please select valid option.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="abn_gst" class="form-label">Do you have GST registration?</label>
+                                <input type="text" id="abn_gst" name="abn_gst" class="form-control" readonly>
+                                <p class="text-danger d-none" id="invalid_abn_gst">Please select valid option.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="gst_date" class="form-label">Date of GST registration</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="date" id="gst_date" name="gst_date" class="form-control" readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_gst_date">Please enter valid monthly revenue.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="gst_time" class="form-label">Time From GST Registation (Months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+                                    <input type="text" id="gst_time" name="gst_time" class="form-control" readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_gst_time">Please enter valid Time.</p>
+                            </div>
+
+
+
+                            <div class="col-md-6 mb-3 loan-details">
                                 <label for="loan_amt" class="form-label">Loan Amount Needed</label>
-                                <input type="text" id="loan_amt" name="loan_amt" class="form-control">
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" id="loan_amt" name="loan_amt" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid Loan amount.</p>
                             </div>
 
-                            <!-- Interest Rate -->
-                            <div class="col-md-6 mb-3">
-                                <label for="interest" class="form-label">Expected Interest Rate</label>
-                                <input type="text" id="interest" name="interest" class="form-control">
+                            <div class="col-md-6 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
+                                <label for="document_id" class="form-label">Document ID</label>
+                                <div class="input-group">
+                                    <!-- <span class="input-group-text">$</span> -->
+                                    <input type="text" id="document_id" name="document_id" class="form-control" required>
+                                    <button style="margin: 5px;border:none;border-radius:7px;color:white;padding: 5px;width: 78px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);" type="button" id="submit-document-id">
+                                        <span class="spinner" id="spinner" style="display:none; margin-right: 6px;">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </span> <b id="btn-text">Submit</b></button>
+
+                                </div>
+                                <p class="" id="doc_id_status" style="margin-top: 10px;"></p>
+                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid documnent id.</p>
                             </div>
 
-                            <!-- Annual Revenue -->
-                            <div class="col-md-6 mb-3">
-                                <label for="annual_revenue" class="form-label">Annual Revenue</label>
-                                <input type="text" id="annual_revenue" name="annual_revenue" class="form-control">
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="monthly_revenue" class="form-label">Annual Income</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" id="monthly_revenue" name="monthly_revenue" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_monthly_revenue">Please enter valid monthly revenue.</p>
                             </div>
 
-                            <!-- Net Income -->
-                            <div class="col-md-6 mb-3">
-                                <label for="net_income" class="form-label">Net Income</label>
-                                <input type="text" id="net_income" name="net_income" class="form-control">
+                            <!-- negative days -->
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                                    <input type="text" id="negative_days" name="negative_days" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_negative_days">Please enter valid negative days.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details  visually-hidden">
+                                <input type="text" id="negative_days_in_180" name="negative_days_in_180" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_90" name="negative_days_in_90" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_60" name="negative_days_in_60" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="negative_days_in_30" name="negative_days_in_30" class="form-control" required>
                             </div>
 
-                            <!-- Credit Score -->
-                            <div class="col-md-6 mb-3">
-                                <label for="credit_score" class="form-label">Credit Score</label>
-                                <input type="text" id="credit_score" name="credit_score" class="form-control">
+                            <!-- dishonours -->
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_dishonours" class="form-label">Number of Dishonours</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_dishonours" name="number_of_dishonours" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_dishonours">Please enter valid number of dishonours</p>
                             </div>
 
-                            <!-- Bank Statement -->
-                            <div class="col-md-6 mb-3">
-                                <label for="bank_statement" class="form-label">Bank Statement Duration</label>
-                                <select id="bank_statement" name="bank_statement" class="form-control">
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_30" name="dishonours_in_30" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_60" name="dishonours_in_60" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_90" name="dishonours_in_90" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="dishonours_in_180" name="dishonours_in_180" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_sacc_loans" class="form-label">No. of SACC Loans</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_sacc_loans" name="number_of_sacc_loans" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_sacc_loans">Please enter valid number_of_sacc_loans.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="number_of_cash_flow_loans" class="form-label">No. of Cash Flow Loans</label>
+                                <div class="input-group">
+                                    <input type="text" id="number_of_cash_flow_loans" name="number_of_cash_flow_loans" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_number_of_cash_flow_loans">Please enter valid number_of_cash_flow_loans.</p>
+                            </div>
+                            <!-- EOD balance -->
+
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="eod_balance" class="form-label">Count of days where Day end eod balance < $500 </label>
+                                        <div class="input-group">
+                                            <input type="text" id="eod_balance" name="eod_balance" class="form-control" required readonly>
+                                        </div>
+                                        <p class="text-danger d-none" id="invalid_eod_balance">Please enter valid eod_balance.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_30" name="eod_balance_in_30" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_60" name="eod_balance_in_60" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_90" name="eod_balance_in_90" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="eod_balance_in_180" name="eod_balance_in_180" class="form-control" required>
+                            </div>
+
+                            <!-- Overdrawn Fees  -->
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <label for="overdrawn_fees" class="form-label">Number of overdrawns </label>
+                                <div class="input-group">
+                                    <input type="text" id="overdrawn_fees" name="overdrawn_fees" class="form-control" required readonly>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_overdrawn_fees">Please enter valid overdrawn_fees.</p>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_30" name="overdran_fees_in_30" class="form-control" required>
+                            </div>
+                            <!-- <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_60" name="overdran_fees_in_60" class="form-control" required>
+                            </div> -->
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_90" name="overdran_fees_in_90" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                                <input type="text" id="overdran_fees_in_180" name="overdran_fees_in_180" class="form-control" required>
+                            </div>
+
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="company_credit_score" class="form-label">Company Credit Score</label>
+                                <select id="company_credit_score" name="company_credit_score" class="form-control" required>
                                     <option value="">Select</option>
-                                    <option value="6months">Minimum 6 months</option>
-                                    <option value="6months_ato">Minimum 6 months + ATO portals</option>
+                                    <option value="Excellent">Excellent (800+)</option>
+                                    <option value="Very_Good "> Very Good (700-800) </option>
+                                    <option value="Good">Good (500-700)</option>
+                                    <option value="Fair"> Fair (300 - 500) </option>
+                                    <option value="Low">Low (0-300)</option>
                                 </select>
+                                <p class="text-danger d-none" id="invalid_company_credit_score">Please select valid option.</p>
                             </div>
 
-                            <!-- Guarantee -->
-                            <div class="col-md-6 mb-3">
-                                <label for="Guarantee" class="form-label">Will You Provide a Guarantee?</label>
-                                <select id="Guarantee" name="Guarantee" class="form-control">
+
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="credit_score" class="form-label">Actual Credit Score </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
+                                    <input type="text" id="credit_score" name="credit_score" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_credit_score">Please enter valid credit score.</p>
+                            </div>
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="property_owner" class="form-label">Is your client asset-backed ?</label>
+                                <select id="property_owner" name="property_owner" class="form-control" required>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
+                                <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
                             </div>
 
-                            <!-- Guarantee Type (Conditional) -->
-                            <div id="guaranteeTypeDiv" class="col-md-6 mb-3" style="display: none;">
-                                <label for="GuaranteeType" class="form-label">Guarantee Type</label>
-                                <select id="GuaranteeType" name="GuaranteeType" class="form-control">
+
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="industry_type" class="form-label">Select your industry</label>
+                                <select id="industry_type" name="industry_type" class="form-select select2 " required>
                                     <option value="">Select</option>
-                                    <option value="Personal">Personal</option>
-                                    <option value="Director">Director</option>
-                                    <option value="Owner">Owner</option>
+                                    <option value="Accounting & Bookkeeping">Accounting & Bookkeeping</option>
+                                    <option value="Advertising & Marketing Services">Advertising & Marketing Services</option>
+                                    <option value="Agriculture Equipment Supply & Services (not farms)">Agriculture Equipment Supply & Services (not farms)</option>
+                                    <option value="Architecture & Design">Architecture & Design</option>
+                                    <option value="Automotive Repairs & Servicing">Automotive Repairs & Servicing</option>
+                                    <option value="Business Consulting Services">Business Consulting Services</option>
+                                    <option value="Childcare Services">Childcare Services</option>
+                                    <option value="Cleaning & Sanitation Services">Cleaning & Sanitation Services</option>
+                                    <option value="Construction Trades (e.g. Electrical, Plumbing, Carpentry)">Construction Trades (e.g. Electrical, Plumbing, Carpentry)</option>
+                                    <option value="Courier & Logistics (non-food/alcohol delivery)">Courier & Logistics (non-food/alcohol delivery)</option>
+                                    <option value="Creative Services (Photography, Graphic Design, Copywriting)">Creative Services (Photography, Graphic Design, Copywriting)</option>
+                                    <option value="Dental Clinics">Dental Clinics</option>
+                                    <option value="Digital Marketing Agencies">Digital Marketing Agencies</option>
+                                    <option value="E-commerce (Physical Products)">E-commerce (Physical Products)</option>
+                                    <option value="Education & Tutoring Services">Education & Tutoring Services</option>
+                                    <option value="Engineering Services">Engineering Services</option>
+                                    <option value="Event Services (excluding adult or gambling-related)">Event Services (excluding adult or gambling-related)</option>
+                                    <option value="Financial & Mortgage Brokers">Financial & Mortgage Brokers</option>
+                                    <option value="Fitness & Personal Training Studios (only if not flagged in your logic)">Fitness & Personal Training Studios (only if not flagged in your logic)</option>
+                                    <option value="Florists">Florists</option>
+                                    <option value="Food & Beverage – Cafés, Bakeries (excluding nightclubs, vape bars, etc.)">Food & Beverage – Cafés, Bakeries (excluding nightclubs, vape bars, etc.)</option>
+                                    <option value="Freight & Logistics (non-high-risk categories)">Freight & Logistics (non-high-risk categories)</option>
+                                    <option value="Furniture Retail & Manufacturing">Furniture Retail & Manufacturing</option>
+                                    <option value="General Retail (Clothing, Electronics, Homewares)">General Retail (Clothing, Electronics, Homewares)</option>
+                                    <option value="Hairdressers & Barber Shops (as long as not flagged)">Hairdressers & Barber Shops (as long as not flagged)</option>
+                                    <option value="Health & Allied Services (Physiotherapists, Osteopaths, etc.)">Health & Allied Services (Physiotherapists, Osteopaths, etc.)</option>
+                                    <option value="HVAC Services (Heating, Ventilation & Air Conditioning)">HVAC Services (Heating, Ventilation & Air Conditioning)</option>
+                                    <option value="Import/Export Agents (non-restricted goods)">Import/Export Agents (non-restricted goods)</option>
+                                    <option value="Information Technology Services">Information Technology Services</option>
+                                    <option value="Landscaping & Gardening Services">Landscaping & Gardening Services</option>
+                                    <option value="Legal Services (Sole Practitioner or Firm)">Legal Services (Sole Practitioner or Firm)</option>
+                                    <option value="Manufacturing – Light/Consumer Goods">Manufacturing – Light/Consumer Goods</option>
+                                    <option value="Mechanic & Auto Servicing">Mechanic & Auto Servicing</option>
+                                    <option value="Medical Clinics & Practitioners">Medical Clinics & Practitioners</option>
+                                    <option value="NDIS Plan Managers & Admin Support">NDIS Plan Managers & Admin Support</option>
+                                    <option value="Office Supplies & Equipment">Office Supplies & Equipment</option>
+                                    <option value="Online Services (Web Dev, SaaS, IT Support)">Online Services (Web Dev, SaaS, IT Support)</option>
+                                    <option value="Optometrists & Optical Retail">Optometrists & Optical Retail</option>
+                                    <option value="Packaging & Printing Services">Packaging & Printing Services</option>
+                                    <option value="Pest Control Services">Pest Control Services</option>
+                                    <option value="Pet Services & Supplies">Pet Services & Supplies</option>
+                                    <option value="Property Management Agencies">Property Management Agencies</option>
+                                    <option value="Real Estate Agencies (Sales & Leasing)">Real Estate Agencies (Sales & Leasing)</option>
+                                    <option value="Recruitment & Staffing (General)">Recruitment & Staffing (General)</option>
+                                    <option value="Repair Services (Electronics, Homewares, etc.)">Repair Services (Electronics, Homewares, etc.)</option>
+                                    <option value="Security System Installation (CCTV, alarms)">Security System Installation (CCTV, alarms)</option>
+                                    <option value="Solar & Renewable Energy Installation">Solar & Renewable Energy Installation</option>
+                                    <option value="Trades & Maintenance">Trades & Maintenance</option>
+                                    <option value="Training & Professional Development">Training & Professional Development</option>
+                                    <option value="Veterinary Clinics">Veterinary Clinics</option>
                                 </select>
+                                <small class="form-text text-muted"> </small>
+                                <p class="text-danger d-none" id="invalid_industry_type">Please select a valid option.</p>
                             </div>
-
-                            <!-- Financials -->
-                            <div class="col-md-6 mb-3">
-                                <label for="Financials" class="form-label">Will You Provide Financial Docs?</label>
-                                <select id="Financials" name="Financials" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Decision Time -->
-                            <div class="col-md-6 mb-3">
-                                <label for="decision_time" class="form-label">Preferred Decision Time</label>
-                                <select id="decision_time" name="decision_time" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="24hr">Within 24 hours</option>
-                                    <option value="30min">As fast as 30 minutes</option>
-                                </select>
-                            </div>
-
-                            <!-- Loan Format -->
-                            <div class="col-md-6 mb-3">
-                                <label for="loan_format" class="form-label">Loan Format</label>
-                                <select id="loan_format" name="loan_format" class="form-control">
-                                    <option value="">Select</option>
-                                    @foreach ($loan_formats as $loan_format)
-                                    <option value="{{ $loan_format['loan_format'] }}">{{ $loan_format['loan_format'] }}</option>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="restricted_industry" class="form-label">
+                                    Please select if your client operates in any of the following commonly restricted or excluded industries:
+                                </label>
+                                <select id="restricted_industry" name="restricted_industry[]" class="form-control select2" multiple required>
+                                    <option value="null">None of the below</option>
+                                    @foreach ($restricted_industries as $industry)
+                                    <option value="{{ $industry }}">{{ $industry }}</option>
                                     @endforeach
                                 </select>
+                                <p class="text-danger d-none" id="invalid_restricted_industry">Please select at least one option.</p>
                             </div>
 
-                            <!-- Loan Term -->
-                            <div class="col-md-6 mb-3">
-                                <label for="loan_term" class="form-label">Loan Term</label>
-                                <select id="loan_term" name="loan_term" class="form-control">
-                                    <option value="">Select</option>
-                                    @foreach ($loan_terms as $loan_term)
-                                    <option value="{{ $loan_term['loan_term'] }}">{{ $loan_term['loan_term'] }} Months</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            <!-- Credit History -->
-                            <div class="col-md-6 mb-3">
-                                <label for="CreditHistory" class="form-label">What best describes your credit history?</label>
-                                <select id="CreditHistory" name="CreditHistory" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="clean">Clean credit history</option>
-                                    <option value="paidDefaults">Paid/default under payment plan</option>
-                                    <option value="unpaidDefaults">Unpaid defaults</option>
-                                    <option value="dishonours">Dishonours / overdrawn</option>
-                                    <option value="bankruptcy">Past bankruptcy</option>
-                                </select>
-                            </div>
 
-                            <!-- Security
-                                    <div class="col-md-6 mb-3">
-                                        <label for="SecurityProvided" class="form-label">Security Provided?</label>
-                                        <select id="SecurityProvided" name="SecurityProvided" class="form-control">
-                                            <option value="">Select</option>
-                                            <option value="None">No</option>
-                                            <option value="Property">Property</option>
-                                            <option value="Assets">Assets</option>
-                                        </select>
-                                    </div> -->
-
-                            <!-- Repayment Frequency -->
-                            <div class="col-md-6 mb-3">
-                                <label for="Repayment_Frequency" class="form-label">Repayment Frequency</label>
-                                <select id="Repayment_Frequency" name="Repayment_Frequency" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Daily">Daily</option>
-                                    <option value="Weekly">Weekly</option>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Fortnightly">Fortnightly</option>
-                                </select>
-                            </div>
-
-                            <!-- Early Repayment -->
-                            <div class="col-md-6 mb-3">
-                                <label for="EarlyRepayment" class="form-label">Will You Repay Early?</label>
-                                <select id="EarlyRepayment" name="EarlyRepayment" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Industry Type -->
-                            <div class="col-md-6 mb-3">
-                                <label for="IndustryType" class="form-label">Industry Type</label>
-                                <select id="IndustryType" name="IndustryType" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Accommodation">Accommodation</option>
-                                    <option value="PropertyDevelopment">Property Development</option>
-                                    <option value="Retail">Retail</option>
-                                    <option value="Gaming">Gaming / Gambling</option>
-                                    <option value="Healthcare">Healthcare</option>
-                                    <option value="Education">Education</option>
-                                    <option value="Adult">Adult / Tattoo</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <!-- Refinance -->
-                            <div class="col-md-6 mb-3">
-                                <label for="refinanceOption" class="form-label">Refinance Application?</label>
-                                <select id="refinanceOption" name="refinanceOption" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Lending Ratio -->
-                            <div class="col-md-6 mb-3">
-                                <label for="lendingRatio" class="form-label">Preferred Lending Ratio</label>
-                                <select id="lendingRatio" name="lendingRatio" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="125">Up to 125%</option>
-                                    <option value="150">Up to 150%</option>
-                                    <option value="custom">Other</option>
-                                </select>
-                            </div>
-
-                            <!-- Brokerage -->
-                            <div class="col-md-6 mb-3">
-                                <label for="brokerage" class="form-label">Expected Brokerage</label>
-                                <input type="text" id="brokerage" name="brokerage" class="form-control">
-                            </div>
-
-                            <!-- Payday Loans -->
-                            <div class="col-md-6 mb-3">
-                                <label for="paydayLoans" class="form-label">Have You Taken Payday Loans?</label>
-                                <select id="paydayLoans" name="paydayLoans" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Payday Count (if yes) -->
-                            <div id="payday_loan_div" class="col-md-6 mb-3" style="display: none;">
-                                <label for="payday_loan" class="form-label">How Many Payday Loans?</label>
-                                <input type="text" id="payday_loan" name="payday_loan" class="form-control">
-                            </div>
-
-                            <!-- Bankruptcy -->
-                            <div class="col-md-6 mb-3">
-                                <label for="bankruptcy" class="form-label">Filed for Bankruptcy?</label>
-                                <select id="bankruptcy" name="bankruptcy" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Bankruptcy Details -->
-                            <div id="bankruptcy_div" class="col-md-6 mb-3" style="display: none;">
-                                <label for="bankruptcy_count" class="form-label">Months Since Discharge</label>
-                                <input type="text" id="bankruptcy_count" name="bankruptcy_count" class="form-control">
-                            </div>
-
-                            <!-- Cash Flow Loan -->
-                            <div class="col-md-6 mb-3">
-                                <label for="cashflow_loan" class="form-label">Do You Have Cash Flow Loan?</label>
-                                <select id="cashflow_loan" name="cashflow_loan" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-
-                            <!-- Cash Flow Loan Count -->
-                            <div id="cashflow_loan_div" class="col-md-6 mb-3" style="display: none;">
-                                <label for="cashflow_loan_count" class="form-label">How Much?</label>
-                                <input type="text" id="cashflow_loan_count" name="cashflow_loan_count" class="form-control">
-                            </div>
-
-                            <!-- High Cost Lenders -->
-                            <div class="col-md-6 mb-3">
-                                <label for="high_cost_lenders" class="form-label">Allow High-Cost Lenders?</label>
-                                <select id="high_cost_lenders" name="high_cost_lenders" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes - I consent</option>
-                                    <option value="No">No - Avoid</option>
-                                </select>
-                            </div>
+                            <textarea type="text" id="applicable_lenders" cols="20" rows="20" name="applicable_lenders" class="form-control visually-hidden" required></textarea>
                         </div>
-                    </form>
-                </div>
-
-
-                <div class="step step-3 d-none">
-                    <h5 class="text-center mb-4">Summary</h5>
-                    <p class="text-center">You have selected your loan options. Please review and submit.</p>
-
-
-                </div>
-            </div>
-
-
-
-            <div class="loan-navigation d-flex justify-content-between align-items-center mt-4">
-                <button class="btn btn-purple btn-arrow rounded-circle btn-back-global" data-prev-step="1" style="display:none;">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <div class="matched-lenders text-center ms-5">
-                    <div id="matchedLenders" class="odometer matched-count fw-bold fs-4 text-green">20</div>
-
-                    <div class="matched-label small fw-bold text-purple">MATCHED LENDERS</div>
-                </div>
-                <div class="loan-info d-flex gap-2">
-                    <div class="loan-info-box border border-2 rounded-2 p-2 text-center">
-                        <div class="small text-muted">FROM</div>
-                        <div class="fw-bold fs-5">$22</div>
-                        <div class="small">PER WEEK</div>
-                        <div class="small text-muted">7 years</div>
-                        <div class="small text-success">FROM 6.74% p/a</div>
-                        <div class="small text-muted">10.58% comparison</div>
                     </div>
-                    <div class="loan-info-box border border-2 rounded-2 p-2 text-center">
-                        <div class="small text-muted">MAX LOAN</div>
-                        <div class="fw-bold fs-5">$200,000</div>
-                        <div class="small">unsecured</div>
-                        <div class="small text-success">$200,000 secured</div>
+
+
+                    <div class="loan-navigation d-flex justify-content-between align-items-center mt-4 p-4">
+
+
+
+                        <div class="loan-info d-flex gap-2"></div>
+                        <button type="submit" class="btn btn-submit btn-next-global">
+                            <span id="next-btn">Submit</span>
+                        </button>
                     </div>
-                </div>
-                <button class="btn btn-green btn-arrow rounded-circle btn-next-global">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
+                </form>
             </div>
-
-            <div class="loan-actions d-flex justify-content-center gap-3 mt-3">
-                <button class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-telephone"></i> Finish on a call
-                </button>
-                <button class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-bookmark"></i> Save for later
-                </button>
-            </div>
-
         </div>
     </div>
+    <div class="col-lg-2 mb-4"></div>
+</div>
 
 
 
-    <!-- Right Panel -->
-    <div class="col-lg-6 mb-4">
-        <div class="panel ebroker-lender-panel p-4 rounded-3 shadow-sm">
-            <div class="panel-header text-center mb-3">
-                <span class="badge bg-gradient-ebroker px-3 py-1 rounded-pill fw-semibold">ebroker LENDER PANEL</span>
+
+<!-- Illion Data Modal -->
+<div class="modal fade" id="illionModal" tabindex="-1" aria-labelledby="illionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius:10px;">
+            <div class="modal-header" style="background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%); color: #fff;">
+                <h5 class="modal-title" id="illionModalLabel">Illion Bank Statement Summary (<span id="doc_id" style="font-size: 15px;"></span>)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="lender-cards row g-3">
-                <div id="loader" class="text-center my-4" style="display: none;">
-                    <img src="{{ asset('assets/images/loader.gif') }}" alt="Loading...">
+            <div class="modal-body">
+
+
+                <div id="illion-summary" class="row g-3">
+                    <div class="col-md-6"><b>Reference:</b> <span id="ref"></span></div>
+                    <div class="col-md-6"><b>Submission Time:</b> <span id="sub_time"></span></div>
+
+                    <div class="col-md-6"><b>Monthly Income (BF002):</b> <span id="monthly_income"></span></div>
+                    <div class="col-md-6"><b>Monthly Turnover (BM001):</b> <span id="monthly_turnover"></span></div>
+                    <div class="col-md-6"><b>Annual Income:</b> <span id="annual_income"></span></div>
+                    <div class="col-md-6"><b>Annual Turnover:</b> <span id="annual_turnover"></span></div>
+
+                    <div class="col-md-6"><b>Days in Negative:</b> <span id="days_negative"></span></div>
+                    <div class="col-md-6"><b>Dishonours (EBP009):</b> <span id="dishonours"></span></div>
+
+                    <div class="col-md-6"><b>Non-SACC Loans (DM079):</b> <span id="non_sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Ongoing Non-SACC Loans (DM090):</b> <span id="ongoing_non_sacc_loans"></span></div>
+
+                    <div class="col-md-6"><b>SACC Loans (DM091):</b> <span id="sacc_loans"></span></div>
+                    <div class="col-md-6"><b>Ongoing SACC Loans (DM042):</b> <span id="ongoing_sacc_loans"></span></div>
+
+                    <div class="col-md-6"><b>Cashflow Lenders (BF017):</b> <span id="cashflow_loans"></span></div>
+
+                    <div class="col-md-6"><b>Overdrawn Count (AB006):</b> <span id="overdraw_count"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (30 Days - FN006):</b> <span id="overdraw_30"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (90 Days - FN007):</b> <span id="overdraw_90"></span></div>
+                    <div class="col-md-6"><b>Overdrawn Fees (180 Days - FN008):</b> <span id="overdraw_180"></span></div>
+                    <div class="col-md-6"><b>cash_flow_loans_count:</b> <span id="cash_flow_loans_count"></span></div>
                 </div>
-                        <!-- Each lender card -->
-                        <!-- <div class="col-6">
-                            <div class="lender-card d-flex p-0 rounded-3 shadow-sm overflow-hidden" data-lender-id="1">
-                                <div class="lender-logo-section d-flex flex-column align-items-center justify-content-center bg-white p-3 position-relative">
-                                    <img src="{{ url('assets/images/liberty-logo.png') }}" alt="Wisr" class="lender-logo img-fluid" data-lender-logo />
-
-                                </div>
-                                <div class="loan-details-section flex-grow-1  bg-gradient-moneyme text-white d-flex flex-column justify-content-center small">
-                                    <div class="loan-header d-flex justify-content-between align-items-center">
-                                        <div class="from-label bg-purple px-2 py-1 rounded-top text-white small">FROM</div>
-                                        <div class="max-loan-label bg-orange px-2 py-1 rounded-top text-white small">MAX LOAN</div>
-                                    </div>
-                                    <div class="loan-amounts d-flex justify-content-between fw-bold">
-                                        <div>$22/week</div>
-                                        <div data-max-loan-amount></div>
-                                    </div>
 
 
-                                    <div class="loan-rates d-flex justify-content-between small">
-                                        <div>From 6.74% p/a</div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- More lender cards can be added here following the same pattern -->
-                    </div>
-                    <div class="comparison-note text-center mt-3 small text-white   rounded-2 py-1">
-                        Comparison Rates &amp; Repayments Include Fees &amp; Charges
-                    </div>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- Main content ends here -->
-        @endsection
+    </div>
+</div>
 
-        @section('scripts')
-        <!-- Odometer JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-        <script src="{{ asset('assets/js/index.js') }}"></script>
-        @endsection
+
+
+<!-- Internal CSS -->
+
+
+
+<div class="position-fixed  p-3" style="z-index: 2000;top:0px;right:0px">
+    @if(session('success'))
+    <div id="sessionToast_success" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('success') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div id="sessionToast_error" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('error') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
+</div>
+
+
+
+<!-- Odometer JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+<!-- <script src="{{ asset('assets/js/index.js') }}"></script> -->
+<script src="{{ url('assets/js/index.js') }}"></script>
+<!-- Main content ends here -->
+@endsection

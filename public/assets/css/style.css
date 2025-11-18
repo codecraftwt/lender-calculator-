@@ -18,8 +18,8 @@ body::after {
     left: 0;
     width: 100%;
     height: 250px;
-    background: url('data:image/svg+xml;utf8,<svg width="100%" height="250" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 40" stroke="%237b5de8" stroke-width="1"/></pattern></defs><rect width="100%" height="250" fill="url(%23grid)" /></svg>')
-        repeat;
+    /* background: url('data:image/svg+xml;utf8,<svg width="100%" height="250" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 40" stroke="%237b5de8" stroke-width="1"/></pattern></defs><rect width="100%" height="250" fill="url(%23grid)" /></svg>') */
+    /* repeat; */
     opacity: 0.3;
     pointer-events: none;
     z-index: 0;
@@ -50,7 +50,7 @@ header {
 }
 
 .btn-login {
-    background: #7b5de8;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
     color: white;
     font-weight: 600;
     transition: background 0.3s ease;
@@ -525,7 +525,11 @@ label[for="purchasePrice"] {
 
 .lender-cards-loader {
     position: relative;
-    background: linear-gradient(45deg, #6a5de8, #4a3f9a); /* Gradient background for a modern feel */
+    background: linear-gradient(
+        45deg,
+        #6a5de8,
+        #4a3f9a
+    ); /* Gradient background for a modern feel */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -549,20 +553,711 @@ label[for="purchasePrice"] {
 
 /* Spin animation */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Pulse animation for spinner */
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Text fade-in and fade-out effect */
 @keyframes fadeInOut {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
+.no-lenders-container {
+    text-align: center;
+    padding: 40px 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #d9534f;
+}
+
+.emoji {
+    font-size: 48px;
+    animation: bounce 1.5s infinite;
+}
+
+.symbol {
+    font-size: 32px;
+    margin-top: 15px;
+    animation: sparkle 2s infinite alternate;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes sparkle {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.3) rotate(10deg);
+    }
+}
+
+.swal2-popup {
+    border: 5px solid #b19cd9; /* Red border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 5px;
+}
+
+.swal2-title {
+    color: #b47dee; /* Change to your desired title color */
+    font-size: 30px;
+}
+
+/* Change confirm button color */
+.swal2-confirm {
+    background-color: #28a745; /* Green background for the confirm button */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+}
+
+/* Change cancel button color */
+.swal2-cancel {
+    background-color: #dc3545; /* Red background for the cancel button */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+}
+.swal2-confirm:hover {
+    background-color: #28a745;
+}
+.swal2-cancel:hover {
+    background-color: #dc3545;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Form Enhancements for Loan Matching Form */
+
+/* Refined Elegant Form Enhancements */
+
+.ai-loan-matching {
+    background: #ffffff;
+    /* border-radius: 1rem; */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* padding: 2rem 2rem; */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #3a3a3a;
+    border: 1px solid #e0e0e0;
+    position: relative;
+    overflow: visible;
+}
+
+.ai-loan-matching h5 {
+    font-weight: 700;
+    color: #4a4a4a;
+    /* border-bottom: 2px solid #d1d1d1; */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.ai-loan-matching label.form-label {
+    font-weight: 600;
+    color: #555555;
+    text-shadow: none;
+}
+
+.input-group-text {
+    background-color: #f0f0f0;
+    border: 1px solid #d1d1d1;
+    /* color: #666666 !important; */
+    font-size: 1.1rem;
+    /* border-radius: 0.375rem 0 0 0.375rem !important; */
+    box-shadow: none;
+}
+
+.form-control {
+    border-radius: 0 0.375rem 0.375rem 0 !important;
+    border: 1px solid #d1d1d1 !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333333;
+    background-color: #fafafa;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: #6c63ff !important;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+    outline: none;
+    background-color: #fff;
+}
+
+.text-danger {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    color: #d9534f !important;
+    text-shadow: none;
+}
+
+.loan-navigation .btn-green {
+    /* background-color: #6c63ff !important; */
+    border: none !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.4rem 1.2rem;
+}
+
+.loan-navigation .btn-green:hover {
+    background-color: #574fd6 !important;
+    box-shadow: 0 6px 16px rgba(87, 79, 214, 0.6);
+}
+
+.loan-navigation .btn-arrow span {
+    color: white !important;
+    font-weight: 700;
+}
+
+.loan-info {
+    font-size: 1rem;
+    color: #6c63ff;
+    font-weight: 600;
+}
+
+@media (max-width: 767.98px) {
+    .ai-loan-matching {
+        padding: 2rem 1.5rem;
+    }
+    .ai-loan-matching h5 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Add subtle hover effect on input groups */
+.input-group:hover .form-control {
+    border-color: #6c63ff !important;
+}
+
+/* Smooth transition for input groups */
+.input-group {
+    transition: box-shadow 0.3s ease;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+    border-radius: 0.375rem;
+}
+
+/* Style select dropdown */
+select.form-control {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d1d1 !important;
+    color: #555555;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select.form-control:focus {
+    border-color: #6c63ff !important;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+    outline: none;
+}
+
+.dt-buttons {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#lenderTable_filter {
+    /* margin-top: 10px;
+    margin-right: 5px; */
+}
+
+.panel {
+    /* border-radius: 15px; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.header {
+    background: #dedede;
+
+    padding: 1rem;
+    padding-left: 60px;
+    color: white;
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.multi-step-form {
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-submit {
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #9f7ae2;
+}
+
+.loan-navigation {
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .col-lg-2 {
+        display: none;
+    }
+
+    .panel {
+        margin: 0;
+        padding: 1rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1440px !important;
+    }
+}
+
+span.hover-white:hover {
+    color: white;
+}
+.lender-box {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.lender-box:hover {
+    transform: translateY(-4px);
+}
+
+/* Allow stacking of modals */
+/* .modal-backdrop.show:nth-child(n + 3) {
+    z-index: 1049;
+}
+
+#lenderModal .modal-content {
+    z-index: 1050;
+}
+
+#lenderDetailModal .modal-content {
+    z-index: 1060;
+}
+
+.modal-dialog.modal-lg {
+    max-width: 900px;
+    height: 90vh;
+}
+
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal-body {
+    overflow-y: scroll !important;  
+    max-height: 65vh;  
+} */
+
+.contact-table {
+    width: 100%;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    border-collapse: collapse;
+}
+
+.contact-table td {
+    padding: 8px 10px;
+    vertical-align: top;
+}
+
+/* modal css */
+
+#lenderModal .modal-content {
+    z-index: 1050 !important;
+    min-height: 92vh !important;
+    width: 95% !important;
+}
+
+#lenderDetailModal .modal-content {
+    z-index: 1060 !important;
+    min-height: 94vh !important;
+    width: 95% !important;
+    margin-top: 1vh !important;
+}
+
+#lenderContactModal .modal-content {
+    z-index: 1070 !important;
+    min-height: 94vh !important;
+    width: 95% !important;
+    margin-top: 2vh !important;
+}
+
+#Product_Add_Modal .modal-content {
+    z-index: 3000 !important;
+    min-height: 94vh !important;
+    width: 95% !important;
+    margin-top: 2vh !important;
+}
+
+#lenderTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+/* #lenderTable th, */
+#lenderTable td {
+    /* border: 0.5px solid black !important; */
+}
+
+#lenderTable td,
+#lenderTable th {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+#lenderTable thead th {
+    background-color: white !important;
+}
+#lenderTable thead td {
+    background-color: white !important;
+}
+/* Odd rows */
+/* #lenderTable tbody tr.odd {
+    background-color: #f3f3ff !important;
+}
+
+#lenderTable tbody tr.even {
+    background-color: linear-gradient(
+        90deg,
+        #e5d4f2 0%,
+        #f7a0f5 100%
+    ) !important;
+} */
+/* 
+#Main_Lender_Edit_Modal .modal-content {
+    z-index: 1070 !important;
+    min-height: 88vh !important;
+    width: 100% !important;
+    margin-top: 2vh !important;
+} */
+
+.lender-box-container {
+    position: relative;
+    width: 440px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.lender-box {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    transition: opacity 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Shutters */
+.shutter {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.left-shutter {
+    left: 0;
+    transform: translateX(-100%);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+}
+
+.right-shutter {
+    right: 0;
+    transform: translateX(100%);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background: linear-gradient(90deg, #d15de8 0%, #4a3f9a 100%);
+}
+
+/* Content inside shutters */
+.shutter-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.3s;
+    pointer-events: none;
+}
+
+ 
+/* Shutter container */
+
+/* Left and right shutters */
+.left-shutter,
+.right-shutter {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);
+    z-index: 2;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.right-shutter {
+    right: 0;
+    transform: translateX(100%);
+    background: linear-gradient(90deg, #d15de8 0%, #4a3f9a 100%);
+}
+
+/* Shutter content (Edit Subproduct text) */
+
+/* Hover effects */
+
+.dataTables_filter label {
+    font-size: 0;
+}
+
+.dataTables_filter label input {
+    font-size: 1rem;
+}
+
+.dataTables_filter input {
+    height: 36px; /* desired height */
+    border-radius: 5px; /* rounded corners */
+    border: 1px solid #ccc; /* border color */
+    padding: 0 10px; /* horizontal padding */
+    font-size: 14px; /* font size */
+    outline: none; /* remove default outline */
+    transition: border-color 0.3s ease;
+    margin-top: -5px;
+    width: 500px;
+}
+
+.dataTables_filter input:focus {
+    border-color: #8659f6; /* focus border color */
+    box-shadow: 0 0 5px #8659f6;
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    padding-left: 35px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Important to prevent overflow */
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+#lenderTable_wrapper {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+.no-arrow {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 8px;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    background-color: #d8c4e1db;
+    margin: 3px;
+}
+.contact-name {
+    /* background-color: #c9aed4; */
+    color: #4a2670;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 150px;
+}
+.contact-role {
+    flex: 1;
+    padding-left: 15px;
+    font-weight: 500;
+}
+.edit-contact,
+.delete-contact,
+.contact-phone,
+.contact-email {
+    display: flex;
+    align-items: center;
+    color: #555;
+    font-weight: 500;
+    margin-left: 20px;
+    white-space: nowrap;
+}
+.delete-contact i,
+.edit-contact i,
+.contact-phone i,
+.contact-email i {
+    margin-right: 6px;
+    color: #852aa3;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-top: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.4s;
+    border-radius: 30px;
+    background-color: #e35966; /* inactive color */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #25f253; /* active color */
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* user table css  */
+
+#userTable_wrapper {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+#userTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+/* #lenderTable th, */
+#userTable td {
+    /* border: 0.5px solid black !important; */
+}
+
+#userTable td,
+#userTable th {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+#userTable thead th {
+    background-color: white !important;
+}
+#userTable thead td {
+    background-color: white !important;
+}

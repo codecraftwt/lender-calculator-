@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AbnController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/abn-lookup', [AbnController::class, 'lookup']);
+Route::get('/abn-details', [AbnController::class, 'details']);
+
+
+
+// Route::post('/get-lenders', [LenderController::class, 'get_lenders']);
+// Route::post('/get-users', [UserController::class, 'get_users']);
