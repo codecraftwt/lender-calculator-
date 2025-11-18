@@ -155,7 +155,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
-                                <label for="document_id" class="form-label">Documnet ID</label>
+                                <label for="document_id" class="form-label">Document ID</label>
                                 <div class="input-group">
                                     <!-- <span class="input-group-text">$</span> -->
                                     <input type="text" id="document_id" name="document_id" class="form-control" required>
@@ -425,7 +425,7 @@
             </div>
             <div class="modal-body">
 
-                 
+
                 <div id="illion-summary" class="row g-3">
                     <div class="col-md-6"><b>Reference:</b> <span id="ref"></span></div>
                     <div class="col-md-6"><b>Submission Time:</b> <span id="sub_time"></span></div>

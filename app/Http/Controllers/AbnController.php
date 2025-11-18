@@ -63,7 +63,7 @@ class AbnController extends Controller
     public function fetch_bank_statement(Request $request)
     {
 
-       
+
         // 1. Validate document_id
         $validated = $request->validate([
             'document_id' => 'required|string',
@@ -92,7 +92,7 @@ class AbnController extends Controller
         $apiKey = env('TEST_API_KEY');
 
         // 5. Build API URL
-        $url = "https://dashboard-test.proviso.com.au/api/v1/get-submission/{$documentId}/{$referralCode}?returnDocument=true";
+        $url = "https://dashboard.proviso.com.au/api/v1/get-submission/{$documentId}/{$referralCode}?returnDocument=true";
 
         try {
             // 6. Make the API request
@@ -102,6 +102,16 @@ class AbnController extends Controller
                 'Content-Type' => 'application/json',
             ])->get($url);
 
+
+            $responseData = json_decode($response, true);
+
+            if (isset($responseData['error'])) {
+                return response()->json([
+                    'error' => true,
+                    'data' => $response->json()
+                ]);
+                
+            }
             // 7. Return JSON response
             return response()->json([
                 'success' => true,
