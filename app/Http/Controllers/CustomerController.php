@@ -32,7 +32,7 @@ class CustomerController extends Controller
                 'restricted_industry'  => 'nullable',
                 'loan_amt'             => 'required|numeric',
                 'time_in_business'     => 'required|numeric',
-                'credit_score'         => 'required|numeric',
+                'credit_score'         => 'nullable|numeric',
                 'monthly_revenue'      => 'required|numeric',
                 'negative_days'        => 'required|numeric',
                 'number_of_dishonours' => 'required|numeric',

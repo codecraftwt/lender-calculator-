@@ -93,7 +93,7 @@
                                 <p class="text-danger d-none" id="invalid_director_phone">Please enter valid Phone.</p>
                             </div>
 
-                            <h5 class="text-center mt-3">Loan Details</h5>
+                            <h5 class="text-center mt-3">Business Details</h5>
                             <hr>
 
                             <div class="col-md-6 mb-3 loan-details">
@@ -106,7 +106,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="time_in_business" class="form-label">Time in Business (Months)</label>
+                                <label for="time_in_business" class="form-label">Time in Business  </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
                                     <input type="text" id="time_in_business" name="time_in_business" class="form-control" required readonly>
@@ -121,7 +121,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="abn_gst" class="form-label">Do you have GST registration?</label>
+                                <label for="abn_gst" class="form-label">GST Registered</label>
                                 <input type="text" id="abn_gst" name="abn_gst" class="form-control" readonly>
                                 <p class="text-danger d-none" id="invalid_abn_gst">Please select valid option.</p>
                             </div>
@@ -135,13 +135,16 @@
                                 <p class="text-danger d-none" id="invalid_gst_date">Please enter valid monthly revenue.</p>
                             </div>
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="gst_time" class="form-label">Time From GST Registation (Months)</label>
+                                <label for="gst_time" class="form-label">Time From GST Registation  </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
                                     <input type="text" id="gst_time" name="gst_time" class="form-control" readonly>
                                 </div>
                                 <p class="text-danger d-none" id="invalid_gst_time">Please enter valid Time.</p>
                             </div>
+
+                            <h5 class="text-center mt-3">Loan Details</h5>
+                            <hr>
 
 
 
@@ -154,20 +157,42 @@
                                 <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid Loan amount.</p>
                             </div>
 
-                            <div class="col-md-6 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
-                                <label for="document_id" class="form-label">Document ID</label>
-                                <div class="input-group">
-                                    <!-- <span class="input-group-text">$</span> -->
-                                    <input type="text" id="document_id" name="document_id" class="form-control" required>
-                                    <button style="margin: 5px;border:none;border-radius:7px;color:white;padding: 5px;width: 78px;background: linear-gradient(90deg, #4a3f9a 0%, #d15de8 100%);" type="button" id="submit-document-id">
-                                        <span class="spinner" id="spinner" style="display:none; margin-right: 6px;">
-                                            <i class="fas fa-spinner fa-spin"></i>
-                                        </span> <b id="btn-text">Submit</b></button>
-
-                                </div>
-                                <p class="" id="doc_id_status" style="margin-top: 10px;"></p>
-                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid documnent id.</p>
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="property_owner" class="form-label">Asset Backed / Property Owner</label>
+                                <select id="property_owner" name="property_owner" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
                             </div>
+
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="company_credit_score" class="form-label">Company Credit Score</label>
+                                <select id="company_credit_score" name="company_credit_score" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Excellent">Excellent (800+)</option>
+                                    <option value="Very_Good "> Very Good (700-800) </option>
+                                    <option value="Good">Good (500-700)</option>
+                                    <option value="Fair"> Fair (300 - 500) </option>
+                                    <option value="Low">Low (0-300)</option>
+                                </select>
+                                <p class="text-danger d-none" id="invalid_company_credit_score">Please select valid option.</p>
+                            </div>
+
+
+
+                            <div class="col-md-6 mb-3 loan-details">
+                                <label for="credit_score" class="form-label">Actual Credit Score </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
+                                    <input type="text" id="credit_score" name="credit_score" class="form-control" required>
+                                </div>
+                                <p class="text-danger d-none" id="invalid_credit_score">Please enter valid credit score.</p>
+                            </div>
+
+
 
                             <div class="col-md-6 mb-3 loan-details visually-hidden">
                                 <label for="monthly_revenue" class="form-label">Annual Income</label>
@@ -180,7 +205,7 @@
 
                             <!-- negative days -->
                             <div class="col-md-6 mb-3 loan-details visually-hidden">
-                                <label for="negative_days" class="form-label">Days in negative (in last 6 months)</label>
+                                <label for="negative_days" class="form-label">Days in negative      </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
                                     <input type="text" id="negative_days" name="negative_days" class="form-control" required readonly>
@@ -281,42 +306,20 @@
                                 <input type="text" id="overdran_fees_in_180" name="overdran_fees_in_180" class="form-control" required>
                             </div>
 
-
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="company_credit_score" class="form-label">Company Credit Score</label>
-                                <select id="company_credit_score" name="company_credit_score" class="form-control" required>
-                                    <option value="">Select</option>
-                                    <option value="Excellent">Excellent (800+)</option>
-                                    <option value="Very_Good "> Very Good (700-800) </option>
-                                    <option value="Good">Good (500-700)</option>
-                                    <option value="Fair"> Fair (300 - 500) </option>
-                                    <option value="Low">Low (0-300)</option>
-                                </select>
-                                <p class="text-danger d-none" id="invalid_company_credit_score">Please select valid option.</p>
-                            </div>
-
-
-
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="credit_score" class="form-label">Actual Credit Score </label>
+                            <hr style="margin-top: 30px;">
+                            <br> <br>
+                            <div class="col-md-12 mb-3 " style=" border-radius: 8px;font-weight: 600;line-height: 1.1;">
+                                <label for="document_id" class="form-label">Bank Statement Document ID</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
-                                    <input type="text" id="credit_score" name="credit_score" class="form-control" required>
+                                    <!-- <span class="input-group-text">$</span> -->
+                                    <input type="text" id="document_id" name="document_id" class="form-control" required>
                                 </div>
-                                <p class="text-danger d-none" id="invalid_credit_score">Please enter valid credit score.</p>
+                                <span class="spinner" id="spinner" style="display:none; margin-right: 6px;margin-top:10px;color:gray">
+                                    Fetching bank statements <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                                <p class="" id="doc_id_status" style="margin-top: 10px;"></p>
+                                <p class="text-danger d-none" id="invalid_loan_amt">Please enter valid bank statement document id.</p>
                             </div>
-
-                            <div class="col-md-6 mb-3 loan-details">
-                                <label for="property_owner" class="form-label">Is your client asset-backed ?</label>
-                                <select id="property_owner" name="property_owner" class="form-control" required>
-                                    <option value="">Select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                                <p class="text-danger d-none" id="invalid_property_owner">Please select valid option.</p>
-                            </div>
-
-
 
                             <div class="col-md-6 mb-3 loan-details">
                                 <label for="industry_type" class="form-label">Select your industry</label>
