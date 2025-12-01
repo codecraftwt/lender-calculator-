@@ -216,6 +216,7 @@ $(document).ready(function () {
 
             case "credit_score":
                 return (
+                    val === "" || // allow empty
                     (/^[0-9]+$/.test(val) && val >= 0 && val <= 1200) ||
                     (showErrorMessage &&
                         showError(
@@ -369,6 +370,8 @@ $(document).ready(function () {
             const eod_balance = $("#eod_balance").val();
             const document_id = $("#document_id").val();
 
+            const monthlyIncome = (monthlyRevenue / 12).toFixed(0);
+
             Swal.fire({
                 title: "Please Check Your Details",
                 showCancelButton: true,
@@ -410,7 +413,7 @@ $(document).ready(function () {
         ${inputGroup("Loan Amount", "$" + loanAmt, "fa-solid fa-dollar-sign")}
         ${inputGroup(
             "Monthly Revenue",
-            "$" + monthlyRevenue,
+            "$" + monthlyIncome,
             "fa-solid fa-dollar-sign"
         )}
         ${inputGroup(
@@ -730,394 +733,402 @@ $(document).ready(function () {
             });
     });
 
-    $("#submit-document-id").on("click", function () {
+    $("#document_id").on("input", function () {
         var document_id = $("#document_id").val();
-
-        const button = document.getElementById("submit-document-id");
-        const spinner = button.querySelector(".spinner");
-        const btnText = document.getElementById("btn-text");
-        btnText.style.display = "none";
-        spinner.style.display = "inline-block";
         console.log(document_id);
 
-        $.ajax({
-            url: "/fetch-bank-statement",
-            method: "GET",
-            data: { document_id: document_id },
-            dataType: "json",
+        if (document_id.length >= 9) {
+            const spinner = document.getElementById("spinner");
+            spinner.style.display = "inline-block";
+            $("#doc_id_status").css("display", "none");
 
-            success: function (response) {
-                spinner.style.display = "none";
-                btnText.style.display = "inline-block";
-                // console.log(response);
+            const document_input = document.getElementById("document_id");
+            document_input.disabled = true;
 
-                const data = response.data || {};
+            $.ajax({
+                url: "/fetch-bank-statement",
+                method: "GET",
+                data: { document_id: document_id },
+                dataType: "json",
 
-                $("#doc_id").html(response.data.documentId);
+                success: function (response) {
+                    spinner.style.display = "none";
+                    document_input.disabled = false;
 
-                if (!response.success) {
-                    Swal.fire("Error", "Failed to fetch Illion data", "error");
-                    return;
-                }
+                    // console.log(response);
 
-                // const data = response.data || {};
-                const metrics = data.decisionMetrics || []; // array of {id,name,type,value,...}
+                    const data = response.data || {};
 
-                // helper to find metric object (returns undefined if not found)
-                function getMetric(id) {
-                    return metrics.find((m) => m.id === id);
-                }
+                    $("#doc_id").html(response.data.documentId);
 
-                // helper to get numeric or object value
-                function metricValue(id) {
-                    const m = getMetric(id);
-                    if (!m) return null;
-                    return m.value;
-                }
-
-                // If the metric value is an object with months, return formatted string and numeric helpers
-                function formatMonthlyMetric(metricObj) {
-                    if (metricObj == null)
-                        return { display: "N/A", average: 0, total: 0 };
-
-                    if (typeof metricObj === "object") {
-                        const months = Object.values(metricObj).map(
-                            (v) => parseFloat(v) || 0
+                    if (!response.success) {
+                        Swal.fire(
+                            "Error",
+                            "Failed to fetch Illion data",
+                            "error"
                         );
-                        const total = months.reduce((s, n) => s + n, 0);
-                        const avg = months.length ? total / months.length : 0;
-                        const monthParts = Object.entries(metricObj).map(
-                            ([k, v]) => `${k}: ${parseFloat(v).toFixed(2)}`
-                        );
-                        return {
-                            display: monthParts.join(" | "),
-                            average: avg,
-                            total: total,
-                        };
-                    } else {
-                        const n = parseFloat(metricObj) || 0;
-                        return {
-                            display: n.toFixed(2),
-                            average: n,
-                            total: n,
-                        };
+                        return;
                     }
-                }
 
-                // populate basic info
-                $("#ref").text(data.reference || "N/A");
-                $("#sub_time").text(data.submissionTime || "N/A");
+                    // const data = response.data || {};
+                    const metrics = data.decisionMetrics || []; // array of {id,name,type,value,...}
 
-                // Monthly Income (BF002)
-                const bf002 = metricValue("BF002");
-                const bf002Res = formatMonthlyMetric(bf002);
-                $("#monthly_income").text(bf002Res.display);
+                    // helper to find metric object (returns undefined if not found)
+                    function getMetric(id) {
+                        return metrics.find((m) => m.id === id);
+                    }
 
-                // Monthly Turnover (BM001)
-                const bm001 = metricValue("BM001");
-                const bm001Res = formatMonthlyMetric(bm001);
-                $("#monthly_turnover").text(bm001Res.display);
+                    // helper to get numeric or object value
+                    function metricValue(id) {
+                        const m = getMetric(id);
+                        if (!m) return null;
+                        return m.value;
+                    }
 
-                // Annual Income & Turnover
-                const annualIncome = (bf002Res.average || 0) * 12;
-                const annualTurnover = (bm001Res.average || 0) * 12;
-                $("#annual_income").text(
-                    annualIncome ? annualIncome.toFixed(2) : "0.00"
-                );
+                    // If the metric value is an object with months, return formatted string and numeric helpers
+                    function formatMonthlyMetric(metricObj) {
+                        if (metricObj == null)
+                            return { display: "N/A", average: 0, total: 0 };
 
-                $("#monthly_revenue").val(
-                    annualIncome ? annualIncome.toFixed(0) : "0.00"
-                );
-                $("#annual_turnover").text(
-                    annualTurnover ? annualTurnover.toFixed(2) : "0.00"
-                );
-
-                // Dishonours (EBP009)
-                const dishonourMetric = metricValue("EBP009");
-                if (typeof dishonourMetric === "object") {
-                    const dishonourParts = Object.entries(dishonourMetric).map(
-                        ([k, v]) => `${k}: ${v}`
-                    );
-                    $("#dishonours").text(dishonourParts.join(" | "));
-                } else {
-                    $("#dishonours").text(dishonourMetric ?? "0");
-                }
-
-                // Loans
-                $("#non_sacc_loans").text(metricValue("DM079") ?? "0");
-                $("#ongoing_non_sacc_loans").text(metricValue("DM090") ?? "0");
-                $("#sacc_loans").text(metricValue("DM091") ?? "0");
-                $("#ongoing_sacc_loans").text(metricValue("DM042") ?? "0");
-                $("#cashflow_loans").text(metricValue("BF017") ?? "0");
-
-                // Overdraws & Overdrawn Fees
-                $("#overdraw_count").text(metricValue("AB006") ?? "0");
-                $("#overdraw_30").text(metricValue("FN006") ?? "0");
-                $("#overdraw_90").text(metricValue("FN007") ?? "0");
-                $("#overdraw_180").text(metricValue("FN008") ?? "0");
-
-                // dishonours
-
-                const dishonourData = metricValue("EBP009") ?? "0";
-
-                console.log(dishonourData);
-
-                const month1 = dishonourData["Month 1"] ?? 0;
-                const month2 = dishonourData["Month 2"] ?? 0;
-                const month3 = dishonourData["Month 3"] ?? 0;
-                const month4 = dishonourData["Month 4"] ?? 0;
-                const month5 = dishonourData["Month 5"] ?? 0;
-                const month6 = dishonourData["Month 6"] ?? 0;
-
-                // Assign them to inputs (assuming you want cumulative or specific months)
-                $("#dishonours_in_30").val(month1);
-                $("#dishonours_in_60").val(month2);
-                $("#dishonours_in_90").val(month3);
-                $("#dishonours_in_180").val(month6);
-
-                const totalDishonours = month1 + month2 + month3 + month6;
-                $("#number_of_dishonours").val(totalDishonours);
-
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                            "content"
-                        ),
-                    },
-                });
-
-                let all_lenders = [];
-
-                function get_all_lenders(callback) {
-                    $.ajax({
-                        url: "/get-all-lenders-name",
-                        method: "GET",
-                        success: function (res) {
-                            all_lenders = res;
-                            console.log("All lenders loaded:", all_lenders);
-                            if (callback) callback(); // ✅ call your logic after data is ready
-                        },
-                        error: function (xhr) {
-                            Swal.fire(
-                                "Error",
-                                "Failed to load lender data.",
-                                "error"
+                        if (typeof metricObj === "object") {
+                            const months = Object.values(metricObj).map(
+                                (v) => parseFloat(v) || 0
                             );
-                            console.error(xhr.responseText);
+                            const total = months.reduce((s, n) => s + n, 0);
+                            const avg = months.length
+                                ? total / months.length
+                                : 0;
+                            const monthParts = Object.entries(metricObj).map(
+                                ([k, v]) => `${k}: ${parseFloat(v).toFixed(2)}`
+                            );
+                            return {
+                                display: monthParts.join(" | "),
+                                average: avg,
+                                total: total,
+                            };
+                        } else {
+                            const n = parseFloat(metricObj) || 0;
+                            return {
+                                display: n.toFixed(2),
+                                average: n,
+                                total: n,
+                            };
+                        }
+                    }
+
+                    // populate basic info
+                    $("#ref").text(data.reference || "N/A");
+                    $("#sub_time").text(data.submissionTime || "N/A");
+
+                    // Monthly Income (BF002)
+                    const bf002 = metricValue("BF002");
+                    const bf002Res = formatMonthlyMetric(bf002);
+                    $("#monthly_income").text(bf002Res.display);
+
+                    // Monthly Turnover (BM001)
+                    const bm001 = metricValue("BM001");
+                    const bm001Res = formatMonthlyMetric(bm001);
+                    $("#monthly_turnover").text(bm001Res.display);
+
+                    // Annual Income & Turnover
+                    const annualIncome = (bf002Res.average || 0) * 12;
+                    const annualTurnover = (bm001Res.average || 0) * 12;
+                    $("#annual_income").text(
+                        annualIncome ? annualIncome.toFixed(2) : "0.00"
+                    );
+
+                    $("#monthly_revenue").val(
+                        annualIncome ? annualIncome.toFixed(0) : "0.00"
+                    );
+                    $("#annual_turnover").text(
+                        annualTurnover ? annualTurnover.toFixed(2) : "0.00"
+                    );
+
+                    // Dishonours (EBP009)
+                    const dishonourMetric = metricValue("EBP009");
+                    if (typeof dishonourMetric === "object") {
+                        const dishonourParts = Object.entries(
+                            dishonourMetric
+                        ).map(([k, v]) => `${k}: ${v}`);
+                        $("#dishonours").text(dishonourParts.join(" | "));
+                    } else {
+                        $("#dishonours").text(dishonourMetric ?? "0");
+                    }
+
+                    // Loans
+                    $("#non_sacc_loans").text(metricValue("DM079") ?? "0");
+                    $("#ongoing_non_sacc_loans").text(
+                        metricValue("DM090") ?? "0"
+                    );
+                    $("#sacc_loans").text(metricValue("DM091") ?? "0");
+                    $("#ongoing_sacc_loans").text(metricValue("DM042") ?? "0");
+                    $("#cashflow_loans").text(metricValue("BF017") ?? "0");
+
+                    // Overdraws & Overdrawn Fees
+                    $("#overdraw_count").text(metricValue("AB006") ?? "0");
+                    $("#overdraw_30").text(metricValue("FN006") ?? "0");
+                    $("#overdraw_90").text(metricValue("FN007") ?? "0");
+                    $("#overdraw_180").text(metricValue("FN008") ?? "0");
+
+                    // dishonours
+
+                    const dishonourData = metricValue("EBP009") ?? "0";
+
+                    console.log(dishonourData);
+
+                    const month1 = dishonourData["Month 1"] ?? 0;
+                    const month2 = dishonourData["Month 2"] ?? 0;
+                    const month3 = dishonourData["Month 3"] ?? 0;
+                    const month4 = dishonourData["Month 4"] ?? 0;
+                    const month5 = dishonourData["Month 5"] ?? 0;
+                    const month6 = dishonourData["Month 6"] ?? 0;
+
+                    // Assign them to inputs (assuming you want cumulative or specific months)
+                    $("#dishonours_in_30").val(month1);
+                    $("#dishonours_in_60").val(month2);
+                    $("#dishonours_in_90").val(month3);
+                    $("#dishonours_in_180").val(month6);
+
+                    const totalDishonours = month1 + month2 + month3 + month6;
+                    $("#number_of_dishonours").val(totalDishonours);
+
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
                         },
                     });
-                }
 
-                var totalOngoingLoans = 0;
-                const banks = data.banks || [];
-                // Put your loan-processing logic into a separate function
-                function processBanks(data) {
-                    banks.forEach((bank) => {
-                        bank.bankAccounts.forEach((account) => {
-                            const statementAnalysis =
-                                account.statementAnalysis || [];
+                    let all_lenders = [];
 
-                            const loansAnalysis = statementAnalysis.filter(
-                                (item) =>
-                                    item.analysisCategory &&
-                                    item.analysisCategory.name === "Loans"
-                            );
+                    function get_all_lenders(callback) {
+                        $.ajax({
+                            url: "/get-all-lenders-name",
+                            method: "GET",
+                            success: function (res) {
+                                all_lenders = res;
+                                console.log("All lenders loaded:", all_lenders);
+                                if (callback) callback(); // ✅ call your logic after data is ready
+                            },
+                            error: function (xhr) {
+                                Swal.fire(
+                                    "Error",
+                                    "Failed to load lender data.",
+                                    "error"
+                                );
+                                console.error(xhr.responseText);
+                            },
+                        });
+                    }
 
-                            loansAnalysis.forEach((loan) => {
-                                const transactionGroups =
-                                    loan.analysisCategory.transactionGroups ||
-                                    [];
+                    var totalOngoingLoans = 0;
+                    const banks = data.banks || [];
+                    // Put your loan-processing logic into a separate function
+                    function processBanks(data) {
+                        banks.forEach((bank) => {
+                            bank.bankAccounts.forEach((account) => {
+                                const statementAnalysis =
+                                    account.statementAnalysis || [];
 
-                                transactionGroups.forEach((grp) => {
-                                    const found = all_lenders.some(
-                                        (lenderObj) =>
-                                            grp.name
-                                                .toLowerCase()
-                                                .includes(
-                                                    (
-                                                        lenderObj.lender_name ||
-                                                        ""
-                                                    ).toLowerCase()
-                                                )
-                                    );
+                                const loansAnalysis = statementAnalysis.filter(
+                                    (item) =>
+                                        item.analysisCategory &&
+                                        item.analysisCategory.name === "Loans"
+                                );
 
-                                    if (found) {
-                                        console.log(
-                                            `Found lender in bank: ${bank.bankName}, account: ${account.accountName}, group: ${grp.name}`
+                                loansAnalysis.forEach((loan) => {
+                                    const transactionGroups =
+                                        loan.analysisCategory
+                                            .transactionGroups || [];
+
+                                    transactionGroups.forEach((grp) => {
+                                        const found = all_lenders.some(
+                                            (lenderObj) =>
+                                                grp.name
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        (
+                                                            lenderObj.lender_name ||
+                                                            ""
+                                                        ).toLowerCase()
+                                                    )
                                         );
 
-                                        grp.analysisPoints.forEach(
-                                            (analysis) => {
-                                                if (
-                                                    analysis.name ===
-                                                    "countOfOngoingLoans"
-                                                ) {
-                                                    console.log(
-                                                        `Ongoing Loans: ${analysis.value}`
-                                                    );
-                                                    totalOngoingLoans +=
-                                                        analysis.value;
+                                        if (found) {
+                                            console.log(
+                                                `Found lender in bank: ${bank.bankName}, account: ${account.accountName}, group: ${grp.name}`
+                                            );
+
+                                            grp.analysisPoints.forEach(
+                                                (analysis) => {
+                                                    if (
+                                                        analysis.name ===
+                                                        "countOfOngoingLoans"
+                                                    ) {
+                                                        console.log(
+                                                            `Ongoing Loans: ${analysis.value}`
+                                                        );
+                                                        totalOngoingLoans +=
+                                                            analysis.value;
+                                                    }
                                                 }
-                                            }
-                                        );
-                                    }
+                                            );
+                                        }
+                                    });
                                 });
                             });
                         });
+
+                        console.log("Total Ongoing Loans:", totalOngoingLoans);
+                    }
+
+                    // ✅ Call get_all_lenders, then process banks *after* data is loaded
+                    get_all_lenders(function () {
+                        processBanks(data);
+
+                        $("#number_of_cash_flow_loans").val(totalOngoingLoans);
                     });
 
-                    console.log("Total Ongoing Loans:", totalOngoingLoans);
-                }
+                    if (totalOngoingLoans > 0) {
+                        $("#cash_flow_loans_count").text(totalOngoingLoans); // Append to the UI
+                    } else {
+                        $("#cash_flow_loans_count").text(
+                            "No ongoing loans found"
+                        );
+                    }
 
-                // ✅ Call get_all_lenders, then process banks *after* data is loaded
-                get_all_lenders(function () {
-                    processBanks(data);
+                    $("#number_of_sacc_loans").val(metricValue("DM042") ?? "0");
+                    $("#overdrawn_fees").val(metricValue("FN008") ?? "0");
 
-                    $("#number_of_cash_flow_loans").val(totalOngoingLoans);
-                });
+                    $("#overdran_fees_in_30").val(metricValue("FN006") ?? "0");
+                    $("#overdran_fees_in_90").val(metricValue("FN007") ?? "0");
+                    $("#overdran_fees_in_180").val(metricValue("FN008") ?? "0");
 
-                if (totalOngoingLoans > 0) {
-                    $("#cash_flow_loans_count").text(totalOngoingLoans); // Append to the UI
-                } else {
-                    $("#cash_flow_loans_count").text("No ongoing loans found");
-                }
+                    // DAYS IN NEGATIVE and DAYS < $500
+                    // DAYS IN NEGATIVE and DAYS < $500
+                    let dayEndBalancesAll = [];
 
-                $("#number_of_sacc_loans").val(metricValue("DM042") ?? "0");
-                $("#overdrawn_fees").val(metricValue("FN008") ?? "0");
-
-                $("#overdran_fees_in_30").val(metricValue("FN006") ?? "0");
-                $("#overdran_fees_in_90").val(metricValue("FN007") ?? "0");
-                $("#overdran_fees_in_180").val(metricValue("FN008") ?? "0");
-
-                // DAYS IN NEGATIVE and DAYS < $500
-                // DAYS IN NEGATIVE and DAYS < $500
-                let dayEndBalancesAll = [];
-
-                for (const bank of banks) {
-                    const bankAccounts = bank.bankAccounts || [];
-                    for (const acc of bankAccounts) {
-                        const ss = acc.statementSummary;
-                        if (ss && Array.isArray(ss.dayEndBalances)) {
-                            dayEndBalancesAll = dayEndBalancesAll.concat(
-                                ss.dayEndBalances
-                            );
+                    for (const bank of banks) {
+                        const bankAccounts = bank.bankAccounts || [];
+                        for (const acc of bankAccounts) {
+                            const ss = acc.statementSummary;
+                            if (ss && Array.isArray(ss.dayEndBalances)) {
+                                dayEndBalancesAll = dayEndBalancesAll.concat(
+                                    ss.dayEndBalances
+                                );
+                            }
                         }
                     }
-                }
 
-                // helper to count days where balance < threshold and optionally within lastDays
-                function countDaysBelow(threshold, lastDays = null) {
-                    if (!dayEndBalancesAll?.length) return 0;
+                    // helper to count days where balance < threshold and optionally within lastDays
+                    function countDaysBelow(threshold, lastDays = null) {
+                        if (!dayEndBalancesAll?.length) return 0;
 
-                    // Convert balances and dates safely
-                    const arr = dayEndBalancesAll.map((d) => ({
-                        date: new Date(d.date),
-                        bal:
-                            parseFloat(
-                                String(d.balance).replace(/[^0-9.-]/g, "")
-                            ) || 0,
-                    }));
+                        // Convert balances and dates safely
+                        const arr = dayEndBalancesAll.map((d) => ({
+                            date: new Date(d.date),
+                            bal:
+                                parseFloat(
+                                    String(d.balance).replace(/[^0-9.-]/g, "")
+                                ) || 0,
+                        }));
 
-                    // Determine cutoff date if counting for last X days
-                    let cutoff = null;
-                    if (lastDays) {
-                        const latestDate = arr.reduce(
-                            (a, b) => (a.date > b.date ? a : b),
-                            arr[0]
-                        ).date;
-                        cutoff = new Date(latestDate);
-                        cutoff.setDate(cutoff.getDate() - lastDays + 1);
+                        // Determine cutoff date if counting for last X days
+                        let cutoff = null;
+                        if (lastDays) {
+                            const latestDate = arr.reduce(
+                                (a, b) => (a.date > b.date ? a : b),
+                                arr[0]
+                            ).date;
+                            cutoff = new Date(latestDate);
+                            cutoff.setDate(cutoff.getDate() - lastDays + 1);
+                        }
+
+                        // Count number of days with balance below threshold (e.g., 0)
+                        return arr.filter(
+                            (d) =>
+                                d.bal < threshold &&
+                                (!cutoff || d.date >= cutoff)
+                        ).length;
                     }
 
-                    // Count number of days with balance below threshold (e.g., 0)
-                    return arr.filter(
-                        (d) =>
-                            d.bal < threshold && (!cutoff || d.date >= cutoff)
-                    ).length;
-                }
+                    // ---------------------------
+                    // Days in Negative Summary
+                    // ---------------------------
+                    const daysNegTotal = countDaysBelow(0); // Total negative days
+                    const daysNeg30 = countDaysBelow(0, 30); // Last 30 days
+                    const daysNeg60 = countDaysBelow(0, 60); // Last 60 days
+                    const daysNeg90 = countDaysBelow(0, 90); // Last 90 days
+                    const daysNeg120 = countDaysBelow(0, 120); // Last 120 days
+                    const daysNeg150 = countDaysBelow(0, 150); // Last 150 days
+                    const daysNeg180 = countDaysBelow(0, 180); // Last 180 days
 
-                // ---------------------------
-                // Days in Negative Summary
-                // ---------------------------
-                const daysNegTotal = countDaysBelow(0); // Total negative days
-                const daysNeg30 = countDaysBelow(0, 30); // Last 30 days
-                const daysNeg60 = countDaysBelow(0, 60); // Last 60 days
-                const daysNeg90 = countDaysBelow(0, 90); // Last 90 days
-                const daysNeg120 = countDaysBelow(0, 120); // Last 120 days
-                const daysNeg150 = countDaysBelow(0, 150); // Last 150 days
-                const daysNeg180 = countDaysBelow(0, 180); // Last 180 days
+                    // Display nicely in UI
+                    $("#days_negative").text(
+                        `Total: ${daysNegTotal} | 30d: ${daysNeg30} | 60d: ${daysNeg60} | 90d: ${daysNeg90} | 180d: ${daysNeg180}`
+                    );
 
-                // Display nicely in UI
-                $("#days_negative").text(
-                    `Total: ${daysNegTotal} | 30d: ${daysNeg30} | 60d: ${daysNeg60} | 90d: ${daysNeg90} | 180d: ${daysNeg180}`
-                );
+                    $("#negative_days_in_30").val(daysNeg30);
+                    $("#negative_days_in_60").val(daysNeg60);
+                    $("#negative_days_in_90").val(daysNeg90);
+                    $("#negative_days_in_180").val(daysNeg180);
+                    $("#negative_days").val(daysNeg180);
 
-                $("#negative_days_in_30").val(daysNeg30);
-                $("#negative_days_in_60").val(daysNeg60);
-                $("#negative_days_in_90").val(daysNeg90);
-                $("#negative_days_in_180").val(daysNeg180);
-                $("#negative_days").val(daysNeg180);
+                    // Ending Daily Balances < $500
+                    const daysUnder500Total = countDaysBelow(500, null);
+                    const under500_30 = countDaysBelow(500, 30);
+                    const under500_60 = countDaysBelow(500, 60);
+                    const under500_90 = countDaysBelow(500, 90);
+                    const under500_120 = countDaysBelow(500, 120);
+                    const under500_150 = countDaysBelow(500, 150);
+                    const under500_180 = countDaysBelow(500, 180);
 
-                // Ending Daily Balances < $500
-                const daysUnder500Total = countDaysBelow(500, null);
-                const under500_30 = countDaysBelow(500, 30);
-                const under500_60 = countDaysBelow(500, 60);
-                const under500_90 = countDaysBelow(500, 90);
-                const under500_120 = countDaysBelow(500, 120);
-                const under500_150 = countDaysBelow(500, 150);
-                const under500_180 = countDaysBelow(500, 180);
+                    $("#eod_balance").val(under500_180);
+                    $("#eod_balance_in_30").val(under500_30);
+                    $("#eod_balance_in_60").val(under500_60);
+                    $("#eod_balance_in_90").val(under500_90);
+                    $("#eod_balance_in_180").val(under500_180);
 
-                $("#eod_balance").val(under500_180);
-                $("#eod_balance_in_30").val(under500_30);
-                $("#eod_balance_in_60").val(under500_60);
-                $("#eod_balance_in_90").val(under500_90);
-                $("#eod_balance_in_180").val(under500_180);
+                    $("#ending_under_500").remove();
+                    $("#illion-summary").append(
+                        `<div id="ending_under_500" class="col-12"><b>Days EOD < $500:</b> Total: ${daysUnder500Total} | 30d: ${under500_30} | 60d: ${under500_60} | 90d: ${under500_90} | 180d: ${under500_180}</div>`
+                    );
 
-                $("#ending_under_500").remove();
-                $("#illion-summary").append(
-                    `<div id="ending_under_500" class="col-12"><b>Days EOD < $500:</b> Total: ${daysUnder500Total} | 30d: ${under500_30} | 60d: ${under500_60} | 90d: ${under500_90} | 180d: ${under500_180}</div>`
-                );
+                    // Convert monthly metric objects to arrays of numeric values
+                    function objectToValues(obj) {
+                        if (!obj || typeof obj !== "object") return [];
+                        return Object.values(obj).map(
+                            (v) => parseFloat(v) || 0
+                        );
+                    }
 
-                // Convert monthly metric objects to arrays of numeric values
-                function objectToValues(obj) {
-                    if (!obj || typeof obj !== "object") return [];
-                    return Object.values(obj).map((v) => parseFloat(v) || 0);
-                }
+                    $("#doc_id_status").css("display", "block");
+                    $("#doc_id_status").css("color", "green");
+                    $("#doc_id_status").text("Data Fetched Successfully !");
+                },
+                error: function (xhr, status) {
+                    spinner.style.display = "none";
+                    document_input.disabled = false;
+                    $("#doc_id_status").css("display", "block");
+                    $("#doc_id_status").css("color", "red");
+                    $("#doc_id_status").text("Failed To Fetch Data!");
 
-                $("#doc_id_status").css("color", "green");
+                    // Check if there's an error message from the server
+                    let errorMessage =
+                        xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message // If the response has a message
+                            : "Something went wrong, please try again."; // Default error message
 
-                $("#doc_id_status").text("Data Fetched Successfully !");
-            },
-            error: function (xhr, status) {
-                spinner.style.display = "none";
-                btnText.style.display = "inline-block";
-                button.disabled = false;
-
-                $("#doc_id_status").css("color", "red");
-                $("#doc_id_status").text("Failed To Fetch Data!");
-
-                // Check if there's an error message from the server
-                let errorMessage =
-                    xhr.responseJSON && xhr.responseJSON.message
-                        ? xhr.responseJSON.message // If the response has a message
-                        : "Something went wrong, please try again."; // Default error message
-
-                // Show SweetAlert with the error message
-                Swal.fire({
-                    icon: "error", // This shows an error icon
-                    title: "Oops...",
-                    text: errorMessage, // Display the error message from the server or a default message
-                    confirmButtonText: "OK",
-                });
-            },
-        });
-    });
-
-    $("#document_id").on("input", function () {
-        $("#btn-text").css("display", "inline-block");
-        const button = document.getElementById("submit-document-id");
-        button.disabled = false;
-        button.style.opacity = 1;
-        // console.log("hellos");
+                    // Show SweetAlert with the error message
+                    Swal.fire({
+                        icon: "error", // This shows an error icon
+                        title: "Oops...",
+                        text: errorMessage, // Display the error message from the server or a default message
+                        confirmButtonText: "OK",
+                    });
+                },
+            });
+        }
     });
 });

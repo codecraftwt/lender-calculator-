@@ -36,6 +36,20 @@ class IndexController extends Controller
         return view('Index.index', compact('restricted_industries'));
     }
 
+    // public function index_demo()
+    // {
+    //     $restricted_industries = ProductTypeModel::whereNotNull('restricted_industry')
+    //         ->pluck('restricted_industry')
+    //         ->map(function ($item) {
+    //             return json_decode($item, true);
+    //         })
+    //         ->flatten()
+    //         ->unique()
+    //         ->values();
+
+    //     return view('Index.index3', compact('restricted_industries'));
+    // }
+
     public function index_test()
     {
 
