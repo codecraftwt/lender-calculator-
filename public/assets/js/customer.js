@@ -53,6 +53,7 @@ $(document).ready(function () {
                                        <i class="fas fa-eye" style="font-size:20px"></i>
                                    </button>
                                </td>
+                               <td>${item.name || ""}</td>
                                `
                                 : "";
 
@@ -123,6 +124,8 @@ $(document).ready(function () {
                               </button>
                           </td>
                             ${viewDetailsBtn}
+
+                            
                           `;
 
                         tableBody.append(row);

@@ -43,6 +43,8 @@ Route::get('/', function () {
     return view('Index.index', compact('restricted_industries'));
 });
 Route::get('/index', [IndexController::class, 'index']);
+Route::get('/index_demo', [IndexController::class, 'index_demo']);
+
 Route::get('/index2', [IndexController::class, 'index_test']);
 Route::get('/broker', [IndexController::class, 'broker_panel']);
 Route::post('/get-lender', [IndexController::class, 'get_lenders'])->name('get.lenders')->middleware(['auth', 'role:Admin,Broker']);

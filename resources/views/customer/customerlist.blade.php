@@ -95,6 +95,8 @@
                         <th>Lenders</th>
                         @if(auth()->check() && auth()->user()->master_account === 'Yes')
                         <th>Details</th>
+                        <th>Added By</th>
+
                         @endif
 
                     </tr>

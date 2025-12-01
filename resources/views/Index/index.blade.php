@@ -52,7 +52,7 @@
                 </div>
                 <form method="POST" action="{{ url('/save_data') }}" id="lender_form" class="car-bike-boat-form p-4">
                     @csrf
-                    <div class="col-12 step active" data-step="1">
+                    <div class="col-12 step active p-3" data-step="1">
                         <div class="row">
                             <h5 class="text-center section-title">Client Details</h5>
                             <hr>
@@ -106,7 +106,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="time_in_business" class="form-label">Time in Business  </label>
+                                <label for="time_in_business" class="form-label">Time in Business </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
                                     <input type="text" id="time_in_business" name="time_in_business" class="form-control" required readonly>
@@ -135,7 +135,7 @@
                                 <p class="text-danger d-none" id="invalid_gst_date">Please enter valid monthly revenue.</p>
                             </div>
                             <div class="col-md-6 mb-3 loan-details">
-                                <label for="gst_time" class="form-label">Time From GST Registation  </label>
+                                <label for="gst_time" class="form-label">Time From GST Registation </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
                                     <input type="text" id="gst_time" name="gst_time" class="form-control" readonly>
@@ -205,7 +205,7 @@
 
                             <!-- negative days -->
                             <div class="col-md-6 mb-3 loan-details visually-hidden">
-                                <label for="negative_days" class="form-label">Days in negative      </label>
+                                <label for="negative_days" class="form-label">Days in negative </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
                                     <input type="text" id="negative_days" name="negative_days" class="form-control" required readonly>
@@ -265,7 +265,7 @@
                             </div>
                             <!-- EOD balance -->
 
-                            <div class="col-md-6 mb-3 loan-details visually-hidden">
+                            <div class="col-md-6 mb-3 loan-details  ">
                                 <label for="eod_balance" class="form-label">Count of days where Day end eod balance < $500 </label>
                                         <div class="input-group">
                                             <input type="text" id="eod_balance" name="eod_balance" class="form-control" required readonly>
