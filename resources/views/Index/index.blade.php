@@ -265,7 +265,7 @@
                             </div>
                             <!-- EOD balance -->
 
-                            <div class="col-md-6 mb-3 loan-details  ">
+                            <div class="col-md-6 mb-3 loan-details visually-hidden  ">
                                 <label for="eod_balance" class="form-label">Count of days where Day end eod balance < $500 </label>
                                         <div class="input-group">
                                             <input type="text" id="eod_balance" name="eod_balance" class="form-control" required readonly>
