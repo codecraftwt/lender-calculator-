@@ -370,7 +370,7 @@ $(document).ready(function () {
             const eod_balance = $("#eod_balance").val();
             const document_id = $("#document_id").val();
 
-            const monthlyIncome = (monthlyRevenue / 12).toFixed(0);
+            const monthly_Income = (monthlyRevenue / 12).toFixed(0);
 
             Swal.fire({
                 title: "Please Check Your Details",
@@ -413,7 +413,7 @@ $(document).ready(function () {
         ${inputGroup("Loan Amount", "$" + loanAmt, "fa-solid fa-dollar-sign")}
         ${inputGroup(
             "Monthly Revenue",
-            "$" + monthlyIncome,
+            "$" + monthly_Income,
             "fa-solid fa-dollar-sign"
         )}
         ${inputGroup(
