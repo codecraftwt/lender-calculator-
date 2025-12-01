@@ -187,7 +187,9 @@ class CustomerController extends Controller
         $user = auth()->user();
 
 
-        $customers = CustomerModel::where('deleted_flag', 0)
+        $customers = CustomerModel::select('customer_models.*', 'users.name')
+            ->join('users', 'customer_models.added_by', 'users.id')
+            ->where('customer_models.deleted_flag', 0)
             ->orderBy('id', 'DESC');
 
         if ($user->role === 'Broker') {
@@ -201,12 +203,12 @@ class CustomerController extends Controller
 
         if (!empty($startDate)) {
 
-            $customers->where('created_at', '>=', Carbon::parse($startDate)->startOfDay());
+            $customers->where('customer_models.created_at', '>=', Carbon::parse($startDate)->startOfDay());
         }
 
         if (!empty($endDate)) {
 
-            $customers->where('created_at', '<=', Carbon::parse($endDate)->endOfDay());
+            $customers->where('customer_models.created_at', '<=', Carbon::parse($endDate)->endOfDay());
         }
 
         if ($minVal !== null && $maxVal !== null) {
