@@ -100,7 +100,9 @@ class AbnController extends Controller
                 'X-API-KEY'    => $apiKey,
                 'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
-            ])->get($url);
+            ])
+                ->timeout(120)
+                ->get($url);
 
 
             $responseData = json_decode($response, true);
@@ -110,7 +112,6 @@ class AbnController extends Controller
                     'error' => true,
                     'data' => $response->json()
                 ]);
-                
             }
             // 7. Return JSON response
             return response()->json([
@@ -119,6 +120,9 @@ class AbnController extends Controller
             ]);
         } catch (\Exception $e) {
             // 8. Handle error
+
+            Log::error('Failed to fetch bank statement: ' . $e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to fetch bank statement.',
