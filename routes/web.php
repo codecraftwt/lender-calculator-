@@ -7,11 +7,6 @@ use App\Http\Controllers\LenderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbnController;
 use App\Http\Controllers\GoogleSheetController;
-
-
-
-
-
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\ProductTypeModel;
