@@ -101,7 +101,7 @@ class AbnController extends Controller
                 'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
             ])
-                ->timeout(120)
+                ->timeout(240)
                 ->get($url);
 
 
