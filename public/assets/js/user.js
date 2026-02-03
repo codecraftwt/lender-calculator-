@@ -20,7 +20,6 @@ $(document).ready(function () {
                 _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (data) {
-               
                 const tableBody = $("#userTable tbody");
                 $("#lenderTable").DataTable();
                 // Destroy existing DataTable instance safely
@@ -62,7 +61,7 @@ $(document).ready(function () {
             <td>
 
                 ${
-                    item.master_account == "No"
+                    item.master_account === "No"
                         ? `<button
                     type="button"
                     data-id=' ${item.id}'
@@ -88,12 +87,11 @@ $(document).ready(function () {
                     autoWidth: false,
                     order: [[0, "desc"]],
                     columns: [
-                        { width: "17%" }, // first column width
-                        { width: "17%" }, // second column width
-                        { width: "25%" }, // third column width
-                        { width: "17%" }, // fourth column width
-                        { width: "16%" }, // fifth column width
-                        // add as many objects as your columns
+                        { width: "17%" },
+                        { width: "17%" },
+                        { width: "25%" },
+                        { width: "17%" },
+                        { width: "16%" },
                     ],
                 });
 
@@ -428,7 +426,7 @@ $(document).ready(function () {
                 $("#invalid_profile_image")
                     .removeClass("d-none")
                     .text(
-                        "Please select a valid image (JPG, JPEG, PNG, WEBP)."
+                        "Please select a valid image (JPG, JPEG, PNG, WEBP).",
                     );
                 isValid = false;
             }

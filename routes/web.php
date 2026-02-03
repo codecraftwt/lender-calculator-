@@ -110,9 +110,9 @@ Route::post('/delete-lender', [LenderController::class, 'delete_lender'])->middl
 // user list routes
 
 Route::get('/user-list', [UserController::class, 'user_list'])->middleware(['auth', 'role:Admin']);
-Route::post('/get-users', [UserController::class, 'get_users'])->middleware(['auth', 'role:Admin']);
+Route::post('/get-users', [UserController::class, 'get_users'])->middleware(['auth']);
 Route::post('/update-user-status', [UserController::class, 'update_user_status'])->middleware(['auth', 'role:Admin']);
-Route::post('/get-user-data', [UserController::class, 'get_user_data'])->middleware(['auth', 'role:Admin']);
+Route::post('/get-user-data', [UserController::class, 'get_user_data'])->middleware(['auth']);
 Route::post('/update-user-data', [UserController::class, 'update_user_data'])->middleware(['auth', 'role:Admin,Broker']);
 Route::post('/update-user-profile', [UserController::class, 'update_user_profile'])->middleware(['auth', 'role:Admin,Broker']);
 Route::post('send-password-change-otp', [UserController::class, 'send_password_change_otp'])->middleware(['auth', 'role:Admin,Broker']);

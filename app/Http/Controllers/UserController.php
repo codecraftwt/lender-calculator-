@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -134,11 +136,20 @@ class UserController extends Controller
 
     public function update_user_data(Request $request)
     {
+
+        $user = auth()->user();
+
         $rules = [
             'user_id' => ['required', 'integer'],
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'role'    => ['required', 'in:Admin,Broker'],
+
+            'password' => [
+                'nullable',
+                'string',
+                'confirmed',
+            ],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -158,6 +169,10 @@ class UserController extends Controller
                 'role' => $request->role,
             ];
 
+        if ($request->filled('password') && $user->role === 'Admin') {
+            $data['password'] = Hash::make($request->password);
+        }
+
 
 
         $result = User::where('id', $request->user_id)->update($data);
@@ -165,7 +180,7 @@ class UserController extends Controller
         if ($result) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'User details Udpated successfully.'
+                'message' => 'User details Updated successfully.'
             ]);
         } else {
             return response()->json([
