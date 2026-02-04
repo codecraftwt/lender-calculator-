@@ -48,6 +48,11 @@
                         <a href="{{ url('/user-list') }}" class="nav-link px-2">Users</a>
                     </li>
                     @endif
+                    @if( auth()->user()->deleted_flag !=1 && auth()->user()->role === 'Admin' && auth()->user()->master_account === 'Yes' )
+                    <li>
+                        <a href="{{ url('/activity-logs') }}" class="nav-link px-2">Activity Logs</a>
+                    </li>
+                    @endif
                     <!-- <li>
                         <a href="#" class="nav-link px-2 btn btn-login px-3 py-1 rounded-pill"
                             onclick="confirmLogout(event)">
@@ -310,6 +315,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @auth
     <script src="{{ url('assets/js/user.js') }}"></script>
+    <script src="{{ url('assets/js/activity_logs.js') }}"></script>
     @endauth
 
 
