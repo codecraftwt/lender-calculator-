@@ -111,6 +111,8 @@ Route::post('/delete-lender', [LenderController::class, 'delete_lender'])->middl
 
 Route::get('/user-list', [UserController::class, 'user_list'])->middleware(['auth', 'role:Admin']);
 Route::post('/get-users', [UserController::class, 'get_users'])->middleware(['auth']);
+Route::get('/activity-logs', [UserController::class, 'activity_logs'])->middleware(['auth']);
+Route::post('/get-activity-logs', [UserController::class, 'get_activity_logs'])->middleware(['auth']);
 Route::post('/update-user-status', [UserController::class, 'update_user_status'])->middleware(['auth', 'role:Admin']);
 Route::post('/get-user-data', [UserController::class, 'get_user_data'])->middleware(['auth']);
 Route::post('/update-user-data', [UserController::class, 'update_user_data'])->middleware(['auth', 'role:Admin,Broker']);

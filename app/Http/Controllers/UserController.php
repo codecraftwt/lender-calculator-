@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
+use App\Models\AdminAuditLog;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordChangeOtpMail;
+use App\Mail\UserUpdatedByAdmin;
 
 class UserController extends Controller
 {
@@ -75,6 +76,46 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function activity_logs()
+    {
+        $users = User::select('users.name', 'users.id')->where('role', 'Admin')->get();
+        $actions = AdminAuditLog::select('action')
+            ->distinct()
+            ->pluck('action');
+
+        return view('users.activity_logs', compact('users', 'actions'));
+    }
+
+    public function get_activity_logs(Request $request)
+    {
+        $logs = AdminAuditLog::select(
+            'admin_audit_logs.*',
+            'u.name as user_name',
+            'a.name as admin_name',
+            'a.role as admin_role'
+        )
+            ->join('users as u', 'admin_audit_logs.user_id', '=', 'u.id')
+            ->join('users as a', 'admin_audit_logs.admin_id', '=', 'a.id')
+            ->addSelect(DB::raw("DATE_FORMAT(admin_audit_logs.created_at, '%d %b %Y, %h:%i %p') as formatted_date"))
+            ->orderBy('admin_audit_logs.id', 'desc');
+
+        if ($request->has('role') && $request->role !== '' && $request->role !== null) {
+            $logs = $logs->where('admin_audit_logs.admin_id', $request->role);
+        }
+
+        if ($request->has('status') && !empty($request->status)) {
+            $logs = $logs->whereDate('admin_audit_logs.created_at', $request->status);
+        }
+
+        if ($request->has('action') && !empty($request->action)) {
+            $logs = $logs->where('admin_audit_logs.action', $request->action);
+        }
+
+        $logs = $logs->get();
+
+        return response()->json($logs);
+    }
+
     public function update_user_status(Request $request)
     {
         $rules = [
@@ -134,22 +175,72 @@ class UserController extends Controller
     }
 
 
+    // public function update_user_data(Request $request)
+    // {
+
+    //     $user = auth()->user();
+
+    //     $rules = [
+    //         'user_id' => ['required', 'integer'],
+    //         'name' => ['required', 'string'],
+    //         'email' => ['required', 'email'],
+    //         'role'    => ['required', 'in:Admin,Broker'],
+
+    //         'password' => [
+    //             'nullable',
+    //             'string',
+    //             'confirmed',
+    //         ],
+    //     ];
+
+    //     $validator = Validator::make($request->all(), $rules);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'errors' => $validator->errors()
+    //         ], 422);
+    //     }
+
+
+    //     $data =
+    //         [
+    //             'name' => $request->name,
+    //             'email' => $request->email,
+    //             'role' => $request->role,
+    //         ];
+
+    //     if ($request->filled('password') && $user->role === 'Admin') {
+    //         $data['password'] = Hash::make($request->password);
+    //     }
+
+
+
+    //     $result = User::where('id', $request->user_id)->update($data);
+
+    //     if ($result) {
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'message' => 'User details Updated successfully.'
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Failed update the user details.'
+    //         ]);
+    //     }
+    // }
+
     public function update_user_data(Request $request)
     {
-
-        $user = auth()->user();
+        $admin = auth()->user();
 
         $rules = [
-            'user_id' => ['required', 'integer'],
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'role'    => ['required', 'in:Admin,Broker'],
-
-            'password' => [
-                'nullable',
-                'string',
-                'confirmed',
-            ],
+            'user_id'  => ['required', 'integer'],
+            'name'     => ['required', 'string'],
+            'email'    => ['required', 'email'],
+            'role'     => ['required', 'in:Admin,Broker'],
+            'password' => ['nullable', 'string', 'confirmed'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -161,34 +252,81 @@ class UserController extends Controller
             ], 422);
         }
 
+        $user = User::findOrFail($request->user_id);
 
-        $data =
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'role' => $request->role,
-            ];
+        // 🔹 Keep original data for comparison
+        $originalUser = $user->replicate();
 
-        if ($request->filled('password') && $user->role === 'Admin') {
+        $data = [
+            'name'  => $request->name,
+            'email' => $request->email,
+            'role'  => $request->role,
+        ];
+
+        $passwordChanged = false;
+
+        if ($request->filled('password') && $admin->role === 'Admin') {
             $data['password'] = Hash::make($request->password);
+            $passwordChanged = true;
         }
 
+        // 🔹 Update user
+        $user->update($data);
 
+        // 🔹 Track if anything changed (for email)
+        $changesForEmail = [];
 
-        $result = User::where('id', $request->user_id)->update($data);
+        // 🔹 Log EACH change separately
 
-        if ($result) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'User details Updated successfully.'
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed update the user details.'
-            ]);
+        if ($originalUser->name !== $user->name) {
+            adminAuditLog(
+                'NAME_UPDATED',
+                'Admin updated user name',
+                $user->id
+            );
+            $changesForEmail[] = 'Name updated';
         }
+
+        if ($originalUser->email !== $user->email) {
+            adminAuditLog(
+                'EMAIL_UPDATED',
+                'Admin updated user email',
+                $user->id
+            );
+            $changesForEmail[] = 'Email updated';
+        }
+
+        if ($originalUser->role !== $user->role) {
+            adminAuditLog(
+                'ROLE_UPDATED',
+                'Admin updated user role',
+                $user->id
+            );
+            $changesForEmail[] = 'Role updated';
+        }
+
+        if ($passwordChanged) {
+            adminAuditLog(
+                'PASSWORD_CHANGED',
+                'Admin changed user password',
+                $user->id
+            );
+            $changesForEmail[] = 'Password changed';
+        }
+
+        // 🔹 Send ONE email if anything changed
+        if ($passwordChanged) {
+            Mail::to($user->email)->send(
+                new UserUpdatedByAdmin($user, $admin, $changesForEmail)
+            );
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'User details updated successfully.'
+        ]);
     }
+
 
     public function update_user_profile(Request $request)
     {

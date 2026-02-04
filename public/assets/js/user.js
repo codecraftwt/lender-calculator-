@@ -219,6 +219,8 @@ $(document).ready(function () {
     $(document).on("click", ".user-details-submit-btn", function (e) {
         e.preventDefault();
 
+        const submitBtn = $(this);
+
         const user_id = $("#user_id").val().trim();
         const name = $("#name").val().trim();
         const email = $("#email").val().trim();
@@ -226,10 +228,8 @@ $(document).ready(function () {
 
         let isValid = true;
 
-        // Clear old errors
         $(".text-danger").addClass("d-none");
 
-        // Name validation
         if (name === "") {
             $("#invalid_name")
                 .removeClass("d-none")
@@ -237,7 +237,6 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email === "" || !emailRegex.test(email)) {
             $("#invalid_email")
@@ -246,7 +245,6 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        // Role validation
         if (role === "") {
             $("#invalid_role")
                 .removeClass("d-none")
@@ -254,11 +252,23 @@ $(document).ready(function () {
             isValid = false;
         }
 
-        if (!isValid) return; // stop submission if invalid
+        if (!isValid) return;
 
-        // Prepare form data
         const form = $("#user_detail_edit_form")[0];
         const formData = new FormData(form);
+
+        // 🔄 SHOW LOADER
+        Swal.fire({
+            title: "Updating user...",
+            text: "Please wait while we save the changes.",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        submitBtn.prop("disabled", true);
 
         $.ajax({
             url: $(form).attr("action"),
@@ -266,28 +276,33 @@ $(document).ready(function () {
             data: formData,
             contentType: false,
             processData: false,
+
             success: function (response) {
+                Swal.close(); // ❌ close loader
+
                 Swal.fire({
                     toast: true,
                     position: "top-end",
                     icon: "success",
                     title:
                         response.message ||
-                        "User Details updated successfully!",
+                        "User details updated successfully!",
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
                 });
 
-                // Optional: close modal if inside modal
                 $("#User_Edit_Modal").modal("hide");
-
                 getCustomerData();
             },
+
             error: function (error) {
+                Swal.close(); // ❌ close loader
+
                 if (error.status === 422) {
                     const errors = error.responseJSON.errors;
                     const firstError = Object.values(errors)[0][0];
+
                     Swal.fire({
                         toast: true,
                         position: "top-end",
@@ -298,7 +313,6 @@ $(document).ready(function () {
                         timerProgressBar: true,
                     });
 
-                    // Show individual errors
                     $.each(errors, function (key, messages) {
                         $(`#invalid_${key}`)
                             .removeClass("d-none")
@@ -308,12 +322,17 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "Something went wrong!",
+                        text: "Something went wrong. Please try again.",
                     });
                 }
             },
+
+            complete: function () {
+                submitBtn.prop("disabled", false); // 🔓 re-enable button
+            },
         });
     });
+
     $("select").on("change", function () {
         getCustomerData();
     });
