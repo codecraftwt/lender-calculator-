@@ -315,11 +315,11 @@ class UserController extends Controller
         }
 
         // 🔹 Send ONE email if anything changed
-        if ($passwordChanged) {
-            Mail::to($user->email)->send(
-                new UserUpdatedByAdmin($user, $admin, $changesForEmail)
-            );
-        }
+        // if ($passwordChanged) {
+        //     Mail::to($user->email)->send(
+        //         new UserUpdatedByAdmin($user, $admin, $changesForEmail)
+        //     );
+        // }
 
         return response()->json([
             'status'  => 'success',
